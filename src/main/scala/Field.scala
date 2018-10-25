@@ -1,4 +1,14 @@
 class Field(column: Int, row: Int) {
+    var piece = None: Option[Piece]
     def getColumn: Int = column
     def getRow: Int = row
+
+    def piece_(piece: Some[Piece]): Unit = { this.piece = piece }
+    def getPiece: Option[Piece] = piece
+    def hasPiece: Boolean = {
+        piece match {
+            case Some(_) => true
+            case None => false
+        }
+    }
 }
