@@ -1,3 +1,5 @@
+package model
+
 class Board(size: Int) {
     var fields = Array.ofDim[Field](size, size)
 

@@ -1,3 +1,5 @@
+package model
+
 class Piece(colour: Colour.Value, var position: Field) {
     position.piece_(Some(this))
     def getColour: Colour.Value = colour

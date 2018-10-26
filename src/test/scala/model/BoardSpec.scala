@@ -1,3 +1,5 @@
+package model
+
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
@@ -24,7 +26,7 @@ class BoardSpec extends WordSpec {
             board.getPieceColour(0) should be(Colour.BLACK)
         }
 
-        "initialize the piece colour with white if it is on the first three rows" in {
+        "initialize the piece colour with white if it is on the last three rows" in {
             val board: Board = new Board(8)
             board.getPieceColour(7) should be(Colour.WHITE)
         }
