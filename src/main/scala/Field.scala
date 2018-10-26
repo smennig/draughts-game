@@ -11,4 +11,13 @@ class Field(column: Int, row: Int) {
             case None => false
         }
     }
+
+    def getColour: Colour.Value = {
+        (row % 2, column %2) match {
+            case (0, 0) => Colour.BLACK
+            case (0, 1) => Colour.WHITE
+            case (1, 0) => Colour.WHITE
+            case (1, 1) => Colour.BLACK
+        }
+    }
 }

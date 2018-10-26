@@ -23,5 +23,16 @@ class FieldSpec extends WordSpec {
             val piece: Piece = new Man(Colour.BLACK, field)
             field.getPiece should be(Some(piece))
         }
+
+        "have a colour based on its coordinates" in {
+            val field1: Field = new Field(0, 0)
+            val field2: Field = new Field(1, 0)
+            val field3: Field = new Field(0, 1)
+            val field4: Field = new Field(1, 1)
+            field1.getColour should be(Colour.BLACK)
+            field2.getColour should be(Colour.WHITE)
+            field3.getColour should be(Colour.WHITE)
+            field4.getColour should be(Colour.BLACK)
+        }
     }
 }
