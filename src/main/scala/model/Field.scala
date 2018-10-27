@@ -1,3 +1,5 @@
+package model
+
 class Field(column: Int, row: Int) {
     var piece = None: Option[Piece]
     def getColumn: Int = column
