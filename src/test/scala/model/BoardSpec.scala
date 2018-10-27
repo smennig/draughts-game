@@ -1,5 +1,4 @@
-package model
-
+import model.{Board, Colour}
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 

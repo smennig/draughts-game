@@ -11,4 +11,12 @@ class Piece(colour: Colour.Value, var position: Field) {
 
         position = newPosition
     }
+
+    override def toString: String = {
+
+        (this.colour) match {
+            case (Colour.BLACK) => "b"
+            case (Colour.WHITE) => "w"
+        }
+    }
 }
