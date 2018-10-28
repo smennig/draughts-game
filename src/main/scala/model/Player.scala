@@ -1,15 +1,12 @@
 package model
 
-class Player {
-
-
-object PlayerColor extends Enumeration {
-  val Weiss, Schwarz = Value
-}
-
 class Player(var name: String, var color: PlayerColor.Value) {
 
+  override def toString: String = {
+    "Name : " + name +" Farbe: " + color
+  }
 }
 
-//Name
-//Farbe
+object PlayerColor extends Enumeration {
+  val Schwarz, Weiß = Value
+}

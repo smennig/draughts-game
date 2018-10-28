@@ -1,8 +1,11 @@
+package main
 
+import controller.CommandLineController
 
-class Main {
+object Main {
   def main(args: Array[String]): Unit = {
-    val clc = new CommandLineController;
+    val clc = new CommandLineController
     clc.readPlayerAttributes()
+
   }
 }
