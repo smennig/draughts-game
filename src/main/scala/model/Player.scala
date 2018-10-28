@@ -1,3 +1,7 @@
+package model
+
+class Player {
+
 
 object PlayerColor extends Enumeration {
   val Weiss, Schwarz = Value

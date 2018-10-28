@@ -1,5 +1,7 @@
-import org.scalatest.WordSpec
+package model
+
 import org.scalatest.Matchers._
+import org.scalatest.WordSpec
 
 class PlayerSpec extends WordSpec {
   "A Player" when {
