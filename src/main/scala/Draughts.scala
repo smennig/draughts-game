@@ -1,12 +1,11 @@
 package main
 
-import model.Board
+import model.{Board, BoardCreator}
 
 import scala.io.StdIn
 
 object Draughts extends App {
-  var board = new Board(9)
-board.setupFields()
+  var board =   new BoardCreator(8).setupFields()
     var input: String = ""
 
     do {

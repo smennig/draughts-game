@@ -1,4 +1,4 @@
-import model.{Board, Colour}
+import model.{Board, BoardCreator, Colour}
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
@@ -11,8 +11,7 @@ class BoardSpec extends WordSpec {
         }
 
         "have a Array of fields with the same coordinates in the filed and array" in {
-            val board: Board = new Board(8)
-            board.setupFields()
+            val board: Board = new BoardCreator(8).setupFields()
             board.fields(0)(0).getColumn should be(0)
             board.fields(0)(0).getRow should be(0)
 
@@ -21,18 +20,15 @@ class BoardSpec extends WordSpec {
         }
 
         "initialize the piece colour with black if it is on the first three rows" in {
-            val board: Board = new Board(8)
-            board.getPieceColour(0) should be(Colour.BLACK)
+            new BoardCreator(8).getPieceColour(0) should be(Colour.BLACK)
         }
 
         "initialize the piece colour with white if it is on the last three rows" in {
-            val board: Board = new Board(8)
-            board.getPieceColour(7) should be(Colour.WHITE)
+            new BoardCreator(8).getPieceColour(7) should be(Colour.WHITE)
         }
 
         "have pieces on their start positions" in {
-            val board: Board = new Board(8)
-            board.setupFields()
+            val board: Board =   new BoardCreator(8).setupFields()
 
             board.fields(0)(0).hasPiece should be(true)
             board.fields(0)(1).hasPiece should be(false)
@@ -108,8 +104,7 @@ class BoardSpec extends WordSpec {
         }
 
         "have a start position" in {
-            val board: Board = new Board(8)
-            board.setupFields()
+            val board: Board =  new BoardCreator(8).setupFields()
 
             board.toString should be("   1   2   3   4   5   6   7   8  \n" +
                                      " |---|---|---|---|---|---|---|---|\n" +
