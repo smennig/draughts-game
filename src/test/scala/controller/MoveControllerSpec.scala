@@ -1,14 +1,14 @@
 package controller
 
-import model.{Colour, Field, Man, Player}
+import model._
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
-class ControllerSpec extends WordSpec {
-    "The Controller" should {
+class MoveControllerSpec extends WordSpec {
+    "The MoveController" should {
         "check if the selected field has a valid piece" in {
-            val controller = new Controller()
-            val player = new Player(Colour.BLACK)
+            val controller = new MoveController()
+            val player = new Player("Player 1", Colour.BLACK)
             val field = new Field(0, 0)
             val piece = new Man(Colour.BLACK)
             field.piece_(Some(piece))

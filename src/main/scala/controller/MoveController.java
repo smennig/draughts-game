@@ -1,6 +1,6 @@
 package controller;
 
-public class Controller {
+public class MoveController {
     public boolean checkIfPieceIsValid() {
 
     }
