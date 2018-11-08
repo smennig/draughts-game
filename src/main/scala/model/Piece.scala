@@ -1,6 +1,6 @@
 package model
 
-class Piece(colour: Colour.Value) {
+abstract class Piece(colour: Colour.Value) {
     def getColour: Colour.Value = colour
 
     override def toString: String = {
@@ -10,4 +10,6 @@ class Piece(colour: Colour.Value) {
             case (Colour.WHITE) => "w"
         }
     }
+
+    def move(oldField: Field, newField: Field): Boolean
 }

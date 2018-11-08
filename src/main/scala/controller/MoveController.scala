@@ -7,9 +7,20 @@ class MoveController {
         field.hasPiece && field.getPiece.get.getColour == player.color
     }
 
-    def move(oldField: Field, newField: Field) = {
+    def move(oldField: Field, newField: Field): Boolean = {
+        if (newField.hasPiece) {
+            return false
+        }
+
         val piece = oldField.getPiece.get
-        oldField.clearPiece()
-        newField.piece_(Some(piece))
+
+        if (piece.move(oldField, newField)) {
+            oldField.clearPiece()
+            newField.piece_(Some(piece))
+
+            true
+        } else {
+            false
+        }
     }
 }
