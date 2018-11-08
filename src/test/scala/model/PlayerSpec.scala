@@ -8,15 +8,15 @@ import controller.CommandLineController
 class PlayerSpec extends WordSpec {
   "A Player" when {
     "valid" should {
-      val validPlayerBlack = new Player("TestPlayerBlack", PlayerColor.Schwarz)
-      val validPlayerWhite = new Player("TestPlayerWhite", PlayerColor.Weiß)
+      val validPlayerBlack = new Player("TestPlayerBlack", Colour.BLACK)
+      val validPlayerWhite = new Player("TestPlayerWhite", Colour.WHITE)
       "have a name" in {
         validPlayerBlack.name should be ("TestPlayerBlack")
         validPlayerWhite.name should be ("TestPlayerWhite")
       }
       "have a color" in {
-        validPlayerBlack.color should be (PlayerColor.Schwarz)
-        validPlayerWhite.color should be (PlayerColor.Weiß)
+        validPlayerBlack.color should be (Colour.BLACK)
+        validPlayerWhite.color should be (Colour.WHITE)
       }
     }
 
@@ -26,7 +26,7 @@ class PlayerSpec extends WordSpec {
         val in = new ByteArrayInputStream("Schwarz".getBytes)
         System.setIn(in)
         val color = controller.chooseFirstColor()
-        color should be (PlayerColor.Schwarz)
+        color should be (Colour.BLACK)
       }
     }
   }

@@ -12,7 +12,24 @@ class MoveControllerSpec extends WordSpec {
             val field = new Field(0, 0)
             val piece = new Man(Colour.BLACK)
             field.piece_(Some(piece))
+
             controller.checkIfPieceIsValid(field, player) should be(true)
+        }
+
+        "move a piece to a new position" in {
+            val controller = new MoveController()
+            val oldField =  new Field(0, 0)
+            val newField =  new Field(1, 1)
+            val piece = new Man(Colour.BLACK)
+            oldField.piece_(Some(piece))
+
+            oldField.hasPiece should be(true)
+            newField.hasPiece should be(false)
+
+            controller.move(oldField, newField)
+
+            oldField.hasPiece should be(false)
+            newField.hasPiece should be(true)
         }
     }
 }
