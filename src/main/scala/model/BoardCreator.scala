@@ -9,6 +9,7 @@ class BoardCreator(size:Int) {
       val field = new Field(row=i, column = j)
       if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= size - 3 && i < size))) {
         val piece = new Man(getPieceColour(i))
+        field.piece_(Some(piece))
       }
       board.fields(i)(j) = field
     }
