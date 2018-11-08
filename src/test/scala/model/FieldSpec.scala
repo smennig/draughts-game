@@ -22,7 +22,8 @@ class FieldSpec extends WordSpec {
 
         "have a piece if specified" in {
             val field: Field = new Field(1, 2)
-            val piece: Piece = new Man(Colour.BLACK, field)
+            val piece: Piece = new Man(Colour.BLACK)
+            field.piece_(Some(piece))
             field.getPiece should be(Some(piece))
         }
 
