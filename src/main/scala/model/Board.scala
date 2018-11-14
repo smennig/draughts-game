@@ -27,4 +27,8 @@ class Board(size: Int) {
         })
         output
     }
+
+    def getField(column: Int)(row: Int): Field = {
+        fields(column)(row)
+    }
 }

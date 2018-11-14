@@ -7,7 +7,8 @@ import org.scalatest.WordSpec
 class MoveControllerSpec extends WordSpec {
     "The MoveController" should {
         "check if the selected field has a valid piece" in {
-            val controller = new MoveController()
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
             val player = new Player("Player 1", Colour.BLACK)
             val field = new Field(0, 0)
             val piece = new Man(Colour.BLACK)
@@ -17,85 +18,95 @@ class MoveControllerSpec extends WordSpec {
         }
 
         "move a man to a new position if the new Field is empty" in {
-            val controller = new MoveController()
-            val oldField =  new Field(0, 0)
-            val newField =  new Field(1, 1)
-            val piece = new Man(Colour.BLACK)
-            oldField.piece_(Some(piece))
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(3)(3).hasPiece should be(false)
 
-            controller.move(oldField, newField) should be(true)
+            controller.move(2, 2, 3, 3)
 
-            oldField.hasPiece should be(false)
-            newField.hasPiece should be(true)
+            board.getField(2)(2).hasPiece should be(false)
+            board.getField(3)(3).hasPiece should be(true)
         }
 
         "return false if the target field has a piece on it" in {
-            val controller = new MoveController()
-            val oldField =  new Field(0, 0)
-            val newField =  new Field(1, 1)
-            val piece1 = new Man(Colour.BLACK)
-            val piece2 = new Man(Colour.WHITE)
-            oldField.piece_(Some(piece1))
-            newField.piece_(Some(piece2))
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(true)
+            board.getField(1)(1).hasPiece should be(true)
+            board.getField(2)(2).hasPiece should be(true)
 
-            controller.move(oldField, newField) should be(false)
+            controller.move(1, 1, 2, 2)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(true)
+            board.getField(1)(1).hasPiece should be(true)
+            board.getField(2)(2).hasPiece should be(true)
         }
 
         "return false if the move of a man is not diagonal" in {
-            val controller = new MoveController()
-            val oldField =  new Field(0, 0)
-            val newField =  new Field(1, 0)
-            val piece = new Man(Colour.BLACK)
-            oldField.piece_(Some(piece))
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(2)(3).hasPiece should be(false)
 
-            controller.move(oldField, newField) should be(false)
+            controller.move(2, 2, 2, 3) should be(false)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(2)(3).hasPiece should be(false)
         }
 
         "return false if the move of a man is backwards" in {
-            val controller = new MoveController()
-            val oldField =  new Field(1,1)
-            val newField =  new Field(0,0)
-            val piece = new Man(Colour.BLACK)
-            oldField.piece_(Some(piece))
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            controller.move(2, 2, 3, 3) should be(true)
 
-            controller.move(oldField, newField) should be(false)
+            board.getField(3)(3).hasPiece should be(true)
+            board.getField(2)(2).hasPiece should be(false)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            controller.move(3, 3, 2, 2) should be(false)
+
+            board.getField(3)(3).hasPiece should be(true)
+            board.getField(2)(2).hasPiece should be(false)
+        }
+
+        "return true if one opponents piece is on the inbetween field" in {
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
+
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(3)(3).hasPiece should be(false)
+            board.getField(4)(4).hasPiece should be(false)
+            board.getField(5)(5).hasPiece should be(true)
+
+            controller.move(2, 2, 3, 3) should be(true)
+            controller.move(5, 5, 4, 4) should be(true)
+
+            board.getField(2)(2).hasPiece should be(false)
+            board.getField(3)(3).hasPiece should be(true)
+            board.getField(4)(4).hasPiece should be(true)
+            board.getField(5)(5).hasPiece should be(false)
+
+            controller.move(3, 3, 5, 5) should be(true)
+
+            board.getField(2)(2).hasPiece should be(false)
+            board.getField(3)(3).hasPiece should be(false)
+            board.getField(4)(4).hasPiece should be(false)
+            board.getField(5)(5).hasPiece should be(true)
         }
 
         "return false if the move of a man is bigger than one step" in {
-            val controller = new MoveController()
-            val oldField =  new Field(0, 0)
-            val newField =  new Field(2, 2)
-            val piece = new Man(Colour.BLACK)
-            oldField.piece_(Some(piece))
+            val board = new BoardCreator(8).setupFields()
+            val controller = new MoveController(board)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(4)(4).hasPiece should be(false)
 
-            controller.move(oldField, newField) should be(false)
+            controller.move(2, 2, 4, 4) should be(false)
 
-            oldField.hasPiece should be(true)
-            newField.hasPiece should be(false)
+            board.getField(2)(2).hasPiece should be(true)
+            board.getField(4)(4).hasPiece should be(false)
         }
     }
 }
