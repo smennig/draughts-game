@@ -1,5 +1,3 @@
-package main
-
 import model.{Board, BoardCreator}
 
 import scala.io.StdIn

@@ -1,5 +1,3 @@
-package main
-
 import controller.CommandLineController
 
 object Main {
