@@ -2,8 +2,10 @@ package view
 
 
 import model.Board
+import scalafx.geometry.Pos
 import scalafx.scene.Scene
 import scalafx.scene.layout.{BorderPane, GridPane, Region, StackPane}
+import scalafx.scene.paint.Color
 
 class GameScene(val board: Board) extends Scene {
   val boardPane: BorderPane = new BorderPane() {
@@ -11,7 +13,6 @@ class GameScene(val board: Board) extends Scene {
       children = buildBoard()
     }
   }
-
 
   lazy val fields: Seq[Tile] = {
     val positions = for {
@@ -30,7 +31,11 @@ class GameScene(val board: Board) extends Scene {
     val guiBoard = new GridPane()
     fields.foreach(tile => {
       guiBoard.add(new StackPane() {
-        children = tile.region
+        // Pieces are just added for testing purposes
+        children = Seq(tile.region, new GamePiece(Color.White) {
+          alignment = Pos.Center
+        })
+
       }, tile.x, tile.y)
     })
     guiBoard
@@ -44,5 +49,4 @@ class GameScene(val board: Board) extends Scene {
   }
 
   root = boardPane
-
 }
