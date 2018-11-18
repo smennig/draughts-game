@@ -1,8 +1,3 @@
-package main
-
-import view.BeginGameGUI
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
@@ -51,6 +46,7 @@ object Main extends JFXApp {
               spread = 0.25
             }
           }
+
         )
       }
     }
