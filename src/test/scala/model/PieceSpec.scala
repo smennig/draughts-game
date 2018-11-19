@@ -10,4 +10,11 @@ class PieceSpec extends WordSpec {
             man.getColour should be(Colour.WHITE)
         }
     }
+
+    "A King" should {
+        "have a colour equal to the passed value" in {
+            val king: Piece = new King(Colour.WHITE)
+            king.getColour should be(Colour.WHITE)
+        }
+    }
 }
