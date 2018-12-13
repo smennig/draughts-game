@@ -1,18 +1,12 @@
 package view
 
-
+import scalafx.Includes._
 import model.{Board, King, Man, Piece}
+import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.{BorderPane, GridPane, Region, StackPane}
 import scalafx.scene.{Node, Scene}
 
 class GameScene(val board: Board) extends Scene {
-  val boardPane: BorderPane = new BorderPane() {
-    center = new StackPane() {
-      children = buildBoard()
-    }
-    antialiasing
-  }
-
   lazy val fields: Seq[Tile] = {
     val positions = for {
       row <- board.fields.indices
@@ -27,27 +21,36 @@ class GameScene(val board: Board) extends Scene {
       Tile(position, square, piece)
     }
   }
+  val boardPane: BorderPane = new BorderPane() {
+    center = new StackPane {
+      children = buildBoard()
+    }
+    antialiasing
+  }
 
   def buildBoard(): GridPane = {
     val guiBoard = new GridPane()
     fields.foreach(tile => {
-      guiBoard.add(new StackPane() {
-        children = tile.region
-      }, tile.x, tile.y)
-    })
-
-    fields.foreach(tile => {
-      guiBoard.add(new StackPane() {
-        children = getPieceOrElse(tile.piece)
-      }, tile.x, tile.y)
+      guiBoard.add(addClickHandlers(new FieldPane(row = tile.x, col = tile.y, piece = tile.piece) {
+        children = tile.region :: getPieceOrElse(tile.piece)
+      }), tile.x, tile.y)
     })
     guiBoard
   }
 
-  case class Tile(position: (Int, Int), region: Region, piece: Option[Piece]) {
-    def x: Int = position._1
+  //TODO implement reasonable onClick logic
+  def addClickHandlers(fieldPane: FieldPane): FieldPane = {
+    fieldPane.onMouseClicked = (e: MouseEvent) => {
+      print("click" + fieldPane.row + fieldPane.col + fieldPane.piece)
+    }
+    fieldPane
+  }
 
-    def y: Int = position._2
+  def getPieceOrElse(piece: Option[Piece]): List[Node] = {
+    piece match {
+      case Some(p) => getPieceView(p)
+      case None => List.empty[Node]
+    }
   }
 
   def getPieceView(piece: Piece): List[Node] = {
@@ -57,11 +60,11 @@ class GameScene(val board: Board) extends Scene {
     }
   }
 
-  def getPieceOrElse(piece: Option[Piece]): List[Node] = {
-    piece match {
-      case Some(p) => getPieceView(p)
-      case None => List.empty[Node]
-    }
+
+  case class Tile(position: (Int, Int), region: Region, piece: Option[Piece]) {
+    def x: Int = position._1
+
+    def y: Int = position._2
   }
 
   root = boardPane

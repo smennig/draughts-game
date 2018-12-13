@@ -12,6 +12,19 @@ case class GamePiece(color: Colour.Value, size: Double = 30, isKing: Boolean = f
   val crownBlackPath = "img/crown_black.png"
   val crownWhitePath = "img/crown_white.png"
 
+  def getView: Node = {
+    if (isKing) {
+      new StackPane {
+        children = List(blackOrWhite, blackOrWhiteKing)
+      }
+    } else {
+      new StackPane() {
+        children = blackOrWhite
+      }
+    }
+
+  }
+
   def blackOrWhite: Circle = {
     color match {
       case Colour.BLACK
@@ -38,19 +51,6 @@ case class GamePiece(color: Colour.Value, size: Double = 30, isKing: Boolean = f
         image = new Image(crownBlackPath)
       )
     }
-  }
-
-  def getView: Node = {
-    if (isKing) {
-      new StackPane() {
-        children = List(blackOrWhite, blackOrWhiteKing)
-      }
-    } else {
-      new StackPane() {
-        children = blackOrWhite
-      }
-    }
-
   }
 
 }
