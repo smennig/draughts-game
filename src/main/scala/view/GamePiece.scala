@@ -1,19 +1,56 @@
 package view
 
 import model.Colour
+import scalafx.scene.Node
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 
-case class GamePiece(color: Colour.Value) extends Circle {
-  fill = blackOrWhite
-  radius = 30
+case class GamePiece(color: Colour.Value, size: Double = 30, isKing: Boolean = false) {
 
-  def blackOrWhite: Color = {
+  val crownBlackPath = "img/crown_black.png"
+  val crownWhitePath = "img/crown_white.png"
+
+  def blackOrWhite: Circle = {
     color match {
       case Colour.BLACK
-      => Color.Black
+      => new Circle {
+        fill = Color.Black
+        radius = size
+      }
       case Colour.WHITE
-      => Color.White
+      => new Circle {
+        fill = Color.White
+        radius = size
+      }
     }
   }
+
+  def blackOrWhiteKing: ImageView = {
+    color match {
+      case Colour.BLACK
+      => new ImageView(
+        image = new Image(crownWhitePath)
+      )
+      case Colour.WHITE
+      => new ImageView(
+        image = new Image(crownBlackPath)
+      )
+    }
+  }
+
+  def getView: Node = {
+    if (isKing) {
+      new StackPane() {
+        children = List(blackOrWhite, blackOrWhiteKing)
+      }
+    } else {
+      new StackPane() {
+        children = blackOrWhite
+      }
+    }
+
+  }
+
 }

@@ -1,14 +1,14 @@
 package model
 
-class BoardCreator(size:Int) {
+class BoardCreator(size: Int) {
 
-  def setupFields():Board = {
+  def setupFields(): Board = {
 
     var board = new Board(size)
-    for (i <- 0 until size; j <- 0 until  size) {
-      val field = new Field(row=i, column = j)
+    for (i <- 0 until size; j <- 0 until size) {
+      val field = new Field(row = i, column = j)
       if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= size - 3 && i < size))) {
-        val piece = new King(getPieceColour(i))
+        val piece = new Man(getPieceColour(i))
         field.piece_(Some(piece))
       }
       board.fields(i)(j) = field

@@ -4,7 +4,7 @@ import model.Colour
 import scalafx.scene.layout.Region
 
 
-case class FieldRegion(position: (Int, Int), color: Colour.Value) extends Region {
+case class FieldRegion(position: (Int, Int), size: Double = 80, color: Colour.Value) extends Region {
 
   val white = "rgb(230,230,230)"
   val black = "rgba(117, 117, 117, 0.7)"
@@ -22,7 +22,7 @@ case class FieldRegion(position: (Int, Int), color: Colour.Value) extends Region
 
   style = blackOrWhite
 
-  prefHeight = 80
-  prefWidth = 80
+  prefHeight = size
+  prefWidth = size
 
 }

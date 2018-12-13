@@ -1,7 +1,7 @@
 package view
 
 
-import model.{Board, Piece}
+import model.{Board, King, Man, Piece}
 import scalafx.scene.layout.{BorderPane, GridPane, Region, StackPane}
 import scalafx.scene.{Node, Scene}
 
@@ -23,7 +23,7 @@ class GameScene(val board: Board) extends Scene {
       val col = position._1
       val colour = board.fields(row)(col).getColour
       val piece = board.fields(row)(col).piece
-      val square = FieldRegion(position, colour)
+      val square = FieldRegion(position, color = colour)
       Tile(position, square, piece)
     }
   }
@@ -38,12 +38,11 @@ class GameScene(val board: Board) extends Scene {
 
     fields.foreach(tile => {
       guiBoard.add(new StackPane() {
-        children = getPiceOrElse(tile.piece)
+        children = getPieceOrElse(tile.piece)
       }, tile.x, tile.y)
     })
     guiBoard
   }
-
 
   case class Tile(position: (Int, Int), region: Region, piece: Option[Piece]) {
     def x: Int = position._1
@@ -51,12 +50,17 @@ class GameScene(val board: Board) extends Scene {
     def y: Int = position._2
   }
 
-  def getPiceOrElse(piece: Option[Piece]): List[Node] = {
-
-    val gamePieces = List.empty[Node]
+  def getPieceView(piece: Piece): List[Node] = {
     piece match {
-      case Some(piece) => GamePiece(piece.getColour) :: gamePieces //      case None => Option.empty
-      case None => gamePieces
+      case piece: Man => List(GamePiece(piece.getColour).getView)
+      case piece: King => List(GamePiece(piece.getColour, isKing = true).getView)
+    }
+  }
+
+  def getPieceOrElse(piece: Option[Piece]): List[Node] = {
+    piece match {
+      case Some(p) => getPieceView(p)
+      case None => List.empty[Node]
     }
   }
 
