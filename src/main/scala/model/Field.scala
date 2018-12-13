@@ -7,6 +7,7 @@ class Field(column: Int, row: Int) {
 
     def piece_(piece: Some[Piece]): Unit = { this.piece = piece }
     def getPiece: Option[Piece] = piece
+    def clearPiece(): Unit = { piece = None: Option[Piece] }
     def hasPiece: Boolean = {
         piece match {
             case Some(_) => true

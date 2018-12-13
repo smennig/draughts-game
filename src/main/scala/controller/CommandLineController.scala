@@ -1,6 +1,6 @@
 package controller
 
-import model.{Player, PlayerColor}
+import model.{Colour, Player}
 
 import scala.io.StdIn.readLine
 
@@ -26,19 +26,19 @@ class CommandLineController {
 
     }
 
-  def chooseFirstColor(): PlayerColor.Value = {
+  def chooseFirstColor(): Colour.Value = {
     val colorInput = readLine()
     colorInput match {
-      case "Weiß" => println("Sie spielen Weiß"); PlayerColor.Weiß
-      case "Schwarz" => println("Sie spielen Schwarz"); PlayerColor.Schwarz
+      case "Weiß" => println("Sie spielen Weiß"); Colour.WHITE
+      case "Schwarz" => println("Sie spielen Schwarz"); Colour.BLACK
       case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'Schwarz' oder 'Weiß'"); chooseFirstColor()
     }
   }
 
-  def chooseSecondColor(input: PlayerColor.Value): PlayerColor.Value = {
+  def chooseSecondColor(input: Colour.Value): Colour.Value = {
     input match {
-      case PlayerColor.Schwarz => println("Sie spielen Weiß"); PlayerColor.Weiß
-      case PlayerColor.Weiß => println("Sie spielen Schwarz"); PlayerColor.Schwarz
+      case Colour.BLACK => println("Sie spielen Weiß"); Colour.WHITE
+      case Colour.WHITE => println("Sie spielen Schwarz"); Colour.BLACK
     }
   }
 }
