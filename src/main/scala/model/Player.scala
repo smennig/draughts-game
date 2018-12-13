@@ -1,10 +1,8 @@
 package model
 
-class Player(var name: String, var color: Colour.Value) {
-
-  //var hasKing: Boolean
+class Player(val name: String, val color: Colour.Value, var hasKing: Boolean = false) {
 
   override def toString: String = {
-    "Name : " + name +" Farbe: " + color
+    "Name : " + name + " Farbe: " + color
   }
 }
