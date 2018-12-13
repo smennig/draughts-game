@@ -11,7 +11,7 @@ import scalafx.scene.text.Text
 
 class BeginGameGUI {
 
-  val beginScene = new Scene {
+  val beginScene: Scene = new Scene {
     fill = Black
     content = new HBox {
       padding = Insets(20)
@@ -40,7 +40,7 @@ class BeginGameGUI {
     }
   }
 
-  def getStartGameScene(): Scene = {
-    beginScene;
+  def getStartGameScene: Scene = {
+    beginScene
   }
 }
