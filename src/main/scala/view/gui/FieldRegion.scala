@@ -1,30 +1,22 @@
-package view
+package view.gui
 
-import javafx.event.EventHandler
-import javafx.scene.input.MouseEvent
 import model.Colour
-import scalafx.event.ActionEvent
 import scalafx.scene.layout.Region
-
+import view.gui.styles.Styles
 
 case class FieldRegion(position: (Int, Int), size: Double = 80, color: Colour.Value) extends Region {
-
-  val white = "rgb(230,230,230)"
-  val black = "rgba(117, 117, 117, 0.7)"
 
   def blackOrWhite: String = {
     color match {
       case Colour.BLACK
-      => "-fx-background-color: " + black + ";"
+      => "-fx-background-color: " + Styles.blackFieldColor + ";"
       case Colour.WHITE
-      => "-fx-background-color: " + white + ";"
+      => "-fx-background-color: " + Styles.whiteFieldColor + ";"
       case _ => ""
     }
-
   }
 
   style = blackOrWhite
-
   prefHeight = size
   prefWidth = size
 

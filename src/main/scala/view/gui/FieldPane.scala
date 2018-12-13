@@ -1,4 +1,4 @@
-package view
+package view.gui
 
 import model.Piece
 import scalafx.scene.layout.StackPane
