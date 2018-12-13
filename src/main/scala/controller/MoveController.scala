@@ -62,4 +62,29 @@ class MoveController(board: Board) {
             x
         }
     }
+
+    private def isFieldKingsRow(moveColumn: Int, player: Player) = {
+        //ToDo: Add in Move and Capture
+        if(moveColumn == 1 && player.color == Colour.WHITE) {
+            if(false) //!Player.hasKing
+                true;
+        }
+
+        if(moveColumn == 8 && player.color == Colour.BLACK) {
+            if(false) //!Player.hasKing
+                true;
+        }
+        false;
+    }
+
+    private def forceCapture() = {
+        //Check if Enemy Piece is around (diagonally)
+        //Check if Piece could be captured
+
+
+        //ForcedCaptureMove
+        // Capture automatically?
+        // OR Restrict All other moves!
+    }
+
 }
