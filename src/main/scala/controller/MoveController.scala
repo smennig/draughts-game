@@ -4,7 +4,7 @@ import model._
 
 //TODO: check validation
 class MoveController(board: Board) {
-  def checkIfPieceIsValid(field: Field, player: Player) = {
+  def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
@@ -18,8 +18,8 @@ class MoveController(board: Board) {
 
     val piece = oldField.getPiece.get
 
-    var rowMove = newField.getRow - oldField.getRow
-    var columnMove = newField.getColumn - oldField.getColumn
+    val rowMove = newField.getRow - oldField.getRow
+    val columnMove = newField.getColumn - oldField.getColumn
 
     if (getUnsignedInt(rowMove) != getUnsignedInt(columnMove)) {
       return false
@@ -52,17 +52,15 @@ class MoveController(board: Board) {
     (ownPieces, opponentPieces) match {
       case (0, 0) => movePiece(piece, oldField, newField)
       case (0, 1) => capturePiece(piece, oldField, newField, captureField)
-      case (_, _) => return false
+      case (_, _) => false
     }
   }
 
-    def movePiece(piece: Piece, oldField: Field, newField: Field) = {
-        if (piece.isInstanceOf[Man]) {
-            moveMan(piece, oldField, newField)
-        } else if (piece.isInstanceOf[King]) {
-            moveKing(piece, oldField, newField)
-        } else {
-            false
+    def movePiece(piece: Piece, oldField: Field, newField: Field): Boolean = {
+        piece match {
+            case m: Man => moveMan(piece, oldField, newField)
+            case k: King => moveKing(piece, oldField, newField)
+            case _ => false
         }
     }
 
@@ -89,13 +87,11 @@ class MoveController(board: Board) {
         true
     }
 
-    def capturePiece(piece: Piece, oldField: Field, newField: Field, captureField: Option[Field]) = {
-        if (piece.isInstanceOf[Man]) {
-            captureMan(piece, oldField, newField, captureField)
-        } else if (piece.isInstanceOf[King]) {
-            captureKing(piece, oldField, newField, captureField)
-        } else {
-            false
+    def capturePiece(piece: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
+        piece match {
+            case m: Man => captureMan(piece, oldField, newField, captureField)
+            case k: King => captureKing(piece, oldField, newField, captureField)
+            case _ => false
         }
     }
 
@@ -111,7 +107,7 @@ class MoveController(board: Board) {
         }
     }
 
-    private def captureManHelp(man: Piece, oldField: Field, newField: Field, captureField: Option[Field]) = {
+    private def captureManHelp(man: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
         oldField.clearPiece()
         newField.piece_(Some(man))
         captureField.get.clearPiece()
@@ -129,7 +125,7 @@ class MoveController(board: Board) {
         }
     }
 
-    private def captureKingHelp(king: Piece, oldField: Field, newField: Field, captureField: Option[Field]) = {
+    private def captureKingHelp(king: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
         oldField.clearPiece()
         newField.piece_(Some(king))
         captureField.get.clearPiece()
@@ -147,17 +143,17 @@ class MoveController(board: Board) {
     //ToDo: Add in Move and Capture
     if (moveColumn == 1 && player.color == Colour.WHITE) {
       if (false) //!Player.hasKing
-        true;
+        true
     }
 
     if (moveColumn == 8 && player.color == Colour.BLACK) {
       if (false) //!Player.hasKing
-        true;
+        true
     }
-    false;
+    false
   }
 
-  private def forceCapture() = {
+  private def forceCapture(): Unit = {
     //Check if Enemy Piece is around (diagonally)
     //Check if Piece could be captured
 
