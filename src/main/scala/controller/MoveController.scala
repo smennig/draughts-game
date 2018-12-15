@@ -49,87 +49,19 @@ class MoveController(board: Board) {
       }
     } while (currentColumn != newColumn && currentRow != newRow)
 
+      val pieceController: PieceController = piece match {
+          case m: Man => new ManController(m)
+          case k: King => new KingController(k)
+      }
+
     (ownPieces, opponentPieces) match {
-      case (0, 0) => movePiece(piece, oldField, newField)
-      case (0, 1) => capturePiece(piece, oldField, newField, captureField)
+      case (0, 0) => pieceController.move(oldField, newField)
+      case (0, 1) => pieceController.capture(oldField, newField, captureField)
       case (_, _) => false
     }
   }
 
-    def movePiece(piece: Piece, oldField: Field, newField: Field): Boolean = {
-        piece match {
-            case m: Man => moveMan(piece, oldField, newField)
-            case k: King => moveKing(piece, oldField, newField)
-            case _ => false
-        }
-    }
 
-  def moveMan(man: Piece, oldField: Field, newField: Field): Boolean = {
-    val rowMove = newField.getRow - oldField.getRow
-    val columnMove = newField.getColumn - oldField.getColumn
-    (man.getColour, rowMove, columnMove) match {
-      case (Colour.BLACK, 1, 1) => moveManHelp(man, oldField, newField); true
-      case (Colour.BLACK, 1, -1) => moveManHelp(man, oldField, newField); true
-      case (Colour.WHITE, -1, 1) => moveManHelp(man, oldField, newField); true
-      case (Colour.WHITE, -1, -1) => moveManHelp(man, oldField, newField); true
-      case (_, _, _) => false
-    }
-  }
-
-  private def moveManHelp(man: Piece, oldField: Field, newField: Field): Unit = {
-    oldField.clearPiece()
-    newField.piece_(Some(man))
-  }
-
-    def moveKing(king: Piece, oldField: Field, newField: Field): Boolean = {
-        oldField.clearPiece()
-        newField.piece_(Some(king))
-        true
-    }
-
-    def capturePiece(piece: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
-        piece match {
-            case m: Man => captureMan(piece, oldField, newField, captureField)
-            case k: King => captureKing(piece, oldField, newField, captureField)
-            case _ => false
-        }
-    }
-
-    def captureMan(man: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
-        val rowMove = newField.getRow - oldField.getRow
-        val columnMove = newField.getColumn - oldField.getColumn
-        (man.getColour, rowMove, columnMove) match {
-            case (Colour.BLACK, 2, 2) => captureManHelp(man, oldField, newField, captureField); true
-            case (Colour.BLACK, 2, -2) => captureManHelp(man, oldField, newField, captureField); true
-            case (Colour.WHITE, -2, 2) => captureManHelp(man, oldField, newField, captureField); true
-            case (Colour.WHITE, -2, -2) => captureManHelp(man, oldField, newField, captureField); true
-            case (_, _, _) => false
-        }
-    }
-
-    private def captureManHelp(man: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
-        oldField.clearPiece()
-        newField.piece_(Some(man))
-        captureField.get.clearPiece()
-    }
-
-    def captureKing(king: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
-        val rowMove = newField.getRow - captureField.get.getRow
-        val columnMove = newField.getColumn - captureField.get.getColumn
-        (rowMove, columnMove) match {
-            case (1, 1) => captureKingHelp(king, oldField, newField, captureField); true
-            case (1, -1) => captureKingHelp(king, oldField, newField, captureField); true
-            case (-1, 1) => captureKingHelp(king, oldField, newField, captureField); true
-            case (-1, -1) => captureKingHelp(king, oldField, newField, captureField); true
-            case (_, _) => false
-        }
-    }
-
-    private def captureKingHelp(king: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
-        oldField.clearPiece()
-        newField.piece_(Some(king))
-        captureField.get.clearPiece()
-    }
 
   private def getUnsignedInt(x: Int) = {
     if (x < 0) {
