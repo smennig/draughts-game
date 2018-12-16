@@ -29,6 +29,6 @@ class Board(size: Int) {
     }
 
     def getField(column: Int)(row: Int): Field = {
-        fields(column)(row)
+        fields(row)(column)
     }
 }
