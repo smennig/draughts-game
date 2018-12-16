@@ -2,9 +2,9 @@ package controller
 
 import model._
 
-//TODO: oliver move methods from piececontroller, check validation
+//TODO: check validation
 class MoveController(board: Board) {
-  def checkIfPieceIsValid(field: Field, player: Player) = {
+  def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
@@ -18,8 +18,8 @@ class MoveController(board: Board) {
 
     val piece = oldField.getPiece.get
 
-    var rowMove = newField.getRow - oldField.getRow
-    var columnMove = newField.getColumn - oldField.getColumn
+    val rowMove = newField.getRow - oldField.getRow
+    val columnMove = newField.getColumn - oldField.getColumn
 
     if (getUnsignedInt(rowMove) != getUnsignedInt(columnMove)) {
       return false
@@ -49,12 +49,19 @@ class MoveController(board: Board) {
       }
     } while (currentColumn != newColumn && currentRow != newRow)
 
+      val pieceController: PieceController = piece match {
+          case m: Man => new ManController(m)
+          case k: King => new KingController(k)
+      }
+
     (ownPieces, opponentPieces) match {
-      case (0, 0) => piece.move(oldField, newField)
-      case (0, 1) => piece.capture(oldField, newField, captureField)
-      case (_, _) => return false
+      case (0, 0) => pieceController.move(oldField, newField)
+      case (0, 1) => pieceController.capture(oldField, newField, captureField)
+      case (_, _) => false
     }
   }
+
+
 
   private def getUnsignedInt(x: Int) = {
     if (x < 0) {
@@ -64,21 +71,7 @@ class MoveController(board: Board) {
     }
   }
 
-  private def isFieldKingsRow(moveColumn: Int, player: Player) = {
-    //ToDo: Add in Move and Capture
-    if (moveColumn == 1 && player.color == Colour.WHITE) {
-      if (false) //!Player.hasKing
-        true;
-    }
-
-    if (moveColumn == 8 && player.color == Colour.BLACK) {
-      if (false) //!Player.hasKing
-        true;
-    }
-    false;
-  }
-
-  private def forceCapture() = {
+  private def forceCapture(): Unit = {
     //Check if Enemy Piece is around (diagonally)
     //Check if Piece could be captured
 
