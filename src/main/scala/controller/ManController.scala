@@ -1,6 +1,6 @@
 package controller
 
-import model.{Colour, Field, Man, Piece}
+import model._
 
 class ManController(man: Man) extends PieceController {
     def move(oldField: Field, newField: Field): Boolean = {
@@ -17,7 +17,12 @@ class ManController(man: Man) extends PieceController {
 
     private def moveHelp(oldField: Field, newField: Field): Unit = {
         oldField.clearPiece()
-        newField.piece_(Some(man))
+        if (isFieldKingsRow(newField.getRow, man.getColour)) {
+            val king: Piece = new King(man.getColour)
+            newField.piece_(Some(king))
+        } else {
+            newField.piece_(Some(man))
+        }
     }
 
     def capture(oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
@@ -34,7 +39,20 @@ class ManController(man: Man) extends PieceController {
 
     private def captureHelp(oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
         oldField.clearPiece()
-        newField.piece_(Some(man))
+        if (isFieldKingsRow(newField.getRow, man.getColour)) {
+            val king: Piece = new King(man.getColour)
+            newField.piece_(Some(king))
+        } else {
+            newField.piece_(Some(man))
+        }
         captureField.get.clearPiece()
+    }
+
+    private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
+        if (moveRow == 0 && colour == Colour.WHITE || moveRow == 7 && colour == Colour.BLACK) {
+            true
+        } else {
+            false
+        }
     }
 }
