@@ -1,3 +1,4 @@
+import controller.MoveController
 import model.BoardCreator
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -7,7 +8,8 @@ object DraughtsGui extends JFXApp {
 
   stage = new PrimaryStage {
     title = "Draughts"
-    scene = new GameScene(new BoardCreator(8).setupFields())
+    val controller = new MoveController(new BoardCreator(8).setupFields())
+    scene = new GameScene(controller)
   }
 
 }

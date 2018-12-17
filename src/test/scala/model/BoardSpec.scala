@@ -7,9 +7,9 @@ import org.scalatest.WordSpec
 class BoardSpec extends WordSpec {
     "A Board" should {
         "have a Array of fields with the passed size" in {
-            val board: Board = new Board(8)
+          val board: Board = new BoardCreator(8).setupFields()
             board.fields should not be empty
-            board.fields.size should be(8)
+          board.fields.length should be(8)
         }
 
         "have a Array of fields with the same coordinates in the filed and array" in {

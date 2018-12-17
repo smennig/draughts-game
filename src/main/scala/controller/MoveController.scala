@@ -3,7 +3,7 @@ package controller
 import model._
 
 //TODO: check validation
-class MoveController(board: Board) {
+class MoveController(var board: Board) {
   def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
     field.hasPiece && field.getPiece.get.getColour == player.color
   }

@@ -1,7 +1,7 @@
 package model
 
-class Board(size: Int) {
-    var fields :Array[Array[Field]] = Array.ofDim[Field](size, size)
+class Board(size: Int, val fields: Array[Array[Field]]) {
+
 
     override def toString: String = {
         val blank = " "
