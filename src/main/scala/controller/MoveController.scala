@@ -4,6 +4,10 @@ import model._
 
 //TODO: check validation
 class MoveController(var board: Board) {
+  def toggleHighlightField(col: Int, row: Int) = {
+    board.getField(col)(row).highlighted = !board.getField(col)(row).highlighted
+  }
+
   def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
     field.hasPiece && field.getPiece.get.getColour == player.color
   }

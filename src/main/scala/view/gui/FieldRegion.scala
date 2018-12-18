@@ -4,7 +4,7 @@ import model.Colour
 import scalafx.scene.layout.Region
 import view.gui.styles.Styles
 
-case class FieldRegion(position: (Int, Int), size: Double = 80, color: Colour.Value) extends Region {
+case class FieldRegion(size: Double = 100, color: Colour.Value) extends Region {
 
   def blackOrWhite: String = {
     color match {

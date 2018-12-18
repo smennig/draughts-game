@@ -1,7 +1,7 @@
 package model
 
-class Field(column: Int, row: Int) {
-    var piece = None: Option[Piece]
+class Field(column: Int, row: Int, var highlighted: Boolean = false) {
+    var piece: Option[Piece] = Option.empty
     def getColumn: Int = column
     def getRow: Int = row
 

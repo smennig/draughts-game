@@ -10,6 +10,9 @@ object DraughtsGui extends JFXApp {
     title = "Draughts"
     val controller = new MoveController(new BoardCreator(8).setupFields())
     scene = new GameScene(controller)
+    resizable = false
+    //    maximized = true
+
   }
 
 }
