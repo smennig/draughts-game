@@ -53,10 +53,10 @@ class MoveController(var board: Board) {
       }
     } while (currentColumn != newColumn && currentRow != newRow)
 
-      val pieceController: PieceController = piece match {
-          case m: Man => new ManController(m)
-          case k: King => new KingController(k)
-      }
+    val pieceController: PieceController = piece match {
+      case m: Man => new ManController(m)
+      case k: King => new KingController(k)
+    }
 
     (ownPieces, opponentPieces) match {
       case (0, 0) => pieceController.move(oldField, newField)
@@ -64,7 +64,6 @@ class MoveController(var board: Board) {
       case (_, _) => false
     }
   }
-
 
 
   private def getUnsignedInt(x: Int) = {

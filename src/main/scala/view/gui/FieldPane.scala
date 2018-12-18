@@ -40,6 +40,7 @@ class FieldPane(tile: Tile) extends StackPane {
       case (0, 1) => Styles.fieldBoarderWhite
       case (1, 0) => Styles.fieldBoarderWhite
       case (1, 1) => Styles.fieldBoarderBlack
+      case _ => ""
     }
   }
 

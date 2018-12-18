@@ -9,12 +9,12 @@ class CommandLineController {
   def readPlayerAttributes() {
     println("Willkommen bei Scala-Dame")
     println("Spieler 1: Bitte geben Sie Ihren Namen ein: ")
-    val nameInputOne =  readLine()
+    val nameInputOne = readLine()
 
     println("Hallo " + nameInputOne + ": Bitte wählen sie Ihre Farbe")
     println("Geben sie dazu 'Schwarz' oder 'Weiß' ein")
-    var colorOne : Option[Colour.Value] = None
-    while(colorOne isEmpty) {
+    var colorOne: Option[Colour.Value] = None
+    while (colorOne isEmpty) {
       val inputColor = readLine()
       colorOne = chooseFirstColor(inputColor)
     }
@@ -22,11 +22,11 @@ class CommandLineController {
     val playerOne = new Player(nameInputOne, colorOne.get)
 
     println("Spieler 2: Bitte geben Sie Ihren Namen ein: ")
-    val nameInputTwo =  readLine()
+    val nameInputTwo = readLine()
     val colorTwo = chooseSecondColor(colorOne.get)
     val playerTwo = new Player(nameInputTwo, colorTwo)
 
-    println("Es spielt: " + playerOne.name + " mit " + translateEnumColour(playerOne.color)  + " gegen " + playerTwo.name + " mit " + playerTwo.color)
+    println("Es spielt: " + playerOne.name + " mit " + translateEnumColour(playerOne.color) + " gegen " + playerTwo.name + " mit " + playerTwo.color)
 
 
   }
