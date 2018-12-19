@@ -11,7 +11,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, FontWeight, Text}
 import view.gui.styles.Styles
 
-class GameScene(val controller: MoveController, val playerOne: Player = new Player(color = Colour.BLACK, name = "Player1"), val playerTwo: Player = new Player(color = Colour.WHITE, name = "Player2")) extends Scene {
+class GameScene(val controller: MoveController, val playerOne: Player = new Player(color = Colour.BLACK, name = "Player1", turn = true), val playerTwo: Player = new Player(color = Colour.WHITE, name = "Player2", turn = false)) extends Scene {
 
   var lastClickedField: Option[FieldPane] = Option.empty
 

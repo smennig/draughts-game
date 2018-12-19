@@ -9,7 +9,7 @@ class MoveControllerSpec extends WordSpec {
         "check if the selected field has a valid piece" in {
             val board = new BoardCreator(8).setupFields()
             val controller = new MoveController(board)
-            val player = new Player("Player 1", Colour.BLACK)
+            val player = new Player("Player 1", Colour.BLACK, true)
             val field = new Field(0, 0)
             val piece = new Man(Colour.BLACK)
             field.piece_(Some(piece))

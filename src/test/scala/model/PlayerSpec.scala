@@ -7,8 +7,8 @@ import controller.CommandLineController
 class PlayerSpec extends WordSpec {
   "A Player" when {
     "valid" should {
-      val validPlayerBlack = new Player("TestPlayerBlack", Colour.BLACK)
-      val validPlayerWhite = new Player("TestPlayerWhite", Colour.WHITE)
+      val validPlayerBlack = new Player("TestPlayerBlack", Colour.BLACK, true)
+      val validPlayerWhite = new Player("TestPlayerWhite", Colour.WHITE, false)
       "have a name" in {
         validPlayerBlack.name should be ("TestPlayerBlack")
         validPlayerWhite.name should be ("TestPlayerWhite")
@@ -16,6 +16,16 @@ class PlayerSpec extends WordSpec {
       "have a color" in {
         validPlayerBlack.color should be (Colour.BLACK)
         validPlayerWhite.color should be (Colour.WHITE)
+      }
+      "have a turn" in {
+        validPlayerBlack.turn should be (true)
+        validPlayerWhite.turn should be (false)
+      }
+      "invert its turn" in {
+        validPlayerBlack.turn_()
+        validPlayerWhite.turn_()
+        validPlayerBlack.turn should be (false)
+        validPlayerWhite.turn should be (true)
       }
     }
 
