@@ -12,7 +12,13 @@ class MoveController(var board: Board, blackPlayer: Player, whitePlayer: Player,
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
+  def checkIfGameIsOver() = {
+    if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
+  }
+
   def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean = {
+    if (checkIfGameIsOver()) return false
+
     val oldField: Field = board.getField(oldColumn)(oldRow)
     val newField: Field = board.getField(newColumn)(newRow)
 
@@ -69,6 +75,16 @@ class MoveController(var board: Board, blackPlayer: Player, whitePlayer: Player,
       case (_, _) => false
     }
   }
+
+//  def checkWinner() = {
+//    if (blackPlayer.pieces == 0) {
+//      "White has won"
+//    }
+//    if (whitePlayer.pieces == 0) {
+//      "Black has won"
+//    }
+//    "Game not over"
+//  }
 
 
   private def getUnsignedInt(x: Int) = {
