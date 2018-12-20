@@ -3,7 +3,7 @@ package controller
 import model._
 
 //TODO: check validation
-class MoveController(var board: Board, var colourTurn: Colour.Value = Colour.BLACK) {
+class MoveController(var board: Board, blackPlayer: Player, whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) {
   def toggleHighlightField(col: Int, row: Int) = {
     board.getField(col)(row).highlighted = !board.getField(col)(row).highlighted
   }
@@ -60,11 +60,12 @@ class MoveController(var board: Board, var colourTurn: Colour.Value = Colour.BLA
       case k: King => new KingController(k)
     }
 
+    val player = if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer
     if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
 
     (ownPieces, opponentPieces) match {
       case (0, 0) => pieceController.move(oldField, newField)
-      case (0, 1) => pieceController.capture(oldField, newField, captureField)
+      case (0, 1) => pieceController.capture(oldField, newField, captureField, player)
       case (_, _) => false
     }
   }
