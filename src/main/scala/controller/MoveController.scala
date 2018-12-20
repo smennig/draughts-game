@@ -22,6 +22,8 @@ class MoveController(var board: Board, var colourTurn: Colour.Value = Colour.BLA
 
     val piece = oldField.getPiece.get
 
+    if (piece.getColour != colourTurn) return false
+
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
 
