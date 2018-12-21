@@ -15,4 +15,8 @@ trait GameController {
 
   def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean
 
+  def whitePlayer: Player
+
+  def blackPlayer: Player
+
 }

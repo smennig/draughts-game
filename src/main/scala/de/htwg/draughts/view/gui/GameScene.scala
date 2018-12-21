@@ -11,8 +11,10 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, FontWeight, Text}
 import de.htwg.draughts.view.gui.styles.Styles
 
-class GameScene(val controller: GameController, val playerOne: Player = new Player(color = Colour.BLACK, name = "Player1", turn = true), val playerTwo: Player = new Player(color = Colour.WHITE, name = "Player2", turn = false)) extends Scene {
+class GameScene(val controller: GameController) extends Scene {
 
+  val whitePlayer: Player = controller.whitePlayer
+  val blackPlayer: Player = controller.blackPlayer
   var lastClickedField: Option[FieldPane] = Option.empty
 
   def boardPane: BorderPane = new BorderPane() {
@@ -31,30 +33,28 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
           children = Seq(
             new Text {
               margin = Insets(0, 10, 0, 0)
-              text = playerOne.name
-              fill = getNameColor(playerOne)
-              font = Font.font(null, FontWeight.Bold, getSize(playerOne.color, controller.colourTurn))
+              text = whitePlayer.name
+              fill = getNameColor(whitePlayer)
+              font = Font.font(null, FontWeight.Bold, getSize(whitePlayer.color, controller.colourTurn))
             },
-            //TODO:simon make current Turn indicator Dynamic
             new Text {
-              text = if (controller.colourTurn == playerOne.color) "ist dran" else ""
-              fill = getNameColor(playerOne)
-              font = Font.font(null, FontWeight.Bold, getSize(playerOne.color, controller.colourTurn))
+              text = if (controller.colourTurn == whitePlayer.color) "ist dran" else ""
+              fill = getNameColor(whitePlayer)
+              font = Font.font(null, FontWeight.Bold, getSize(whitePlayer.color, controller.colourTurn))
             })
         },
         new HBox {
           children = Seq(
             new Text {
               margin = Insets(0, 10, 0, 0)
-              text = playerTwo.name
-              fill = getNameColor(playerTwo)
-              font = Font.font(null, FontWeight.Bold, getSize(playerTwo.color, controller.colourTurn))
+              text = blackPlayer.name
+              fill = getNameColor(blackPlayer)
+              font = Font.font(null, FontWeight.Bold, getSize(blackPlayer.color, controller.colourTurn))
             },
             new Text {
-              //TODO:simon make current Turn indicator Dynamic
-              text = if (controller.colourTurn == playerTwo.color) "ist dran" else ""
-              fill = getNameColor(playerTwo)
-              font = Font.font(null, FontWeight.Bold, getSize(playerTwo.color, controller.colourTurn))
+              text = if (controller.colourTurn == blackPlayer.color) "ist dran" else ""
+              fill = getNameColor(blackPlayer)
+              font = Font.font(null, FontWeight.Bold, getSize(blackPlayer.color, controller.colourTurn))
             })
         })
 

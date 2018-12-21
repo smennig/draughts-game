@@ -3,7 +3,7 @@ package de.htwg.draughts.controller
 import de.htwg.draughts.model._
 
 //TODO: check validation
-class MoveController(var board: Board, blackPlayer: Player, whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
+class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).highlighted = !board.getField(col)(row).highlighted
     board.getField(col)(row).highlighted

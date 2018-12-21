@@ -13,7 +13,7 @@ object DraughtsGui extends JFXApp {
     val blackPlayer = new Player(color = Colour.BLACK, name = "Player1", turn = true)
     val whitePlayer = new Player(color = Colour.WHITE, name = "Player2", turn = false)
     val controller = new MoveController(new BoardCreator(8).setupFields(), blackPlayer, whitePlayer)
-    scene = new GameScene(controller, blackPlayer, whitePlayer)
+    scene = new GameScene(controller)
     resizable = false
     //    maximized = true
 
