@@ -11,7 +11,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, FontWeight, Text}
 import de.htwg.draughts.view.gui.styles.Styles
 
-class GameScene(val controller: GameController, val playerOne: Player = new Player(color = Colour.BLACK, name = "Player1"), val playerTwo: Player = new Player(color = Colour.WHITE, name = "Player2")) extends Scene {
+class GameScene(val controller: GameController, val playerOne: Player = new Player(color = Colour.BLACK, name = "Player1", turn = true), val playerTwo: Player = new Player(color = Colour.WHITE, name = "Player2", turn = false)) extends Scene {
 
   var lastClickedField: Option[FieldPane] = Option.empty
 
@@ -37,7 +37,7 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
             },
             //TODO:simon make current Turn indicator Dynamic
             new Text {
-              text = "ist dran"
+              text = if (controller.colourTurn == playerOne.color) "ist dran" else ""
               fill = getNameColor(playerOne)
               font = Font.font(null, FontWeight.Bold, getSize(playerOne.color, controller.colourTurn))
             })
@@ -52,7 +52,7 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
             },
             new Text {
               //TODO:simon make current Turn indicator Dynamic
-              text = "ist dran"
+              text = if (controller.colourTurn == playerTwo.color) "ist dran" else ""
               fill = getNameColor(playerTwo)
               font = Font.font(null, FontWeight.Bold, getSize(playerTwo.color, controller.colourTurn))
             })
@@ -77,7 +77,6 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
     if (playerColour == turnColour) 32 else 16
   }
 
-  //TODO: simon check if color is valid
   def addClickHandlers(fieldPane: FieldPane): FieldPane = {
     fieldPane.onMouseClicked = (e: MouseEvent) => {
       println("last clickedField is: " + lastClickedField)

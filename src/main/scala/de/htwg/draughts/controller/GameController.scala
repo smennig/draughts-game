@@ -1,10 +1,13 @@
 package de.htwg.draughts.controller
 
-import de.htwg.draughts.model.{Board, Field, Player}
+import de.htwg.draughts.model.{Board, Colour, Field, Player}
 
 trait GameController {
+  def colourTurn: Colour.Value
+
   def board: Board
 
+  def checkIfGameIsOver(): Boolean
 
   def toggleHighlightField(col: Int, row: Int): Boolean
 
