@@ -33,13 +33,13 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
               margin = Insets(0, 10, 0, 0)
               text = playerOne.name
               fill = getNameColor(playerOne)
-              font = Font.font(null, FontWeight.Bold, 32)
+              font = Font.font(null, FontWeight.Bold, getSize(playerOne.color, controller.colourTurn))
             },
             //TODO:simon make current Turn indicator Dynamic
             new Text {
               text = "ist dran"
               fill = getNameColor(playerOne)
-              font = Font.font(null, FontWeight.Bold, 32)
+              font = Font.font(null, FontWeight.Bold, getSize(playerOne.color, controller.colourTurn))
             })
         },
         new HBox {
@@ -48,13 +48,13 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
               margin = Insets(0, 10, 0, 0)
               text = playerTwo.name
               fill = getNameColor(playerTwo)
-              font = Font.font(null, FontWeight.Bold, 32)
+              font = Font.font(null, FontWeight.Bold, getSize(playerTwo.color, controller.colourTurn))
             },
             new Text {
               //TODO:simon make current Turn indicator Dynamic
               text = "ist dran"
               fill = getNameColor(playerTwo)
-              font = Font.font(null, FontWeight.Bold, 32)
+              font = Font.font(null, FontWeight.Bold, getSize(playerTwo.color, controller.colourTurn))
             })
         })
 
@@ -71,6 +71,10 @@ class GameScene(val controller: GameController, val playerOne: Player = new Play
     positions.map { position =>
       Tile(controller.board.fields(position._1)(position._2))
     }
+  }
+
+  def getSize(playerColour: Colour.Value, turnColour: Colour.Value): Int = {
+    if (playerColour == turnColour) 32 else 16
   }
 
   //TODO: simon check if color is valid

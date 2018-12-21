@@ -3,7 +3,7 @@ package de.htwg.draughts.controller
 import de.htwg.draughts.model._
 
 //TODO: check validation
-class MoveController(var board: Board) extends GameController {
+class MoveController(var board: Board, blackPlayer: Player, whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).highlighted = !board.getField(col)(row).highlighted
     board.getField(col)(row).highlighted
@@ -14,6 +14,8 @@ class MoveController(var board: Board) extends GameController {
   }
 
   def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean = {
+    if (checkIfGameIsOver()) return false
+
     val oldField: Field = board.getField(oldColumn)(oldRow)
     val newField: Field = board.getField(newColumn)(newRow)
 
@@ -22,6 +24,8 @@ class MoveController(var board: Board) extends GameController {
     }
 
     val piece = oldField.getPiece.get
+
+    if (piece.getColour != colourTurn) return false
 
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
@@ -59,13 +63,29 @@ class MoveController(var board: Board) extends GameController {
       case k: King => new KingController(k)
     }
 
+    val player = if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer
+    if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
+
     (ownPieces, opponentPieces) match {
       case (0, 0) => pieceController.move(oldField, newField)
-      case (0, 1) => pieceController.capture(oldField, newField, captureField)
+      case (0, 1) => pieceController.capture(oldField, newField, captureField, player)
       case (_, _) => false
     }
   }
 
+  def checkIfGameIsOver() = {
+    if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
+  }
+
+//  def checkWinner() = {
+//    if (blackPlayer.pieces == 0) {
+//      "White has won"
+//    }
+//    if (whitePlayer.pieces == 0) {
+//      "Black has won"
+//    }
+//    "Game not over"
+//  }
 
   private def getUnsignedInt(x: Int) = {
     if (x < 0) {

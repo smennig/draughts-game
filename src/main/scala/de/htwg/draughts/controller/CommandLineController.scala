@@ -19,12 +19,12 @@ class CommandLineController {
       colorOne = chooseFirstColor(inputColor)
     }
 
-    val playerOne = new Player(nameInputOne, colorOne.get)
+    val playerOne = new Player(nameInputOne, colorOne.get, true)
 
     println("Spieler 2: Bitte geben Sie Ihren Namen ein: ")
     val nameInputTwo = readLine()
     val colorTwo = chooseSecondColor(colorOne.get)
-    val playerTwo = new Player(nameInputTwo, colorTwo)
+    val playerTwo = new Player(nameInputTwo, colorTwo, false)
 
     println("Es spielt: " + playerOne.name + " mit " + translateEnumColour(playerOne.color) + " gegen " + playerTwo.name + " mit " + playerTwo.color)
 

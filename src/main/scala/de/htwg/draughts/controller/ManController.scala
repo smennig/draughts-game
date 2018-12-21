@@ -33,19 +33,19 @@ class ManController(man: Man) extends PieceController {
     }
   }
 
-  def capture(oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
+  def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean = {
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
     (man.getColour, rowMove, columnMove) match {
-      case (Colour.BLACK, 2, 2) => captureHelp(oldField, newField, captureField); true
-      case (Colour.BLACK, 2, -2) => captureHelp(oldField, newField, captureField); true
-      case (Colour.WHITE, -2, 2) => captureHelp(oldField, newField, captureField); true
-      case (Colour.WHITE, -2, -2) => captureHelp(oldField, newField, captureField); true
+      case (Colour.BLACK, 2, 2) => captureHelp(oldField, newField, captureField, player); true
+      case (Colour.BLACK, 2, -2) => captureHelp(oldField, newField, captureField, player); true
+      case (Colour.WHITE, -2, 2) => captureHelp(oldField, newField, captureField, player); true
+      case (Colour.WHITE, -2, -2) => captureHelp(oldField, newField, captureField, player); true
       case (_, _, _) => false
     }
   }
 
-  private def captureHelp(oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
+  private def captureHelp(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Unit = {
     oldField.clearPiece()
     if (isFieldKingsRow(newField.getRow, man.getColour)) {
       val king: Piece = new King(man.getColour)
@@ -54,5 +54,6 @@ class ManController(man: Man) extends PieceController {
       newField.piece_(Some(man))
     }
     captureField.get.clearPiece()
+    player.removePiece()
   }
 }

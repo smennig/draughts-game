@@ -13,7 +13,7 @@ abstract class PieceController() {
 
   def move(oldField: Field, newField: Field): Boolean
 
-  def capture(oldField: Field, newField: Field, captureField: Option[Field]): Boolean
+  def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean
 
 
   //    def capturePiece(piece: Piece, oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
