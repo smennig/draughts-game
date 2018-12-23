@@ -1,8 +1,10 @@
+import controller.CommandLineController
 import model.BoardCreator
 
 import scala.io.StdIn
 
 object DraughtsTui extends App {
+  /*
   var board = new BoardCreator(8).setupFields()
   var input: String = ""
 
@@ -13,4 +15,8 @@ object DraughtsTui extends App {
     input = StdIn.readLine()
     //      board = tui.processInputLine(input, board)
   } while (input != "q")
+  */
+
+  val clc = new CommandLineController
+  clc.readPlayerAttributes();
 }
