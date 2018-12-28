@@ -77,16 +77,6 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
   }
 
-  //  def checkWinner() = {
-  //    if (blackPlayer.pieces == 0) {
-  //      "White has won"
-  //    }
-  //    if (whitePlayer.pieces == 0) {
-  //      "Black has won"
-  //    }
-  //    "Game not over"
-  //  }
-
   private def getUnsignedInt(x: Int) = {
     if (x < 0) {
       x * (-1)

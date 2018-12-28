@@ -7,7 +7,7 @@ import scala.io.StdIn.readLine
 
 class CommandLineController {
 
-  var BOARD_SIZE = 8;
+  var BOARD_SIZE = 8
 
 
   def readPlayerAttributes() {
@@ -65,14 +65,14 @@ class CommandLineController {
   }
 
   def performTurn(currentPlayer: Player, nextPlayer: Player, currentBoard: Board): Unit = {
-    println(currentBoard.toString());
-    readGameMoves(currentPlayer);
+    println(currentBoard.toString())
+    readGameMoves(currentPlayer)
     //ToDo: Add win condition
     //If(winningCondition)
     //  printWin(currentPlayer);
     // return
 
-    performTurn(nextPlayer, currentPlayer, currentBoard);
+    performTurn(nextPlayer, currentPlayer, currentBoard)
 
   }
 
@@ -114,10 +114,10 @@ class CommandLineController {
   }
 
   def printWin(winningPlayer: Player): Unit = {
-    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen");
-    println("Starte Neues Spiel");
+    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen")
+    println("Starte Neues Spiel")
     //ToDo Add choice to restart game?
-    readPlayerAttributes();
+    readPlayerAttributes()
 
   }
 
