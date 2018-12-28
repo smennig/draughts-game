@@ -104,5 +104,13 @@ class BoardSpec extends WordSpec {
             board.fields(7)(6).hasPiece should be(false)
             board.fields(7)(7).hasPiece should be(true)
         }
+
+        "be able to iterate" in {
+            val board: Board =   new BoardCreator(8).setupFields()
+
+            for (field: Field <- board.iterator) {
+
+            }
+        }
     }
 }

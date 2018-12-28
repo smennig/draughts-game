@@ -1,6 +1,6 @@
 package de.htwg.draughts.model
 
-class Board(val size: Int, val fields: Array[Array[Field]]) {
+class Board(override val size: Int, val fields: Array[Array[Field]]) extends Iterable[Field] {
 
 
   override def toString: String = {
@@ -30,5 +30,9 @@ class Board(val size: Int, val fields: Array[Array[Field]]) {
 
   def getField(column: Int)(row: Int): Field = {
     fields(row)(column)
+  }
+
+  override def iterator: Iterator[Field] = {
+    new BoardIterator(fields)
   }
 }

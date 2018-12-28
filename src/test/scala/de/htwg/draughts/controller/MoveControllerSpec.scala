@@ -197,7 +197,9 @@ class MoveControllerSpec extends WordSpec {
             whitePlayer.pieces should be(12)
 
             // White: f4 x e3 - d2
+            // Zugzwang!!!
             controller.colourTurn should be(Colour.WHITE)
+//            controller.move(0, 4, 1, 3) should be(false)
             controller.move(5, 3, 3, 1) should be(true)
             board.getField(5)(3).hasPiece should be(false)
             board.getField(4)(2).hasPiece should be(false)
