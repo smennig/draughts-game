@@ -123,7 +123,7 @@ class CommandLineController {
 
   def setupFields(): Board = {
 
-    var board = new Board(BOARD_SIZE)
+    var board = new Board(BOARD_SIZE, new BoardCreator(BOARD_SIZE).setupFields().fields)
     for (i <- 0 until BOARD_SIZE; j <- 0 until BOARD_SIZE) {
       val field = new Field(row = i, column = j)
       if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= BOARD_SIZE - 3 && i < BOARD_SIZE))) {
