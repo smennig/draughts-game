@@ -1,5 +1,6 @@
 package de.htwg.draughts.controller
 
+import de.htwg.draughts.DraughtsTui.{board, clc, playerTuple}
 import de.htwg.draughts.model._
 import de.htwg.draughts.model.{Colour, Player}
 
@@ -7,10 +8,10 @@ import scala.io.StdIn.readLine
 
 class CommandLineController {
 
-  var BOARD_SIZE = 8;
+  var moveController : MoveController = null;
 
 
-  def readPlayerAttributes() {
+  def readPlayerAttributes(): (Player, Player) = {
     println("Willkommen bei Scala-Dame")
     println("Spieler 1: Bitte geben Sie Ihren Namen ein: ")
     val nameInputOne = readLine()
@@ -31,7 +32,8 @@ class CommandLineController {
     val playerTwo = new Player(nameInputTwo, colorTwo, false)
 
     println("Es spielt: " + playerOne.name + " mit " + translateEnumColour(playerOne.color)  + " gegen " + playerTwo.name + " mit " + translateEnumColour(playerTwo.color))
-
+    val boardTuple : (Player, Player) = (playerOne, playerTwo);
+    boardTuple
   }
 
   def chooseFirstColor(colorInput: String): Option[Colour.Value] = {
@@ -41,6 +43,13 @@ class CommandLineController {
       case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'Schwarz' oder 'Weiß'"); None;
     }
   }
+
+  def initializeGame(): Unit = {
+    val playerTuple : (Player, Player) = readPlayerAttributes();
+    val board = new BoardCreator().setupFields();
+    moveController = new MoveController(board, playerTuple._1, playerTuple._2)
+  }
+
 
   def chooseSecondColor(input: Colour.Value): Colour.Value = {
     input match {
@@ -65,14 +74,14 @@ class CommandLineController {
   }
 
   def performTurn(currentPlayer: Player, nextPlayer: Player, currentBoard: Board): Unit = {
-    println(currentBoard.toString());
-    readGameMoves(currentPlayer);
-    //ToDo: Add win condition
-    //If(winningCondition)
-    //  printWin(currentPlayer);
-    // return
+    println(currentBoard.toString())
+    readGameMoves(currentPlayer)
 
-    performTurn(nextPlayer, currentPlayer, currentBoard);
+    if(moveController.checkIfGameIsOver()) {
+      printWin(currentPlayer)
+      return
+    }
+    performTurn(nextPlayer, currentPlayer, currentBoard)
 
   }
 
@@ -110,7 +119,12 @@ class CommandLineController {
 
     //ToDo: Add Move Method
     println("Versuche Figur " + xCoordPiece.get + "|" + yCoordPiece.get + " nach " + xCoordTarget.get + "|" + yCoordTarget.get + " zu bewegen")
-    //move(xCoord, yCoord, Player)
+    val validMove : Boolean = moveController.move(xCoordPiece.get, yCoordPiece.get, xCoordTarget.get, yCoordTarget.get)
+    if(!validMove){
+       println("Zug ungültig! Bitte wählen sie einen anderen Zug)")
+      readGameMoves(currentTurnPlayer);
+    }
+
   }
 
   def printWin(winningPlayer: Player): Unit = {
@@ -119,27 +133,5 @@ class CommandLineController {
     //ToDo Add choice to restart game?
     readPlayerAttributes();
 
-  }
-
-  def setupFields(): Board = {
-
-    var board = new Board(BOARD_SIZE)
-    for (i <- 0 until BOARD_SIZE; j <- 0 until BOARD_SIZE) {
-      val field = new Field(row = i, column = j)
-      if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= BOARD_SIZE - 3 && i < BOARD_SIZE))) {
-        val piece = new Man(getPieceColour(i))
-        field.piece_(Some(piece))
-      }
-      board.fields(i)(j) = field
-    }
-    println(board.toString)
-    board
-  }
-
-  def getPieceColour(row: Int): Colour.Value = {
-    row match {
-      case x if 0 to 2 contains x => Colour.BLACK
-      case x if BOARD_SIZE - 3 until BOARD_SIZE contains x => Colour.WHITE
-    }
   }
 }
