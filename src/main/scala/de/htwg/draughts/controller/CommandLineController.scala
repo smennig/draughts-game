@@ -9,6 +9,7 @@ import scala.io.StdIn.readLine
 class CommandLineController {
 
   var moveController : MoveController = null;
+  var BOARD_SIZE = 8
 
 
   def readPlayerAttributes(): (Player, Player) = {
@@ -128,10 +129,32 @@ class CommandLineController {
   }
 
   def printWin(winningPlayer: Player): Unit = {
-    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen");
-    println("Starte Neues Spiel");
+    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen")
+    println("Starte Neues Spiel")
     //ToDo Add choice to restart game?
-    readPlayerAttributes();
+    readPlayerAttributes()
 
+  }
+
+  def setupFields(): Board = {
+
+    var board = new Board(BOARD_SIZE, new BoardCreator(BOARD_SIZE).setupFields().fields)
+    for (i <- 0 until BOARD_SIZE; j <- 0 until BOARD_SIZE) {
+      val field = new Field(row = i, column = j)
+      if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= BOARD_SIZE - 3 && i < BOARD_SIZE))) {
+        val piece = new Man(getPieceColour(i))
+        field.piece_(Some(piece))
+      }
+      board.fields(i)(j) = field
+    }
+    println(board.toString)
+    board
+  }
+
+  def getPieceColour(row: Int): Colour.Value = {
+    row match {
+      case x if 0 to 2 contains x => Colour.BLACK
+      case x if BOARD_SIZE - 3 until BOARD_SIZE contains x => Colour.WHITE
+    }
   }
 }
