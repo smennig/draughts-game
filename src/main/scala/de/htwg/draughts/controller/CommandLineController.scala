@@ -1,6 +1,6 @@
 package de.htwg.draughts.controller
 
-import de.htwg.draughts.DraughtsTui.{board, clc, playerTuple}
+
 import de.htwg.draughts.model._
 import de.htwg.draughts.model.{Colour, Player}
 
@@ -11,6 +11,11 @@ class CommandLineController {
   var moveController : MoveController = null;
   var BOARD_SIZE = 8
 
+  def initializeGame(): Unit = {
+    val playerTuple: (Player, Player) = readPlayerAttributes();
+    val board = new BoardCreator().setupFields();
+    moveController = new MoveController(board, playerTuple._1, playerTuple._2)
+  }
 
   def readPlayerAttributes(): (Player, Player) = {
     println("Willkommen bei Scala-Dame")
@@ -44,13 +49,6 @@ class CommandLineController {
       case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'Schwarz' oder 'Weiß'"); None;
     }
   }
-
-  def initializeGame(): Unit = {
-    val playerTuple : (Player, Player) = readPlayerAttributes();
-    val board = new BoardCreator().setupFields();
-    moveController = new MoveController(board, playerTuple._1, playerTuple._2)
-  }
-
 
   def chooseSecondColor(input: Colour.Value): Colour.Value = {
     input match {
