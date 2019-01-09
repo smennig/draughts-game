@@ -5,6 +5,8 @@ import de.htwg.draughts.controller.MoveController
 import de.htwg.draughts.model.{BoardCreator, Colour, Player}
 import javafx.embed.swing.JFXPanel
 import scalafx.application.{JFXApp, Platform}
+import de.htwg.draughts.view.gui.BeginGameGUI
+import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.stage.Stage
 
@@ -26,7 +28,7 @@ class DraughtsGui {
         val controller = new MoveController(new BoardCreator(8).setupFields(), blackPlayer, whitePlayer)
         scene = new GameScene(controller)
         resizable = false
-        //    maximized = true
+            maximized = true
 
       }
       // Show dialog and wait till it is closed
@@ -35,4 +37,6 @@ class DraughtsGui {
       Platform.exit()
     }
   }
+
+  stage.scene = new BeginGameGUI(stage).getStartGameScene
 }
