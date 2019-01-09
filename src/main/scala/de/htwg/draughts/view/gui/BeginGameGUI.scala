@@ -13,9 +13,10 @@ import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.paint.Color._
 import scalafx.scene.paint.{LinearGradient, Stops}
 import scalafx.scene.text.Text
+import scalafx.stage.Stage
 
 
-class BeginGameGUI(primaryStage: PrimaryStage) {
+class BeginGameGUI(stage: Stage) {
 
   val firstPlayerNameTextField = new TextField{
     margin = Insets(0, 10, 0, 60)
@@ -133,7 +134,8 @@ class BeginGameGUI(primaryStage: PrimaryStage) {
                   val secondPlayer = new Player(secondPlayerNameTextField.text.value, secondPlayerColor, getInitialTurn(secondPlayerColor));
 
                   val controller = new MoveController(new BoardCreator(8).setupFields(), firstPlayer, secondPlayer)
-                  primaryStage.scene = new GameScene(controller)
+                  this.scene.window
+                  stage.scene = new GameScene(controller)
                 }
               }
             }

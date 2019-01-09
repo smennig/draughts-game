@@ -1,18 +1,6 @@
 package de.htwg.draughts
 
-import com.google.inject.Guice
-import de.htwg.draughts.{DraughtsGui, DraughtsModule}
-import de.htwg.draughts.controller.{CommandLineController, GameController}
-import net.codingwell.scalaguice.InjectorExtensions._
-
 object Draughts {
-
-
-  //  val injector = Guice.createInjector(new DraughtsModule())
-
-  //  val c = injector.instance[GameController];
-
-
   val gui = new DraughtsGui()
   val tui = new DraughtsTui()
 
