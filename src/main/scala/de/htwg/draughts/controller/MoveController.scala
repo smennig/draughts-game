@@ -4,7 +4,7 @@ import de.htwg.draughts.model._
 import scala.collection.mutable.Map
 
 //TODO: check validation
-class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
+class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
     board.getField(col)(row).get.highlighted
@@ -17,7 +17,7 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
   def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean = {
     if (checkIfGameIsOver()) return false
 
-    val forcedFieldMap = checkForcedCapture()
+    val forcedFieldMap = if (multipleMove.isEmpty) checkForcedCapture() else multipleMove
 
     val oldField: Field = board.getField(oldColumn)(oldRow).get
     val newField: Field = board.getField(newColumn)(newRow).get
@@ -80,9 +80,12 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
       case (_, _) => false
     }
 
-      val anotherList = checkForcedCapture()
+      val anotherList = pieceController.checkIfNextFieldHasOpponentPiece(board, newField)
       if (!forcedMove || anotherList.isEmpty) {
           if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
+          multipleMove = multipleMove.empty
+      } else {
+          multipleMove(newField) = anotherList
       }
 
       result
