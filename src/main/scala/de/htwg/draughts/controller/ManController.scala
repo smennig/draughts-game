@@ -56,4 +56,32 @@ class ManController(man: Man) extends PieceController {
     captureField.get.clearPiece()
     player.removePiece()
   }
+
+  override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
+    var fieldList: List[Field] = List()
+
+    if (ownField.getColumn > 1) {
+      val nextLeftField = board.getField(ownField.getColumn - 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      val overnextLeftField = board.getField(ownField.getColumn - 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      if (nextLeftField.hasPiece && nextLeftField.getPiece.get.getColour != ownField.getPiece.get.getColour && !overnextLeftField.hasPiece) {
+        fieldList = overnextLeftField :: fieldList
+      }
+    }
+    if (ownField.getColumn < 6) {
+      val nextRightField = board.getField(ownField.getColumn + 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      val overnextRightField = board.getField(ownField.getColumn + 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      if (nextRightField.hasPiece && nextRightField.getPiece.get.getColour != ownField.getPiece.get.getColour && !overnextRightField.hasPiece) {
+        fieldList = overnextRightField :: fieldList
+      }
+    }
+
+    fieldList
+  }
+
+  private def getCaptureMoveDependingOnColour(colour: Colour.Value): Int = {
+    colour match {
+      case Colour.BLACK => 1
+      case Colour.WHITE => -1
+    }
+  }
 }

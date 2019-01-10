@@ -1,6 +1,6 @@
 package de.htwg.draughts.controller
 
-import de.htwg.draughts.model.{Field, King, Player}
+import de.htwg.draughts.model.{Board, Field, King, Player}
 
 class KingController(king: King) extends PieceController {
   def move(oldField: Field, newField: Field): Boolean = {
@@ -27,4 +27,6 @@ class KingController(king: King) extends PieceController {
     captureField.get.clearPiece()
     player.removePiece()
   }
+
+  override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = ???
 }

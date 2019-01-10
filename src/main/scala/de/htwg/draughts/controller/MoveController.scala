@@ -1,6 +1,7 @@
 package de.htwg.draughts.controller
 
 import de.htwg.draughts.model._
+import scala.collection.mutable.Map
 
 //TODO: check validation
 class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
@@ -16,8 +17,17 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
   def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean = {
     if (checkIfGameIsOver()) return false
 
+    val forcedFieldMap = checkForcedCapture()
+
     val oldField: Field = board.getField(oldColumn)(oldRow)
     val newField: Field = board.getField(newColumn)(newRow)
+
+    if (forcedFieldMap.nonEmpty) {
+        forcedFieldMap get oldField match {
+            case Some(lf) => if (!lf.contains(newField)) return false
+            case None => return false
+        }
+    }
 
     if (newField.hasPiece) {
       return false
@@ -58,10 +68,7 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
       }
     } while (currentColumn != newColumn && currentRow != newRow)
 
-    val pieceController: PieceController = piece match {
-      case m: Man => new ManController(m)
-      case k: King => new KingController(k)
-    }
+    val pieceController: PieceController = getPieceController(piece)
 
     val player = if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer
     if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
@@ -70,6 +77,13 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
       case (0, 0) => pieceController.move(oldField, newField)
       case (0, 1) => pieceController.capture(oldField, newField, captureField, player)
       case (_, _) => false
+    }
+  }
+
+  def getPieceController(piece: Piece): PieceController = {
+    piece match {
+      case m: Man => new ManController(m)
+      case k: King => new KingController(k)
     }
   }
 
@@ -83,6 +97,24 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     } else {
       x
     }
+  }
+
+  def checkForcedCapture(): Map[Field, List[Field]] = {
+    var fieldMap: Map[Field, List[Field]] = Map()
+      for (field <- board.iterator) {
+          if (field.hasPiece) {
+              val piece = field.getPiece.get
+              if (piece.getColour == colourTurn) {
+                val pieceController: PieceController = getPieceController(piece)
+                  val forcedFields = pieceController.checkIfNextFieldHasOpponentPiece(board, field)
+                  if (forcedFields.nonEmpty) {
+                      fieldMap(field) = forcedFields
+                  }
+              }
+          }
+      }
+
+      fieldMap
   }
 
   private def forceCapture(): Unit = {
