@@ -5,10 +5,10 @@ class BoardIterator(board: Array[Array[Field]]) extends Iterator[Field] {
 
     override def hasNext: Boolean = {
         val length = board.length
-        if (position._1 < length - 1 && position._2 < length - 1) {
+        if (position._1 < length && position._2 < length - 1) {
             position = (position._1, position._2 + 1)
             true
-        } else if (position._1 < length - 1 && position._2 >= length) {
+        } else if (position._1 < length - 1 && position._2 >= length - 1) {
             position = (position._1 + 1, 0)
             true
         }
