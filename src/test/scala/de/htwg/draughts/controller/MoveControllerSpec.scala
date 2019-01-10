@@ -378,51 +378,220 @@ class MoveControllerSpec extends WordSpec {
             controller.move(5, 3, 7, 5) should be(true)
             controller.colourTurn should be(Colour.BLACK)
             controller.move(7, 5, 5, 7) should be(true)
-//            board.getField(5)(3).get.hasPiece should be(false)
-//            board.getField(6)(4).get.hasPiece should be(false)
-//            board.getField(6)(6).get.hasPiece should be(false)
-//            board.getField(5)(7).get.hasPiece should be(true)
-//            board.getField(5)(7).get.getPiece.get shouldBe a [King]
+            board.getField(5)(3).get.hasPiece should be(false)
+            board.getField(6)(4).get.hasPiece should be(false)
+            board.getField(6)(6).get.hasPiece should be(false)
+            board.getField(5)(7).get.hasPiece should be(true)
+            board.getField(5)(7).get.getPiece.get shouldBe a [King]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(7)
 
             // White: b6 - a5
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(1, 5, 0, 4) should be(true)
+            board.getField(1)(5).get.hasPiece should be(false)
+            board.getField(0)(4).get.hasPiece should be(true)
+            board.getField(0)(4).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(7)
 
             // Black: f8 - d6
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(5, 7, 3, 5) should be(true)
+            board.getField(5)(7).get.hasPiece should be(false)
+            board.getField(3)(5).get.hasPiece should be(true)
+            board.getField(3)(5).get.getPiece.get shouldBe a [King]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(7)
 
             // White: h8 - g7
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(7, 7, 6, 6) should be(true)
+            board.getField(7)(7).get.hasPiece should be(false)
+            board.getField(6)(6).get.hasPiece should be(true)
+            board.getField(6)(6).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(7)
 
             // Black: d6 x e5 - f4
+            controller.colourTurn should be(Colour.BLACK)
+            val fieldList = controller.checkForcedCapture()
+            controller.checkForcedCapture() should be(Map(board.getField(3)(5).get -> List(board.getField(5)(3).get)))
+            controller.move(3, 5, 5, 3) should be(true)
+            board.getField(3)(5).get.hasPiece should be(false)
+            board.getField(5)(3).get.hasPiece should be(true)
+            board.getField(5)(3).get.getPiece.get shouldBe a [King]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(6)
 
             // White: c7 - d6
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(2, 6, 3, 5) should be(true)
+            board.getField(2)(6).get.hasPiece should be(false)
+            board.getField(3)(5).get.hasPiece should be(true)
+            board.getField(3)(5).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(6)
 
             // Black: f4 x d6 - c7
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map(board.getField(5)(3).get -> List(board.getField(2)(6).get)))
+            controller.move(5, 3, 2, 6) should be(true)
+            board.getField(5)(3).get.hasPiece should be(false)
+            board.getField(2)(6).get.hasPiece should be(true)
+            board.getField(2)(6).get.getPiece.get shouldBe a [King]
+            blackPlayer.pieces should be(9)
+            whitePlayer.pieces should be(5)
 
             // White: b8 x c7 - d6
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map(board.getField(1)(7).get -> List(board.getField(3)(5).get)))
+            controller.move(1, 7, 3, 5) should be(true)
+            board.getField(1)(7).get.hasPiece should be(false)
+            board.getField(3)(5).get.hasPiece should be(true)
+            board.getField(3)(5).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(8)
+            whitePlayer.pieces should be(5)
 
             // Black: a1 - b2
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(0, 0, 1, 1) should be(true)
+            board.getField(0)(0).get.hasPiece should be(false)
+            board.getField(1)(1).get.hasPiece should be(true)
+            board.getField(1)(1).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(8)
+            whitePlayer.pieces should be(5)
 
             // White: d6 - e5
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(3, 5, 4, 4) should be(true)
+            board.getField(3)(5).get.hasPiece should be(false)
+            board.getField(4)(4).get.hasPiece should be(true)
+            board.getField(4)(4).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(8)
+            whitePlayer.pieces should be(5)
 
             // Black: h4 - g5
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(7, 3, 6, 4) should be(true)
+            board.getField(7)(3).get.hasPiece should be(false)
+            board.getField(6)(4).get.hasPiece should be(true)
+            board.getField(6)(4).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(8)
+            whitePlayer.pieces should be(5)
 
             // White: f6 x g5 - h4
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map(board.getField(5)(5).get -> List(board.getField(7)(3).get)))
+            controller.move(5, 5, 7, 3) should be(true)
+            board.getField(5)(5).get.hasPiece should be(false)
+            board.getField(7)(3).get.hasPiece should be(true)
+            board.getField(7)(3).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(5)
 
             // Black: d4 x e5 - f6, f6 x g7 - h8D
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map(board.getField(3)(3).get -> List(board.getField(5)(5).get)))
+            board.getField(3)(3).get.getPiece.get shouldBe a [Man]
+            controller.move(3, 3, 5, 5) should be(true)
+            controller.colourTurn should be(Colour.BLACK)
+            controller.move(5, 5, 7, 7) should be(true)
+            board.getField(3)(3).get.hasPiece should be(false)
+            board.getField(4)(4).get.hasPiece should be(false)
+            board.getField(5)(5).get.hasPiece should be(false)
+            board.getField(6)(6).get.hasPiece should be(false)
+            board.getField(7)(7).get.hasPiece should be(true)
+            board.getField(7)(7).get.getPiece.get shouldBe a [King]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(3)
 
             // White: a7 - b6
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(0, 6, 1, 5) should be(true)
+            board.getField(0)(6).get.hasPiece should be(false)
+            board.getField(1)(5).get.hasPiece should be(true)
+            board.getField(1)(5).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(3)
 
             // Black: a3 - b4
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(0, 2, 1, 3) should be(true)
+            board.getField(0)(2).get.hasPiece should be(false)
+            board.getField(1)(3).get.hasPiece should be(true)
+            board.getField(1)(3).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(3)
 
             // White: h4 - g3
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(7, 3, 6, 2) should be(true)
+            board.getField(7)(3).get.hasPiece should be(false)
+            board.getField(6)(2).get.hasPiece should be(true)
+            board.getField(6)(2).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(3)
 
             // Black: f2 x g3 - h4
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map(board.getField(7)(1).get -> List(board.getField(5)(3).get), board.getField(5)(1).get -> List(board.getField(7)(3).get)))
+            controller.move(5, 1, 7, 3) should be(true)
+            board.getField(5)(1).get.hasPiece should be(false)
+            board.getField(7)(3).get.hasPiece should be(true)
+            board.getField(7)(3).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(2)
 
             // White: b6 - c5
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(1, 5, 2, 4) should be(true)
+            board.getField(1)(5).get.hasPiece should be(false)
+            board.getField(2)(4).get.hasPiece should be(true)
+            board.getField(2)(4).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(2)
 
             // Black: b4 x c5 - d6
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map(board.getField(1)(3).get -> List(board.getField(3)(5).get)))
+            controller.move(1, 3, 3, 5) should be(true)
+            board.getField(1)(3).get.hasPiece should be(false)
+            board.getField(3)(5).get.hasPiece should be(true)
+            board.getField(3)(5).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(1)
 
             // White: a5 - b4
+            controller.colourTurn should be(Colour.WHITE)
+            controller.checkForcedCapture() should be(Map())
+            controller.move(0, 4, 1, 3) should be(true)
+            board.getField(0)(4).get.hasPiece should be(false)
+            board.getField(1)(3).get.hasPiece should be(true)
+            board.getField(1)(3).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(1)
 
             // Black: c3 x b4 - a5#
+            controller.colourTurn should be(Colour.BLACK)
+            controller.checkForcedCapture() should be(Map(board.getField(2)(2).get -> List(board.getField(0)(4).get)))
+            controller.move(2, 2, 0, 4) should be(true)
+            board.getField(2)(2).get.hasPiece should be(false)
+            board.getField(0)(4).get.hasPiece should be(true)
+            board.getField(0)(4).get.getPiece.get shouldBe a [Man]
+            blackPlayer.pieces should be(7)
+            whitePlayer.pieces should be(0)
         }
 
 
