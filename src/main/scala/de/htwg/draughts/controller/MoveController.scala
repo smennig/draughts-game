@@ -6,8 +6,8 @@ import scala.collection.mutable.Map
 //TODO: check validation
 class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK) extends GameController {
   def toggleHighlightField(col: Int, row: Int): Boolean = {
-    board.getField(col)(row).highlighted = !board.getField(col)(row).highlighted
-    board.getField(col)(row).highlighted
+    board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
+    board.getField(col)(row).get.highlighted
   }
 
   def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
@@ -19,14 +19,16 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
 
     val forcedFieldMap = checkForcedCapture()
 
-    val oldField: Field = board.getField(oldColumn)(oldRow)
-    val newField: Field = board.getField(newColumn)(newRow)
+    val oldField: Field = board.getField(oldColumn)(oldRow).get
+    val newField: Field = board.getField(newColumn)(newRow).get
+      var forcedMove = false
 
     if (forcedFieldMap.nonEmpty) {
         forcedFieldMap get oldField match {
             case Some(lf) => if (!lf.contains(newField)) return false
             case None => return false
         }
+        forcedMove = true
     }
 
     if (newField.hasPiece) {
@@ -58,7 +60,7 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
         case (-1, -1) => currentColumn -= 1; currentRow -= 1
       }
 
-      val field = board.getField(currentColumn)(currentRow)
+      val field = board.getField(currentColumn)(currentRow).get
 
       if (field.hasPiece) {
         field.getPiece.get.getColour == piece.getColour match {
@@ -71,13 +73,19 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     val pieceController: PieceController = getPieceController(piece)
 
     val player = if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer
-    if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
 
-    (ownPieces, opponentPieces) match {
+    val result = (ownPieces, opponentPieces) match {
       case (0, 0) => pieceController.move(oldField, newField)
       case (0, 1) => pieceController.capture(oldField, newField, captureField, player)
       case (_, _) => false
     }
+
+      val anotherList = checkForcedCapture()
+      if (!forcedMove || anotherList.isEmpty) {
+          if (colourTurn == Colour.BLACK) colourTurn = Colour.WHITE else colourTurn = Colour.BLACK
+      }
+
+      result
   }
 
   def getPieceController(piece: Piece): PieceController = {

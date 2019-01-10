@@ -60,18 +60,19 @@ class ManController(man: Man) extends PieceController {
   override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
     var fieldList: List[Field] = List()
 
-    if (ownField.getColumn > 1) {
-      val nextLeftField = board.getField(ownField.getColumn - 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+    val nextLeftField = board.getField(ownField.getColumn - 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+    val nextRightField = board.getField(ownField.getColumn + 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+
+    if (nextLeftField.isDefined) {
       val overnextLeftField = board.getField(ownField.getColumn - 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
-      if (nextLeftField.hasPiece && nextLeftField.getPiece.get.getColour != ownField.getPiece.get.getColour && !overnextLeftField.hasPiece) {
-        fieldList = overnextLeftField :: fieldList
+      if (nextLeftField.get.hasPiece && nextLeftField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextLeftField.isDefined && !overnextLeftField.get.hasPiece) {
+        fieldList = overnextLeftField.get :: fieldList
       }
     }
-    if (ownField.getColumn < 6) {
-      val nextRightField = board.getField(ownField.getColumn + 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+    if (nextRightField.isDefined) {
       val overnextRightField = board.getField(ownField.getColumn + 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
-      if (nextRightField.hasPiece && nextRightField.getPiece.get.getColour != ownField.getPiece.get.getColour && !overnextRightField.hasPiece) {
-        fieldList = overnextRightField :: fieldList
+      if (nextRightField.get.hasPiece && nextRightField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextRightField.isDefined && !overnextRightField.get.hasPiece) {
+        fieldList = overnextRightField.get :: fieldList
       }
     }
 
