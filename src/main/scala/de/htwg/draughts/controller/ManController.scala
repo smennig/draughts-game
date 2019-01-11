@@ -56,4 +56,33 @@ class ManController(man: Man) extends PieceController {
     captureField.get.clearPiece()
     player.removePiece()
   }
+
+  override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
+    var fieldList: List[Field] = List()
+
+    val nextLeftField = board.getField(ownField.getColumn - 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+    val nextRightField = board.getField(ownField.getColumn + 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+
+    if (nextLeftField.isDefined) {
+      val overnextLeftField = board.getField(ownField.getColumn - 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      if (nextLeftField.get.hasPiece && nextLeftField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextLeftField.isDefined && !overnextLeftField.get.hasPiece) {
+        fieldList = overnextLeftField.get :: fieldList
+      }
+    }
+    if (nextRightField.isDefined) {
+      val overnextRightField = board.getField(ownField.getColumn + 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+      if (nextRightField.get.hasPiece && nextRightField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextRightField.isDefined && !overnextRightField.get.hasPiece) {
+        fieldList = overnextRightField.get :: fieldList
+      }
+    }
+
+    fieldList
+  }
+
+  private def getCaptureMoveDependingOnColour(colour: Colour.Value): Int = {
+    colour match {
+      case Colour.BLACK => 1
+      case Colour.WHITE => -1
+    }
+  }
 }
