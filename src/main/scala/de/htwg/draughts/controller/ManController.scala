@@ -25,14 +25,6 @@ class ManController(man: Man) extends PieceController {
     }
   }
 
-  private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
-    if (moveRow == 0 && colour == Colour.WHITE || moveRow == 7 && colour == Colour.BLACK) {
-      true
-    } else {
-      false
-    }
-  }
-
   def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean = {
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
@@ -55,6 +47,14 @@ class ManController(man: Man) extends PieceController {
     }
     captureField.get.clearPiece()
     player.removePiece()
+  }
+
+  private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
+    if (moveRow == 0 && colour == Colour.WHITE || moveRow == 7 && colour == Colour.BLACK) {
+      true
+    } else {
+      false
+    }
   }
 
   override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {

@@ -1,10 +1,15 @@
 package de.htwg.draughts.model
 
+import com.google.inject.{Guice, Injector}
+import de.htwg.draughts.DraughtsModule
+import de.htwg.draughts.controller.CommandLineController
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import de.htwg.draughts.controller.CommandLineController
+import net.codingwell.scalaguice.InjectorExtensions._
 
 class PlayerSpec extends WordSpec {
+  val injector: Injector = Guice.createInjector(new DraughtsModule())
+
   "A Player" when {
     "valid" should {
       val validPlayerBlack = new Player("TestPlayerBlack", Colour.BLACK, true)
@@ -30,7 +35,7 @@ class PlayerSpec extends WordSpec {
     }
 
     "created" should {
-      val controller = new CommandLineController()
+      val controller = injector.instance[CommandLineController]
       "be able to choose the color black" in {
         val color = controller.chooseFirstColor("Schwarz")
         color should be (Option(Colour.BLACK))

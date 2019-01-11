@@ -1,10 +1,12 @@
 package de.htwg.draughts.controller
 
 import de.htwg.draughts.model._
+
+import scala.collection.mutable
 import scala.collection.mutable.Map
 
 //TODO: check validation
-class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
+class MoveController(val board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: mutable.Map[Field, List[Field]] = mutable.Map()) extends GameController {
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
     board.getField(col)(row).get.highlighted
@@ -91,13 +93,6 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
       result
   }
 
-  def getPieceController(piece: Piece): PieceController = {
-    piece match {
-      case m: Man => new ManController(m)
-      case k: King => new KingController(k)
-    }
-  }
-
   def checkIfGameIsOver(): Boolean = {
     if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
   }
@@ -110,8 +105,8 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     }
   }
 
-  def checkForcedCapture(): Map[Field, List[Field]] = {
-    var fieldMap: Map[Field, List[Field]] = Map()
+  def checkForcedCapture(): mutable.Map[Field, List[Field]] = {
+    var fieldMap: mutable.Map[Field, List[Field]] = mutable.Map()
       for (field <- board.iterator) {
           if (field.hasPiece) {
               val piece = field.getPiece.get
@@ -126,6 +121,13 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
       }
 
       fieldMap
+  }
+
+  def getPieceController(piece: Piece): PieceController = {
+    piece match {
+      case m: Man => new ManController(m)
+      case k: King => new KingController(k)
+    }
   }
 
   private def forceCapture(): Unit = {

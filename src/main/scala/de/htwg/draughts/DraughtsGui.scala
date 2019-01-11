@@ -1,11 +1,12 @@
 package de.htwg.draughts
 
+import com.google.inject.Inject
 import javafx.embed.swing.JFXPanel
 import scalafx.application.Platform
 import de.htwg.draughts.view.gui.BeginGameGUI
 import scalafx.stage.Stage
 
-class DraughtsGui {
+class DraughtsGui @Inject() extends Runnable {
 
   def run(): Unit = {
     // Shortcut to initialize JavaFX, force initialization by creating JFXPanel() object

@@ -4,7 +4,7 @@ class BoardCreator(size: Int = 8) {
 
   val fields: Array[Array[Field]] = Array.ofDim[Field](size, size)
 
-  def setupFields(): Board = {
+  def setupFields(): DraughtsBoard = {
 
     for (i <- 0 until size; j <- 0 until size) {
       val field = new Field(row = i, column = j)
@@ -14,7 +14,7 @@ class BoardCreator(size: Int = 8) {
       }
       fields(i)(j) = field
     }
-    new Board(size, fields)
+    new DraughtsBoard(size, fields)
   }
 
   def getPieceColour(row: Int): Colour.Value = {

@@ -1,19 +1,19 @@
 package de.htwg.draughts.controller
 
 
+import com.google.inject.Inject
 import de.htwg.draughts.model._
 import de.htwg.draughts.model.{Colour, Player}
 
 import scala.io.StdIn.readLine
 
-class CommandLineController {
+class CommandLineController @Inject()(val board: Board) {
 
   var moveController : MoveController = null;
   var BOARD_SIZE = 8
 
   def initializeGame(): Unit = {
     val playerTuple: (Player, Player) = readPlayerAttributes();
-    val board = new BoardCreator().setupFields();
     moveController = new MoveController(board, playerTuple._1, playerTuple._2)
   }
 
@@ -132,21 +132,6 @@ class CommandLineController {
     //ToDo Add choice to restart game?
     readPlayerAttributes()
 
-  }
-
-  def setupFields(): Board = {
-
-    var board = new Board(BOARD_SIZE, new BoardCreator(BOARD_SIZE).setupFields().fields)
-    for (i <- 0 until BOARD_SIZE; j <- 0 until BOARD_SIZE) {
-      val field = new Field(row = i, column = j)
-      if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= BOARD_SIZE - 3 && i < BOARD_SIZE))) {
-        val piece = new Man(getPieceColour(i))
-        field.piece_(Some(piece))
-      }
-      board.fields(i)(j) = field
-    }
-    println(board.toString)
-    board
   }
 
   def getPieceColour(row: Int): Colour.Value = {

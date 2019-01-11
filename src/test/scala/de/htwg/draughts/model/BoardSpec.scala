@@ -1,19 +1,22 @@
 package de.htwg.draughts.model
 
-import de.htwg.draughts.model.{Board, BoardCreator, Colour}
+import com.google.inject.{Guice, Injector}
+import de.htwg.draughts.DraughtsModule
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
+import net.codingwell.scalaguice.InjectorExtensions._
 
 class BoardSpec extends WordSpec {
+  val injector: Injector = Guice.createInjector(new DraughtsModule())
+  val board: Board = injector.instance[Board]
+
     "A Board" should {
         "have a Array of fields with the passed size" in {
-          val board: Board = new BoardCreator(8).setupFields()
             board.fields should not be empty
           board.fields.length should be(8)
         }
 
         "have a Array of fields with the same coordinates in the filed and array" in {
-            val board: Board = new BoardCreator(8).setupFields()
             board.fields(0)(0).getColumn should be(0)
             board.fields(0)(0).getRow should be(0)
 
@@ -30,7 +33,6 @@ class BoardSpec extends WordSpec {
         }
 
         "have pieces on their start positions" in {
-            val board: Board =   new BoardCreator(8).setupFields()
 
             board.fields(0)(0).hasPiece should be(true)
             board.fields(0)(1).hasPiece should be(false)
@@ -106,7 +108,6 @@ class BoardSpec extends WordSpec {
         }
 
         "be able to iterate" in {
-            val board: Board =   new BoardCreator(8).setupFields()
 
             for (field: Field <- board.iterator) {
 

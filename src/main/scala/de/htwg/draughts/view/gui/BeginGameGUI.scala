@@ -4,7 +4,6 @@ import de.htwg.draughts.controller.MoveController
 import de.htwg.draughts.model.{BoardCreator, Colour, Player}
 import de.htwg.draughts.view.gui.styles.Styles
 import scalafx.Includes._
-import scalafx.application.JFXApp.PrimaryStage
 import scalafx.event.ActionEvent
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
@@ -134,7 +133,7 @@ class BeginGameGUI(stage: Stage) {
                   val secondPlayer = new Player(secondPlayerNameTextField.text.value, secondPlayerColor, getInitialTurn(secondPlayerColor));
 
                   val controller = new MoveController(new BoardCreator(8).setupFields(), firstPlayer, secondPlayer)
-                  this.scene.window
+
                   stage.scene = new GameScene(controller)
                 }
               }
