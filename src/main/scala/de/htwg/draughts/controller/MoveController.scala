@@ -1,12 +1,17 @@
 package de.htwg.draughts.controller
 
+import com.google.inject.assistedinject.Assisted
 import de.htwg.draughts.model._
+import javax.inject.Inject
 
 import scala.collection.mutable
-import scala.collection.mutable.Map
 
 //TODO: check validation
-class MoveController(val board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: mutable.Map[Field, List[Field]] = mutable.Map()) extends GameController {
+class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val blackPlayer: Player, @Assisted("whitePlayer") val whitePlayer: Player) extends GameController {
+
+  var colourTurn: Colour.Value = Colour.BLACK
+  var multipleMove: mutable.Map[Field, List[Field]] = mutable.Map()
+
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
     board.getField(col)(row).get.highlighted
