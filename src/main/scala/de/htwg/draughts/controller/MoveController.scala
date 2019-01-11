@@ -65,6 +65,7 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
         case (-1, 1) => currentColumn -= 1; currentRow += 1
         case (1, -1) => currentColumn += 1; currentRow -= 1
         case (-1, -1) => currentColumn -= 1; currentRow -= 1
+        case (_, _) => ;
       }
 
       val field = board.getField(currentColumn)(currentRow).get
