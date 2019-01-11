@@ -18,12 +18,14 @@ class CommandLineController {
     val nameInputOne = readLine()
 
     println("Hallo " + nameInputOne + ": Bitte wählen sie Ihre Farbe")
-    println("Geben sie dazu 'Schwarz' oder 'Weiß' ein")
+    println("Geben sie dazu 'b' oder 'w' ein")
     var colorOne: Option[Colour.Value] = None
     while (colorOne isEmpty) {
       val inputColor = readLine()
       colorOne = chooseFirstColor(inputColor)
     }
+
+
 
     val playerOne = new Player(nameInputOne, colorOne.get, true)
 
@@ -33,24 +35,22 @@ class CommandLineController {
     val playerTwo = new Player(nameInputTwo, colorTwo, false)
 
     println("Es spielt: " + playerOne.name + " mit " + translateEnumColour(playerOne.color)  + " gegen " + playerTwo.name + " mit " + translateEnumColour(playerTwo.color))
-    val boardTuple : (Player, Player) = (playerOne, playerTwo);
-    boardTuple
+    if(playerOne.color == Colour.BLACK){
+      val boardTuple : (Player, Player) = (playerOne, playerTwo)
+      boardTuple
+    } else {
+      val boardTuple : (Player, Player) = (playerTwo, playerOne)
+      boardTuple
+    }
   }
 
   def chooseFirstColor(colorInput: String): Option[Colour.Value] = {
     colorInput match {
-      case "Weiß" => println("Sie spielen Weiß"); Option(Colour.WHITE);
-      case "Schwarz" => println("Sie spielen Schwarz"); Option(Colour.BLACK);
-      case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'Schwarz' oder 'Weiß'"); None;
+      case "w" => println("Sie spielen Weiß"); Option(Colour.WHITE);
+      case "b" => println("Sie spielen Schwarz"); Option(Colour.BLACK);
+      case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'b' oder 'w'"); None;
     }
   }
-
-  def initializeGame(): Unit = {
-    val playerTuple : (Player, Player) = readPlayerAttributes();
-    val board = new BoardCreator().setupFields();
-    moveController = new MoveController(board, playerTuple._1, playerTuple._2)
-  }
-
 
   def chooseSecondColor(input: Colour.Value): Colour.Value = {
     input match {
@@ -61,8 +61,8 @@ class CommandLineController {
 
   def translateEnumColour(input: Colour.Value): String = {
     input match {
-      case Colour.BLACK => "Schwarz"
-      case Colour.WHITE => "Weiß"
+      case Colour.BLACK => "b"
+      case Colour.WHITE => "w"
     }
   }
 
@@ -120,10 +120,16 @@ class CommandLineController {
 
     //ToDo: Add Move Method
     println("Versuche Figur " + xCoordPiece.get + "|" + yCoordPiece.get + " nach " + xCoordTarget.get + "|" + yCoordTarget.get + " zu bewegen")
-    val validMove : Boolean = moveController.move(xCoordPiece.get, yCoordPiece.get, xCoordTarget.get, yCoordTarget.get)
+    val validMove : Boolean = moveController.move(xCoordPiece.get-1, yCoordPiece.get-1, xCoordTarget.get-1, yCoordTarget.get-1)
+
+    if(moveController.checkIfGameIsOver()) {
+      printWin(currentTurnPlayer)
+      return
+    }
+
     if(!validMove){
-       println("Zug ungültig! Bitte wählen sie einen anderen Zug)")
-      readGameMoves(currentTurnPlayer);
+      println("Zug ungültig! Bitte wählen sie einen anderen Zug)")
+      readGameMoves(currentTurnPlayer)
     }
 
   }
@@ -156,5 +162,9 @@ class CommandLineController {
       case x if 0 to 2 contains x => Colour.BLACK
       case x if BOARD_SIZE - 3 until BOARD_SIZE contains x => Colour.WHITE
     }
+  }
+
+  def addController(moveController: MoveController): Unit = {
+    this.moveController = moveController;
   }
 }
