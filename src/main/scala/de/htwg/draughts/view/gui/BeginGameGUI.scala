@@ -1,6 +1,7 @@
 package de.htwg.draughts.view.gui
 
-import de.htwg.draughts.controller.MoveController
+import com.google.inject.Inject
+import de.htwg.draughts.controller.{GameControllerFactory, MoveController}
 import de.htwg.draughts.model.{BoardCreator, Colour, Player}
 import de.htwg.draughts.view.gui.styles.Styles
 import scalafx.Includes._
@@ -15,7 +16,7 @@ import scalafx.scene.text.Text
 import scalafx.stage.Stage
 
 
-class BeginGameGUI(stage: Stage) {
+class BeginGameGUI(changeScene: (Player, Player) => Unit) {
 
   val firstPlayerNameTextField = new TextField{
     margin = Insets(0, 10, 0, 60)
@@ -132,9 +133,7 @@ class BeginGameGUI(stage: Stage) {
                   val firstPlayer = new Player(firstPlayerNameTextField.text.value, firstPlayerColor, getInitialTurn(firstPlayerColor));
                   val secondPlayer = new Player(secondPlayerNameTextField.text.value, secondPlayerColor, getInitialTurn(secondPlayerColor));
 
-                  val controller = new MoveController(new BoardCreator(8).setupFields(), firstPlayer, secondPlayer)
-
-                  stage.scene = new GameScene(controller)
+                  changeScene(firstPlayer, secondPlayer)
                 }
               }
             }
@@ -175,6 +174,7 @@ class BeginGameGUI(stage: Stage) {
     }
 
   }
+
 
   def getInitialTurn(color : Colour.Value): Boolean = {
     if(color == Colour.WHITE) {
