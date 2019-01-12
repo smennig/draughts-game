@@ -79,14 +79,11 @@ class GameScene(val controller: GameController) extends Scene {
 
   def addClickHandlers(fieldPane: FieldPane): FieldPane = {
     fieldPane.onMouseClicked = (e: MouseEvent) => {
-      println("last clickedField is: " + lastClickedField)
-
       lastClickedField match {
         case Some(oldField) =>
           oldField.piece match {
             case Some(piece) =>
               controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
-              println((oldField.col, oldField.row, fieldPane.col, fieldPane.row))
               controller.toggleHighlightField(oldField.col, oldField.row)
               lastClickedField = Option.empty
             case None => lastClickedField = Option.empty
@@ -99,7 +96,6 @@ class GameScene(val controller: GameController) extends Scene {
           }
       }
       repaint()
-      println("click on row: " + fieldPane.row + "field :" + fieldPane.col + "piece: " + fieldPane.piece)
     }
     fieldPane
   }
@@ -116,8 +112,6 @@ class GameScene(val controller: GameController) extends Scene {
     root = boardPane
   }
 
-
   repaint()
-
 
 }
