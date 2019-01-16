@@ -1,10 +1,23 @@
 package de.htwg.draughts.controller
 
+import akka.actor.{ActorSystem, Props}
+import akka.pattern.{ask, pipe}
+import akka.util.Timeout
+import de.htwg.draughts.controller.StopGameChecker.{CheckPlayer, ContinueGame, StopGame}
 import de.htwg.draughts.model._
+
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration._
 import scala.collection.mutable.Map
 
 //TODO: check validation
-class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player, var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
+class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player,
+                     var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
+
+  val system: ActorSystem = ActorSystem("MySystem")
+  val gameStopActor = system.actorOf(Props[StopGameChecker], name = "gameStopActor")
+
+
   def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
     board.getField(col)(row).get.highlighted
@@ -14,9 +27,7 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
-  def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean = {
-    if (checkIfGameIsOver()) return false
-
+  def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
     val forcedFieldMap = if (multipleMove.isEmpty) checkForcedCapture() else multipleMove
 
     val oldField: Field = board.getField(oldColumn)(oldRow).get
@@ -25,25 +36,25 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
 
     if (forcedFieldMap.nonEmpty) {
         forcedFieldMap get oldField match {
-            case Some(lf) => if (!lf.contains(newField)) return false
-            case None => return false
+            case Some(lf) => if (!lf.contains(newField)) return (false, None)
+            case None => return (false, None)
         }
         forcedMove = true
     }
 
     if (newField.hasPiece) {
-      return false
+      return (false, None)
     }
 
     val piece = oldField.getPiece.get
 
-    if (piece.getColour != colourTurn) return false
+    if (piece.getColour != colourTurn) return (false, None)
 
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
 
     if (getUnsignedInt(rowMove) != getUnsignedInt(columnMove)) {
-      return false
+      return (false, None)
     }
 
     var currentColumn = oldColumn
@@ -88,7 +99,17 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
           multipleMove(newField) = anotherList
       }
 
-      result
+      implicit val timeout = Timeout(5 milliseconds)
+      val future = gameStopActor ? CheckPlayer(board, colourTurn)
+      val response = Await.result(future, timeout.duration).asInstanceOf[Boolean]
+
+      val winner = if (!response) {
+        Some(if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer)
+      } else {
+        None
+      }
+
+    (result, winner)
   }
 
   def getPieceController(piece: Piece): PieceController = {
