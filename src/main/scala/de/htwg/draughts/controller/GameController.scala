@@ -13,7 +13,7 @@ trait GameController {
 
   def checkIfPieceIsValid(field: Field, player: Player): Boolean
 
-  def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): Boolean
+  def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player])
 
   def whitePlayer: Player
 
