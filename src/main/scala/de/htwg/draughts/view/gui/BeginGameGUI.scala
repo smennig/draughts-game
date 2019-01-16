@@ -1,8 +1,6 @@
 package de.htwg.draughts.view.gui
 
-import com.google.inject.Inject
-import de.htwg.draughts.controller.{GameControllerFactory, MoveController}
-import de.htwg.draughts.model.{BoardCreator, Colour, Player}
+import de.htwg.draughts.model.{Colour, Player}
 import de.htwg.draughts.view.gui.styles.Styles
 import scalafx.Includes._
 import scalafx.event.ActionEvent
@@ -13,7 +11,6 @@ import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.paint.Color._
 import scalafx.scene.paint.{LinearGradient, Stops}
 import scalafx.scene.text.Text
-import scalafx.stage.Stage
 
 
 class BeginGameGUI(changeScene: (Player, Player) => Unit) {

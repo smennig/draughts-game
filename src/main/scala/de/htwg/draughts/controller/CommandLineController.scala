@@ -70,8 +70,8 @@ class CommandLineController @Inject()(val board: Board) {
   }
 
   def checkCoordinate(coordinate: String): Option[Int] ={
-    val NumberPattern = "^([1-8)$".r
-    val QuitPattern = "^([q)$".r
+    val NumberPattern = "^([1-8])$".r
+    val QuitPattern = "^([q])$".r
     coordinate match {
       case NumberPattern(`coordinate`) => Option(coordinate.toInt);
       case QuitPattern(`coordinate`) => println("Spiel auf Wunsch eines Spielers abgebrochen");System.exit(0); None;
@@ -140,12 +140,11 @@ class CommandLineController @Inject()(val board: Board) {
 
   }
 
-  def printWin(winningPlayer: Player): Unit = {
-    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen")
-    println("Starte Neues Spiel")
-    //ToDo Add choice to restart game?
-    readPlayerAttributes()
 
+  def printWin(winningPlayer: Player): Unit = {
+    println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen!")
+    println("Das Spiel wird beendet...")
+    System.exit(0)
   }
 
   def getPieceColour(row: Int): Colour.Value = {
@@ -156,6 +155,6 @@ class CommandLineController @Inject()(val board: Board) {
   }
 
   def addController(moveController: GameController): Unit = {
-    this.moveController = moveController;
+    this.moveController = moveController
   }
 }
