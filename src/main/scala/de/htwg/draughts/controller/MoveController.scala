@@ -1,31 +1,24 @@
 package de.htwg.draughts.controller
 
 import com.google.inject.assistedinject.Assisted
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
-import de.htwg.draughts.controller.StopGameChecker.{CheckPlayer, ContinueGame, StopGame}
+import de.htwg.draughts.controller.StopGameChecker.CheckPlayer
 import de.htwg.draughts.model._
 import javax.inject.Inject
 
 import scala.collection.mutable
-
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.concurrent.duration._
 import scala.collection.mutable.Map
 
-//TODO: check validation
 class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val blackPlayer: Player, @Assisted("whitePlayer") val whitePlayer: Player) extends GameController {
 
+  val system: ActorSystem = ActorSystem("MySystem")
+  val gameStopActor: ActorRef = system.actorOf(Props[StopGameChecker], name = "gameStopActor")
   var colourTurn: Colour.Value = Colour.BLACK
   var multipleMove: mutable.Map[Field, List[Field]] = mutable.Map()
-
-//class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player,
-//                     var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
-
-  val system: ActorSystem = ActorSystem("MySystem")
-  val gameStopActor = system.actorOf(Props[StopGameChecker], name = "gameStopActor")
-
 
   override def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
@@ -109,7 +102,7 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
           multipleMove(newField) = anotherList
       }
 
-      implicit val timeout = Timeout(5 milliseconds)
+      implicit val timeout: Timeout = Timeout(5 milliseconds)
       val future = gameStopActor ? CheckPlayer(board, colourTurn)
       val response = Await.result(future, timeout.duration).asInstanceOf[Boolean]
 
@@ -120,10 +113,6 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
       }
 
     (result, winner)
-  }
-
-  override def checkIfGameIsOver(): Boolean = {
-    if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
   }
 
   private def getUnsignedInt(x: Int) = {
@@ -157,6 +146,10 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
       case m: Man => new ManController(m)
       case k: King => new KingController(k)
     }
+  }
+
+  override def checkIfGameIsOver(): Boolean = {
+    if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
   }
 
   private def forceCapture(): Unit = {

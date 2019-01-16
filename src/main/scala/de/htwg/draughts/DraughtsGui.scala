@@ -29,7 +29,7 @@ class DraughtsGui @Inject()(gameControllerFactory: GameControllerFactory) extend
 
       gameStage.scene = new BeginGameGUI((player1: Player, player2: Player) => {
         val controller = gameControllerFactory.create(player1, player2)
-        gameStage.scene = new GameScene(controller)
+        gameStage.scene = new GameScene(controller, gameStage.hide)
       }).getStartGameScene
       // Show dialog and wait till it is closed
       gameStage.showAndWait()

@@ -14,7 +14,7 @@ import scalafx.application.Platform
 import scalafx.scene.control.{Alert, ButtonType}
 import scalafx.scene.control.Alert.AlertType
 
-class GameScene(val controller: GameController) extends Scene {
+class GameScene(val controller: GameController, endScene: () => Unit) extends Scene {
 
   val whitePlayer: Player = controller.whitePlayer
   val blackPlayer: Player = controller.blackPlayer
@@ -82,7 +82,7 @@ class GameScene(val controller: GameController) extends Scene {
 
   def ckeckGameEnd(win: Option[Player]): Unit = {
     win match {
-      case Some(player) => {
+      case Some(player) =>
         val alert = new Alert(AlertType.Information) {
 
           title = "Das Spiel ist zu Ende"
@@ -93,11 +93,11 @@ class GameScene(val controller: GameController) extends Scene {
         }
         val result = alert.showAndWait()
         result match {
-          case Some(ButtonType.OK) => Platform.exit()
+          case Some(ButtonType.OK) => endScene()
+          case _ =>
         }
-      }
+      case None =>
     }
-
 
   }
 
@@ -107,7 +107,7 @@ class GameScene(val controller: GameController) extends Scene {
         case Some(oldField) =>
           oldField.piece match {
             case Some(piece) =>
-              val success, win = controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
+              val (success, win) = controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
               ckeckGameEnd(win)
               controller.toggleHighlightField(oldField.col, oldField.row)
               lastClickedField = Option.empty
