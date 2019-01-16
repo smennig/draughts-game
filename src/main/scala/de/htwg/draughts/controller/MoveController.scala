@@ -20,23 +20,23 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
   var colourTurn: Colour.Value = Colour.BLACK
   var multipleMove: mutable.Map[Field, List[Field]] = mutable.Map()
 
-class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player,
-                     var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
+//class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer: Player,
+//                     var colourTurn: Colour.Value = Colour.BLACK, var multipleMove: Map[Field, List[Field]] = Map()) extends GameController {
 
   val system: ActorSystem = ActorSystem("MySystem")
   val gameStopActor = system.actorOf(Props[StopGameChecker], name = "gameStopActor")
 
 
-  def toggleHighlightField(col: Int, row: Int): Boolean = {
+  override def toggleHighlightField(col: Int, row: Int): Boolean = {
     board.getField(col)(row).get.highlighted = !board.getField(col)(row).get.highlighted
     board.getField(col)(row).get.highlighted
   }
 
-  def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
+  override def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
-  def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
+  override def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
     val forcedFieldMap = if (multipleMove.isEmpty) checkForcedCapture() else multipleMove
 
     val oldField: Field = board.getField(oldColumn)(oldRow).get
@@ -122,14 +122,7 @@ class MoveController(var board: Board, val blackPlayer: Player, val whitePlayer:
     (result, winner)
   }
 
-  def getPieceController(piece: Piece): PieceController = {
-    piece match {
-      case m: Man => new ManController(m)
-      case k: King => new KingController(k)
-    }
-  }
-
-  def checkIfGameIsOver(): Boolean = {
+  override def checkIfGameIsOver(): Boolean = {
     if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
   }
 
