@@ -119,7 +119,7 @@ class MoveControllerSpec extends WordSpec {
             board.getField(3)(1).get.hasPiece should be(true)
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(4, 2, 3, 3) should be(true)
+            controller.move(4, 2, 3, 3)._1 should be(true)
             board.getField(4)(2).get.hasPiece should be(false)
             board.getField(3)(3).get.hasPiece should be(true)
             board.getField(3)(3).get.getPiece.get shouldBe a [Man]
@@ -130,7 +130,7 @@ class MoveControllerSpec extends WordSpec {
             board.getField(3)(1).get.hasPiece should be(true)
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 5, 4, 4) should be(true)
+            controller.move(3, 5, 4, 4)._1 should be(true)
             board.getField(3)(5).get.hasPiece should be(false)
             board.getField(4)(4).get.hasPiece should be(true)
             board.getField(4)(4).get.getPiece.get shouldBe a [Man]
@@ -141,7 +141,7 @@ class MoveControllerSpec extends WordSpec {
             board.getField(3)(1).get.hasPiece should be(true)
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 1, 4, 2) should be(true)
+            controller.move(3, 1, 4, 2)._1 should be(true)
             board.getField(3)(1).get.hasPiece should be(false)
             board.getField(4)(2).get.hasPiece should be(true)
             board.getField(4)(2).get.getPiece.get shouldBe a [Man]
@@ -152,7 +152,7 @@ class MoveControllerSpec extends WordSpec {
 //            board.getField(3)(1).hasPiece should be(true)
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(7, 5, 6, 4) should be(true)
+            controller.move(7, 5, 6, 4)._1 should be(true)
             board.getField(7)(5).get.hasPiece should be(false)
             board.getField(6)(4).get.hasPiece should be(true)
             board.getField(6)(4).get.getPiece.get shouldBe a [Man]
@@ -163,7 +163,7 @@ class MoveControllerSpec extends WordSpec {
 //            board.getField(3)(1).hasPiece should be(true)
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(6, 2, 7, 3) should be(true)
+            controller.move(6, 2, 7, 3)._1 should be(true)
             board.getField(6)(2).get.hasPiece should be(false)
             board.getField(7)(3).get.hasPiece should be(true)
             board.getField(7)(3).get.getPiece.get shouldBe a [Man]
@@ -174,7 +174,7 @@ class MoveControllerSpec extends WordSpec {
 //            board.getField(3)(1).hasPiece should be(true)
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(1, 5, 0, 4) should be(true)
+            controller.move(1, 5, 0, 4)._1 should be(true)
             board.getField(1)(5).get.hasPiece should be(false)
             board.getField(0)(4).get.hasPiece should be(true)
             board.getField(0)(4).get.getPiece.get shouldBe a [Man]
@@ -185,7 +185,7 @@ class MoveControllerSpec extends WordSpec {
 //            board.getField(3)(1).hasPiece should be(true)
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 3, 2, 4) should be(true)
+            controller.move(3, 3, 2, 4)._1 should be(true)
             board.getField(3)(3).get.hasPiece should be(false)
             board.getField(2)(4).get.hasPiece should be(true)
             board.getField(2)(4).get.getPiece.get shouldBe a [Man]
@@ -195,7 +195,7 @@ class MoveControllerSpec extends WordSpec {
             // White: e5 - f4
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(4, 4, 5, 3) should be(true)
+            controller.move(4, 4, 5, 3)._1 should be(true)
             board.getField(4)(4).get.hasPiece should be(false)
             board.getField(5)(3).get.hasPiece should be(true)
             board.getField(5)(3).get.getPiece.get shouldBe a [Man]
@@ -205,7 +205,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: c3 - d4
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(2, 2, 3, 3) should be(true)
+            controller.move(2, 2, 3, 3)._1 should be(true)
             board.getField(2)(2).get.hasPiece should be(false)
             board.getField(3)(3).get.hasPiece should be(true)
             board.getField(3)(3).get.getPiece.get shouldBe a [Man]
@@ -217,9 +217,9 @@ class MoveControllerSpec extends WordSpec {
             controller.colourTurn should be(Colour.WHITE)
             val list = List(board.getField(3)(1).get)
             controller.checkForcedCapture() should be(Map(board.getField(5)(3).get -> list))
-            controller.move(5, 3, 6, 2) should be(false)
-            controller.move(0, 4, 1, 3) should be(false)
-            controller.move(5, 3, 3, 1) should be(true)
+            controller.move(5, 3, 6, 2)._1 should be(false)
+            controller.move(0, 4, 1, 3)._1 should be(false)
+            controller.move(5, 3, 3, 1)._1 should be(true)
             board.getField(5)(3).get.hasPiece should be(false)
             board.getField(4)(2).get.hasPiece should be(false)
             board.getField(3)(1).get.hasPiece should be(true)
@@ -231,7 +231,7 @@ class MoveControllerSpec extends WordSpec {
             controller.colourTurn should be(Colour.BLACK)
             val map = controller.checkForcedCapture()
             controller.checkForcedCapture() should be(Map(board.getField(4)(0).get -> List(board.getField(2)(2).get), board.getField(2)(0).get -> List(board.getField(4)(2).get)))
-            controller.move(2, 0, 4, 2) should be(true)
+            controller.move(2, 0, 4, 2)._1 should be(true)
             board.getField(2)(0).get.hasPiece should be(false)
             board.getField(3)(1).get.hasPiece should be(false)
             board.getField(4)(2).get.hasPiece should be(true)
@@ -242,7 +242,7 @@ class MoveControllerSpec extends WordSpec {
             // White: a5 - b4
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(0, 4, 1, 3) should be(true)
+            controller.move(0, 4, 1, 3)._1 should be(true)
             board.getField(0)(4).get.hasPiece should be(false)
             board.getField(1)(3).get.hasPiece should be(true)
             board.getField(1)(3).get.getPiece.get shouldBe a [Man]
@@ -252,7 +252,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: b2 - c3
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(1, 1, 2, 2) should be(true)
+            controller.move(1, 1, 2, 2)._1 should be(true)
             board.getField(1)(1).get.hasPiece should be(false)
             board.getField(2)(2).get.hasPiece should be(true)
             board.getField(2)(2).get.getPiece.get shouldBe a [Man]
@@ -262,7 +262,7 @@ class MoveControllerSpec extends WordSpec {
             // White: b4 x c3 - d2
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map(board.getField(1)(3).get -> List(board.getField(3)(1).get)))
-            controller.move(1, 3, 3, 1) should be(true)
+            controller.move(1, 3, 3, 1)._1 should be(true)
             board.getField(1)(3).get.hasPiece should be(false)
             board.getField(3)(1).get.hasPiece should be(true)
             board.getField(3)(1).get.getPiece.get shouldBe a [Man]
@@ -272,7 +272,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: e1 x d2 - c3
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(4)(0).get -> List(board.getField(2)(2).get)))
-            controller.move(4, 0, 2, 2) should be(true)
+            controller.move(4, 0, 2, 2)._1 should be(true)
             board.getField(4)(0).get.hasPiece should be(false)
             board.getField(3)(1).get.hasPiece should be(false)
             board.getField(2)(2).get.hasPiece should be(true)
@@ -283,7 +283,7 @@ class MoveControllerSpec extends WordSpec {
             // White: c7 - b6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(2, 6, 1, 5) should be(true)
+            controller.move(2, 6, 1, 5)._1 should be(true)
             board.getField(2)(6).get.hasPiece should be(false)
             board.getField(1)(5).get.hasPiece should be(true)
             board.getField(1)(5).get.getPiece.get shouldBe a [Man]
@@ -293,7 +293,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: f2 - g3
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(5, 1, 6, 2) should be(true)
+            controller.move(5, 1, 6, 2)._1 should be(true)
             board.getField(5)(1).get.hasPiece should be(false)
             board.getField(6)(2).get.hasPiece should be(true)
             board.getField(6)(2).get.getPiece.get shouldBe a [Man]
@@ -303,7 +303,7 @@ class MoveControllerSpec extends WordSpec {
             // White: e7 - d6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(4, 6, 3, 5) should be(true)
+            controller.move(4, 6, 3, 5)._1 should be(true)
             board.getField(4)(6).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
             board.getField(3)(5).get.getPiece.get shouldBe a [Man]
@@ -313,7 +313,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: c5 x d6 - e7
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(2)(4).get -> List(board.getField(4)(6).get)))
-            controller.move(2, 4, 4, 6) should be(true)
+            controller.move(2, 4, 4, 6)._1 should be(true)
             board.getField(2)(4).get.hasPiece should be(false)
             board.getField(4)(6).get.hasPiece should be(true)
             board.getField(4)(6).get.getPiece.get shouldBe a [Man]
@@ -323,7 +323,7 @@ class MoveControllerSpec extends WordSpec {
             // White: f8 x e7 - d6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map(board.getField(5)(7).get -> List(board.getField(3)(5).get)))
-            controller.move(5, 7, 3, 5) should be(true)
+            controller.move(5, 7, 3, 5)._1 should be(true)
             board.getField(5)(7).get.hasPiece should be(false)
             board.getField(4)(6).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
@@ -334,7 +334,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: g1 - f2
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(6, 0, 5, 1) should be(true)
+            controller.move(6, 0, 5, 1)._1 should be(true)
             board.getField(6)(0).get.hasPiece should be(false)
             board.getField(5)(1).get.hasPiece should be(true)
             board.getField(5)(1).get.getPiece.get shouldBe a [Man]
@@ -344,7 +344,7 @@ class MoveControllerSpec extends WordSpec {
             // White: d8 - c7
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 7, 2, 6) should be(true)
+            controller.move(3, 7, 2, 6)._1 should be(true)
             board.getField(3)(7).get.hasPiece should be(false)
             board.getField(2)(6).get.hasPiece should be(true)
             board.getField(2)(6).get.getPiece.get shouldBe a [Man]
@@ -354,7 +354,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: g3 - f4
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(6, 2, 5, 3) should be(true)
+            controller.move(6, 2, 5, 3)._1 should be(true)
             board.getField(6)(2).get.hasPiece should be(false)
             board.getField(5)(3).get.hasPiece should be(true)
             board.getField(5)(3).get.getPiece.get shouldBe a [Man]
@@ -364,7 +364,7 @@ class MoveControllerSpec extends WordSpec {
             // White: d6 - e5
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 5, 4, 4) should be(true)
+            controller.move(3, 5, 4, 4)._1 should be(true)
             board.getField(3)(5).get.hasPiece should be(false)
             board.getField(4)(4).get.hasPiece should be(true)
             board.getField(4)(4).get.getPiece.get shouldBe a [Man]
@@ -375,9 +375,9 @@ class MoveControllerSpec extends WordSpec {
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(5)(3).get -> List(board.getField(7)(5).get, board.getField(3)(5).get)))
             board.getField(5)(3).get.getPiece.get shouldBe a [Man]
-            controller.move(5, 3, 7, 5) should be(true)
+            controller.move(5, 3, 7, 5)._1 should be(true)
             controller.colourTurn should be(Colour.BLACK)
-            controller.move(7, 5, 5, 7) should be(true)
+            controller.move(7, 5, 5, 7)._1 should be(true)
             board.getField(5)(3).get.hasPiece should be(false)
             board.getField(6)(4).get.hasPiece should be(false)
             board.getField(6)(6).get.hasPiece should be(false)
@@ -389,7 +389,7 @@ class MoveControllerSpec extends WordSpec {
             // White: b6 - a5
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(1, 5, 0, 4) should be(true)
+            controller.move(1, 5, 0, 4)._1 should be(true)
             board.getField(1)(5).get.hasPiece should be(false)
             board.getField(0)(4).get.hasPiece should be(true)
             board.getField(0)(4).get.getPiece.get shouldBe a [Man]
@@ -399,7 +399,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: f8 - d6
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(5, 7, 3, 5) should be(true)
+            controller.move(5, 7, 3, 5)._1 should be(true)
             board.getField(5)(7).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
             board.getField(3)(5).get.getPiece.get shouldBe a [King]
@@ -409,7 +409,7 @@ class MoveControllerSpec extends WordSpec {
             // White: h8 - g7
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(7, 7, 6, 6) should be(true)
+            controller.move(7, 7, 6, 6)._1 should be(true)
             board.getField(7)(7).get.hasPiece should be(false)
             board.getField(6)(6).get.hasPiece should be(true)
             board.getField(6)(6).get.getPiece.get shouldBe a [Man]
@@ -420,7 +420,7 @@ class MoveControllerSpec extends WordSpec {
             controller.colourTurn should be(Colour.BLACK)
             val fieldList = controller.checkForcedCapture()
             controller.checkForcedCapture() should be(Map(board.getField(3)(5).get -> List(board.getField(5)(3).get)))
-            controller.move(3, 5, 5, 3) should be(true)
+            controller.move(3, 5, 5, 3)._1 should be(true)
             board.getField(3)(5).get.hasPiece should be(false)
             board.getField(5)(3).get.hasPiece should be(true)
             board.getField(5)(3).get.getPiece.get shouldBe a [King]
@@ -430,7 +430,7 @@ class MoveControllerSpec extends WordSpec {
             // White: c7 - d6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(2, 6, 3, 5) should be(true)
+            controller.move(2, 6, 3, 5)._1 should be(true)
             board.getField(2)(6).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
             board.getField(3)(5).get.getPiece.get shouldBe a [Man]
@@ -440,7 +440,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: f4 x d6 - c7
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(5)(3).get -> List(board.getField(2)(6).get)))
-            controller.move(5, 3, 2, 6) should be(true)
+            controller.move(5, 3, 2, 6)._1 should be(true)
             board.getField(5)(3).get.hasPiece should be(false)
             board.getField(2)(6).get.hasPiece should be(true)
             board.getField(2)(6).get.getPiece.get shouldBe a [King]
@@ -450,7 +450,7 @@ class MoveControllerSpec extends WordSpec {
             // White: b8 x c7 - d6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map(board.getField(1)(7).get -> List(board.getField(3)(5).get)))
-            controller.move(1, 7, 3, 5) should be(true)
+            controller.move(1, 7, 3, 5)._1 should be(true)
             board.getField(1)(7).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
             board.getField(3)(5).get.getPiece.get shouldBe a [Man]
@@ -460,7 +460,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: a1 - b2
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(0, 0, 1, 1) should be(true)
+            controller.move(0, 0, 1, 1)._1 should be(true)
             board.getField(0)(0).get.hasPiece should be(false)
             board.getField(1)(1).get.hasPiece should be(true)
             board.getField(1)(1).get.getPiece.get shouldBe a [Man]
@@ -470,7 +470,7 @@ class MoveControllerSpec extends WordSpec {
             // White: d6 - e5
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(3, 5, 4, 4) should be(true)
+            controller.move(3, 5, 4, 4)._1 should be(true)
             board.getField(3)(5).get.hasPiece should be(false)
             board.getField(4)(4).get.hasPiece should be(true)
             board.getField(4)(4).get.getPiece.get shouldBe a [Man]
@@ -480,7 +480,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: h4 - g5
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(7, 3, 6, 4) should be(true)
+            controller.move(7, 3, 6, 4)._1 should be(true)
             board.getField(7)(3).get.hasPiece should be(false)
             board.getField(6)(4).get.hasPiece should be(true)
             board.getField(6)(4).get.getPiece.get shouldBe a [Man]
@@ -490,7 +490,7 @@ class MoveControllerSpec extends WordSpec {
             // White: f6 x g5 - h4
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map(board.getField(5)(5).get -> List(board.getField(7)(3).get)))
-            controller.move(5, 5, 7, 3) should be(true)
+            controller.move(5, 5, 7, 3)._1 should be(true)
             board.getField(5)(5).get.hasPiece should be(false)
             board.getField(7)(3).get.hasPiece should be(true)
             board.getField(7)(3).get.getPiece.get shouldBe a [Man]
@@ -501,9 +501,9 @@ class MoveControllerSpec extends WordSpec {
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(3)(3).get -> List(board.getField(5)(5).get)))
             board.getField(3)(3).get.getPiece.get shouldBe a [Man]
-            controller.move(3, 3, 5, 5) should be(true)
+            controller.move(3, 3, 5, 5)._1 should be(true)
             controller.colourTurn should be(Colour.BLACK)
-            controller.move(5, 5, 7, 7) should be(true)
+            controller.move(5, 5, 7, 7)._1 should be(true)
             board.getField(3)(3).get.hasPiece should be(false)
             board.getField(4)(4).get.hasPiece should be(false)
             board.getField(5)(5).get.hasPiece should be(false)
@@ -516,7 +516,7 @@ class MoveControllerSpec extends WordSpec {
             // White: a7 - b6
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(0, 6, 1, 5) should be(true)
+            controller.move(0, 6, 1, 5)._1 should be(true)
             board.getField(0)(6).get.hasPiece should be(false)
             board.getField(1)(5).get.hasPiece should be(true)
             board.getField(1)(5).get.getPiece.get shouldBe a [Man]
@@ -526,7 +526,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: a3 - b4
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map())
-            controller.move(0, 2, 1, 3) should be(true)
+            controller.move(0, 2, 1, 3)._1 should be(true)
             board.getField(0)(2).get.hasPiece should be(false)
             board.getField(1)(3).get.hasPiece should be(true)
             board.getField(1)(3).get.getPiece.get shouldBe a [Man]
@@ -536,7 +536,7 @@ class MoveControllerSpec extends WordSpec {
             // White: h4 - g3
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(7, 3, 6, 2) should be(true)
+            controller.move(7, 3, 6, 2)._1 should be(true)
             board.getField(7)(3).get.hasPiece should be(false)
             board.getField(6)(2).get.hasPiece should be(true)
             board.getField(6)(2).get.getPiece.get shouldBe a [Man]
@@ -546,7 +546,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: f2 x g3 - h4
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(7)(1).get -> List(board.getField(5)(3).get), board.getField(5)(1).get -> List(board.getField(7)(3).get)))
-            controller.move(5, 1, 7, 3) should be(true)
+            controller.move(5, 1, 7, 3)._1 should be(true)
             board.getField(5)(1).get.hasPiece should be(false)
             board.getField(7)(3).get.hasPiece should be(true)
             board.getField(7)(3).get.getPiece.get shouldBe a [Man]
@@ -556,7 +556,7 @@ class MoveControllerSpec extends WordSpec {
             // White: b6 - c5
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(1, 5, 2, 4) should be(true)
+            controller.move(1, 5, 2, 4)._1 should be(true)
             board.getField(1)(5).get.hasPiece should be(false)
             board.getField(2)(4).get.hasPiece should be(true)
             board.getField(2)(4).get.getPiece.get shouldBe a [Man]
@@ -566,7 +566,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: b4 x c5 - d6
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(1)(3).get -> List(board.getField(3)(5).get)))
-            controller.move(1, 3, 3, 5) should be(true)
+            controller.move(1, 3, 3, 5)._1 should be(true)
             board.getField(1)(3).get.hasPiece should be(false)
             board.getField(3)(5).get.hasPiece should be(true)
             board.getField(3)(5).get.getPiece.get shouldBe a [Man]
@@ -576,7 +576,7 @@ class MoveControllerSpec extends WordSpec {
             // White: a5 - b4
             controller.colourTurn should be(Colour.WHITE)
             controller.checkForcedCapture() should be(Map())
-            controller.move(0, 4, 1, 3) should be(true)
+            controller.move(0, 4, 1, 3)._1 should be(true)
             board.getField(0)(4).get.hasPiece should be(false)
             board.getField(1)(3).get.hasPiece should be(true)
             board.getField(1)(3).get.getPiece.get shouldBe a [Man]
@@ -586,7 +586,7 @@ class MoveControllerSpec extends WordSpec {
             // Black: c3 x b4 - a5#
             controller.colourTurn should be(Colour.BLACK)
             controller.checkForcedCapture() should be(Map(board.getField(2)(2).get -> List(board.getField(0)(4).get)))
-            controller.move(2, 2, 0, 4) should be(true)
+            controller.move(2, 2, 0, 4)._1 should be(true)
             board.getField(2)(2).get.hasPiece should be(false)
             board.getField(0)(4).get.hasPiece should be(true)
             board.getField(0)(4).get.getPiece.get shouldBe a [Man]

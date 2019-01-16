@@ -13,4 +13,9 @@ libraryDependencies += "com.google.inject" % "guice" % "4.1.0"
 libraryDependencies += "com.google.inject.extensions" % "guice-assistedinject" % "4.1.0"
 libraryDependencies += "net.codingwell" %% "scala-guice" % "4.1.0"
 
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-actor" % "2.5.19",
+  "com.typesafe.akka" %% "akka-testkit" % "2.5.19" % Test
+)
+
 mainClass in(Compile, run) := Some("de.htwg.draughts.Draughts")
