@@ -70,9 +70,11 @@ class CommandLineController @Inject()(val board: Board) {
   }
 
   def checkCoordinate(coordinate: String): Option[Int] ={
-    val Pattern = "^([1-8])$".r
+    val NumberPattern = "^([1-8)$".r
+    val QuitPattern = "^([q)$".r
     coordinate match {
-      case Pattern(coordinate) => Option(coordinate.toInt);
+      case NumberPattern(`coordinate`) => Option(coordinate.toInt);
+      case QuitPattern(`coordinate`) => println("Spiel auf Wunsch eines Spielers abgebrochen");System.exit(0); None;
       case _ => println(coordinate + " ist eine ungültige Eingabe: Wählen sie eine ganze Zahl zwischen 1 und 8"); None;
     }
   }
@@ -93,13 +95,14 @@ class CommandLineController @Inject()(val board: Board) {
     println(currentTurnPlayer.name +  " ist am Zug:")
 
     println("Bitte geben sie die Koordinaten der Figur an, die bewegt werden soll:")
-    println("Geben sie dazu die X - Koordinate der Figur als ganze Zahl (1-8) ein");
+    println("Möchten sie das Spiel beenden, geben sie bitte 'q' ein.")
+    println("Geben sie dazu die X - Koordinate der Figur als ganze Zahl (1-8) ein.")
     var xCoordPiece: Option[Int] = None
     while(xCoordPiece isEmpty) {
       val inputCoord = readLine()
       xCoordPiece = checkCoordinate(inputCoord)
     }
-    println("Geben sie nun die Y - Koordinate der Figur als ganze Zahl(1-8) ein");
+    println("Geben sie nun die Y - Koordinate der Figur als ganze Zahl(1-8) ein.")
     var yCoordPiece: Option[Int] = None
     while(yCoordPiece isEmpty) {
       val inputCoord = readLine()
@@ -107,14 +110,14 @@ class CommandLineController @Inject()(val board: Board) {
     }
 
     println("Bitte geben sie nun die Zielkoordinaten des Zuges an:")
-    println("Geben sie dazu die X - Koordinate des Ziels als ganze Zahl (1-8) ein");
+    println("Geben sie dazu die X - Koordinate des Ziels als ganze Zahl (1-8) ein.")
     var xCoordTarget: Option[Int] = None
     while(xCoordTarget isEmpty) {
       val inputCoord = readLine()
       xCoordTarget = checkCoordinate(inputCoord)
     }
 
-    println("Geben sie nun die Y - Koordinate des Ziels als ganze Zahl(1-8) ein");
+    println("Geben sie nun die Y - Koordinate des Ziels als ganze Zahl(1-8) ein.")
     var yCoordTarget: Option[Int] = None
     while(yCoordTarget isEmpty) {
       val inputCoord = readLine()
