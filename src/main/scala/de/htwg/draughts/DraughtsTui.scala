@@ -12,6 +12,6 @@ class DraughtsTui @Inject()(clc: CommandLineController, val board: Board, gameCo
     val moveController = gameControllerFactory.create(playerTuple._1, playerTuple._2)
 
     clc.addController(moveController)
-    clc.performTurn(playerTuple._1, playerTuple._2, board)
+    clc.performTurn(playerTuple._1, playerTuple._2)
   }
 }

@@ -7,15 +7,11 @@ import de.htwg.draughts.model.{Colour, Player}
 
 import scala.io.StdIn.readLine
 
-class CommandLineController @Inject()(val board: Board) {
+class CommandLineController @Inject()() {
 
   var moveController: GameController = _;
   var BOARD_SIZE = 8
 
-  def initializeGame(): Unit = {
-    val playerTuple: (Player, Player) = readPlayerAttributes();
-    moveController = new MoveController(board, playerTuple._1, playerTuple._2)
-  }
 
   def readPlayerAttributes(): (Player, Player) = {
     println("Willkommen bei Scala-Dame")
@@ -79,15 +75,15 @@ class CommandLineController @Inject()(val board: Board) {
     }
   }
 
-  def performTurn(currentPlayer: Player, nextPlayer: Player, currentBoard: Board): Unit = {
-    println(currentBoard.toString())
+  def performTurn(currentPlayer: Player, nextPlayer: Player): Unit = {
+    println(moveController.board)
     readGameMoves(currentPlayer)
 
     if(moveController.checkIfGameIsOver()) {
       printWin(currentPlayer)
       return
     }
-    performTurn(nextPlayer, currentPlayer, currentBoard)
+    performTurn(nextPlayer, currentPlayer)
 
   }
 
@@ -124,7 +120,6 @@ class CommandLineController @Inject()(val board: Board) {
       yCoordTarget = checkCoordinate(inputCoord)
     }
 
-    //ToDo: Add Move Method
     println("Versuche Figur " + xCoordPiece.get + "|" + yCoordPiece.get + " nach " + xCoordTarget.get + "|" + yCoordTarget.get + " zu bewegen")
     val (validMove, winPlayer) = moveController.move(xCoordPiece.get - 1, yCoordPiece.get - 1, xCoordTarget.get - 1, yCoordTarget.get - 1)
 
@@ -146,18 +141,10 @@ class CommandLineController @Inject()(val board: Board) {
 
   }
 
-
   def printWin(winningPlayer: Player): Unit = {
     println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen!")
     println("Das Spiel wird beendet...")
     System.exit(0)
-  }
-
-  def getPieceColour(row: Int): Colour.Value = {
-    row match {
-      case x if 0 to 2 contains x => Colour.BLACK
-      case x if BOARD_SIZE - 3 until BOARD_SIZE contains x => Colour.WHITE
-    }
   }
 
   def addController(moveController: GameController): Unit = {

@@ -1,5 +1,7 @@
 package de.htwg.draughts.model
 
+import akka.japi.Option
+
 class BoardCreator(size: Int = 8) {
 
   val fields: Array[Array[Field]] = Array.ofDim[Field](size, size)
@@ -14,6 +16,18 @@ class BoardCreator(size: Int = 8) {
       }
       fields(i)(j) = field
     }
+    new DraughtsBoard(size, fields)
+  }
+
+  def setupWinFields(): DraughtsBoard = {
+
+    for (i <- 0 until size; j <- 0 until size) {
+      val field = new Field(row = i, column = j)
+
+      fields(i)(j) = field
+    }
+    fields(1)(1).piece =Option.Some( new Man(Colour.BLACK))
+    fields(2)(2).piece =Option.Some( new Man(Colour.WHITE))
     new DraughtsBoard(size, fields)
   }
 

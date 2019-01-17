@@ -10,8 +10,11 @@ import scalafx.scene.layout._
 import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, FontWeight, Text}
 import de.htwg.draughts.view.gui.styles.Styles
+import scalafx.application.Platform
+import scalafx.scene.control.{Alert, ButtonType}
+import scalafx.scene.control.Alert.AlertType
 
-class GameScene(val controller: GameController) extends Scene {
+class GameScene(val controller: GameController, endScene: () => Unit) extends Scene {
 
   val whitePlayer: Player = controller.whitePlayer
   val blackPlayer: Player = controller.blackPlayer
@@ -77,13 +80,35 @@ class GameScene(val controller: GameController) extends Scene {
     if (playerColour == turnColour) 32 else 16
   }
 
+  def ckeckGameEnd(win: Option[Player]): Unit = {
+    win match {
+      case Some(player) =>
+        val alert = new Alert(AlertType.Information) {
+
+          title = "Das Spiel ist zu Ende"
+          headerText = s"${player.name} hat gewonnen!"
+          contentText = "Das Spiel wird beendet !"
+          buttonTypes = Seq(
+            ButtonType.OK)
+        }
+        val result = alert.showAndWait()
+        result match {
+          case Some(ButtonType.OK) => endScene()
+          case _ =>
+        }
+      case None =>
+    }
+
+  }
+
   def addClickHandlers(fieldPane: FieldPane): FieldPane = {
     fieldPane.onMouseClicked = (e: MouseEvent) => {
       lastClickedField match {
         case Some(oldField) =>
           oldField.piece match {
             case Some(piece) =>
-              controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
+              val (success, win) = controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
+              ckeckGameEnd(win)
               controller.toggleHighlightField(oldField.col, oldField.row)
               lastClickedField = Option.empty
             case None => lastClickedField = Option.empty
