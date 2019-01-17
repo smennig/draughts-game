@@ -3,20 +3,20 @@ package de.htwg.draughts.model
 
 class DraughtsBoard(override val size: Int, val fields: Array[Array[Field]]) extends Board {
 
-  override def toString(): String = {
+  override def toString: String = {
     val blank = " "
     var lineHead = blank
 
     for (i <- 1 to size) {
       lineHead += " " + i + "  "
     }
-    val lineseparator = ("|" + ("---|" * size)) + "\n"
+    val lineSeparator = ("|" + ("---|" * size)) + "\n"
 
-    var output = lineHead + "\n" + " " + lineseparator
+    var output = lineHead + "\n" + " " + lineSeparator
 
     var line = ("|" + (" x |" * size)) + "\n"
     for (i <- 1 to size) {
-      output += i + line + blank + lineseparator
+      output += i + line + blank + lineSeparator
     }
     for {
       row <- 0 until size

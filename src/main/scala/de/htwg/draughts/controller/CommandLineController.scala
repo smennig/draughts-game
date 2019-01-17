@@ -17,6 +17,7 @@ class CommandLineController @Inject()() {
 
     println("Hallo " + nameInputOne + ": Bitte wählen sie Ihre Farbe")
     println("Geben sie dazu 'b' oder 'w' ein")
+
     var colorOne: Option[Colour.Value] = None
     while (colorOne isEmpty) {
       val inputColor = readLine()
@@ -62,12 +63,13 @@ class CommandLineController @Inject()() {
     }
   }
 
-  def checkCoordinate(coordinate: String): Option[Int] ={
+  def checkCoordinate(coordinate: String): Option[Int] = {
     val NumberPattern = "^([1-8])$".r
     val QuitPattern = "^([q])$".r
     coordinate match {
       case NumberPattern(`coordinate`) => Option(coordinate.toInt);
-      case QuitPattern(`coordinate`) => println("Spiel auf Wunsch eines Spielers abgebrochen");System.exit(0); None;
+      case QuitPattern(`coordinate`) => println("Spiel auf Wunsch eines Spielers abgebrochen");
+                                        System.exit(0); None;
       case _ => println(coordinate + " ist eine ungültige Eingabe: Wählen sie eine ganze Zahl zwischen 1 und 8"); None;
     }
   }
@@ -80,7 +82,12 @@ class CommandLineController @Inject()() {
       printWin(currentPlayer)
       return
     }
-    performTurn(nextPlayer, currentPlayer)
+    if(moveController.colourTurn == nextPlayer.color){
+      performTurn(nextPlayer, currentPlayer)
+    } else {
+      performTurn(currentPlayer, nextPlayer)
+    }
+
 
   }
 
@@ -95,6 +102,7 @@ class CommandLineController @Inject()() {
       val inputCoord = readLine()
       xCoordPiece = checkCoordinate(inputCoord)
     }
+
     println("Geben sie nun die Y - Koordinate der Figur als ganze Zahl(1-8) ein.")
     var yCoordPiece: Option[Int] = None
     while(yCoordPiece isEmpty) {
@@ -104,6 +112,7 @@ class CommandLineController @Inject()() {
 
     println("Bitte geben sie nun die Zielkoordinaten des Zuges an:")
     println("Geben sie dazu die X - Koordinate des Ziels als ganze Zahl (1-8) ein.")
+
     var xCoordTarget: Option[Int] = None
     while(xCoordTarget isEmpty) {
       val inputCoord = readLine()
