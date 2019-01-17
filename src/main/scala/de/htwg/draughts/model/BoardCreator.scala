@@ -31,6 +31,16 @@ class BoardCreator(size: Int = 8) {
     new DraughtsBoard(size, fields)
   }
 
+  def setupEmptyBoard(): DraughtsBoard = {
+    for (i <- 0 until size; j <- 0 until size) {
+      val field = new Field(row = i, column = j)
+
+      fields(i)(j) = field
+    }
+
+    new DraughtsBoard(size, fields)
+  }
+
   def getPieceColour(row: Int): Colour.Value = {
     row match {
       case x if 0 to 2 contains x => Colour.BLACK
