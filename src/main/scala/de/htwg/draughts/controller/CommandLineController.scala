@@ -126,7 +126,13 @@ class CommandLineController @Inject()(val board: Board) {
 
     //ToDo: Add Move Method
     println("Versuche Figur " + xCoordPiece.get + "|" + yCoordPiece.get + " nach " + xCoordTarget.get + "|" + yCoordTarget.get + " zu bewegen")
-    val validMove: Boolean = moveController.move(xCoordPiece.get - 1, yCoordPiece.get - 1, xCoordTarget.get - 1, yCoordTarget.get - 1)._1
+    val (validMove, winPlayer) = moveController.move(xCoordPiece.get - 1, yCoordPiece.get - 1, xCoordTarget.get - 1, yCoordTarget.get - 1)
+
+
+    winPlayer match {
+      case Some(player) => printWin(player)
+      case None =>
+    }
 
     if (moveController.checkIfGameIsOver()) {
       printWin(currentTurnPlayer)
