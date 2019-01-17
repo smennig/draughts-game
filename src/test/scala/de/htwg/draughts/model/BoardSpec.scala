@@ -7,13 +7,13 @@ import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
 class BoardSpec extends WordSpec {
-  val injector: Injector = Guice.createInjector(new DraughtsModule())
-  val board: Board = injector.instance[Board]
+    val injector: Injector = Guice.createInjector(new DraughtsModule())
+    val board: Board = injector.instance[Board]
 
     "A Board" should {
         "have a Array of fields with the passed size" in {
             board.fields should not be empty
-          board.fields.length should be(8)
+            board.fields.length should be(8)
         }
 
         "have a Array of fields with the same coordinates in the filed and array" in {

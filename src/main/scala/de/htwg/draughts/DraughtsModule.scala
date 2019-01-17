@@ -8,20 +8,20 @@ import de.htwg.draughts.model.{Board, BoardCreator}
 import net.codingwell.scalaguice.ScalaModule
 
 class DraughtsModule extends AbstractModule with ScalaModule {
-  override def configure(): Unit = {
-    bind[Runnable].annotatedWith(Names.named("tui")).to[DraughtsTui]
-    bind[Runnable].annotatedWith(Names.named("gui")).to[DraughtsGui]
-    bind[CommandLineController]
+    override def configure(): Unit = {
+        bind[Runnable].annotatedWith(Names.named("tui")).to[DraughtsTui]
+        bind[Runnable].annotatedWith(Names.named("gui")).to[DraughtsGui]
+        bind[CommandLineController]
 
-    install(new FactoryModuleBuilder()
-      .implement(classOf[GameController], classOf[MoveController])
-      .build(classOf[GameControllerFactory]))
-  }
+        install(new FactoryModuleBuilder()
+            .implement(classOf[GameController], classOf[MoveController])
+            .build(classOf[GameControllerFactory]))
+    }
 
-  @Provides
-  def provideBoard(): Board = {
-    new BoardCreator(8).setupFields()
-  }
+    @Provides
+    def provideBoard(): Board = {
+        new BoardCreator(8).setupFields()
+    }
 
 
 }

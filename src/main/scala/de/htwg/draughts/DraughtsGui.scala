@@ -11,32 +11,32 @@ import scalafx.stage.Stage
 class DraughtsGui @Inject()(gameControllerFactory: GameControllerFactory) extends Runnable {
 
 
-  def run(): Unit = {
-    // Shortcut to initialize JavaFX, force initialization by creating JFXPanel() object
-    // (we will not use it for anything else)
-    new JFXPanel()
+    def run(): Unit = {
+        // Shortcut to initialize JavaFX, force initialization by creating JFXPanel() object
+        // (we will not use it for anything else)
+        new JFXPanel()
 
-    // Create a dialog stage and display it on JavaFX Application Thread
-    Platform.runLater {
+        // Create a dialog stage and display it on JavaFX Application Thread
+        Platform.runLater {
 
-      //       Create dialog
-      val gameStage: Stage = new Stage {
-        title = "Draughts"
+            //       Create dialog
+            val gameStage: Stage = new Stage {
+                title = "Draughts"
 
-        resizable = false
+                resizable = false
 
-      }
+            }
 
-      gameStage.scene = new BeginGameGUI((player1: Player, player2: Player) => {
-        val controller = gameControllerFactory.create(player1, player2)
-        gameStage.scene = new GameScene(controller, gameStage.hide)
-      }).getStartGameScene
-      // Show dialog and wait till it is closed
-      gameStage.showAndWait()
-      // Force application exit
-      Platform.exit()
+            gameStage.scene = new BeginGameGUI((player1: Player, player2: Player) => {
+                val controller = gameControllerFactory.create(player1, player2)
+                gameStage.scene = new GameScene(controller, gameStage.hide)
+            }).getStartGameScene
+            // Show dialog and wait till it is closed
+            gameStage.showAndWait()
+            // Force application exit
+            Platform.exit()
+        }
     }
-  }
 
 
 }

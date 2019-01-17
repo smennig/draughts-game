@@ -5,6 +5,6 @@ import de.htwg.draughts.model.Player
 
 trait GameControllerFactory {
 
-  def create(@Assisted("blackPlayer") blackPlayer: Player, @Assisted("whitePlayer") whitePlayer: Player): GameController
+    def create(@Assisted("blackPlayer") blackPlayer: Player, @Assisted("whitePlayer") whitePlayer: Player): GameController
 
 }

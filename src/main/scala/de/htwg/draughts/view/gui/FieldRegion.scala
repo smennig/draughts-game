@@ -6,18 +6,18 @@ import scalafx.scene.layout.Region
 
 case class FieldRegion(size: Double = 100, color: Colour.Value) extends Region {
 
-  def blackOrWhite: String = {
-    color match {
-      case Colour.BLACK
-      => "-fx-background-color: " + Styles.blackFieldColor + ";"
-      case Colour.WHITE
-      => "-fx-background-color: " + Styles.whiteFieldColor + ";"
-      case _ => ""
+    def blackOrWhite: String = {
+        color match {
+            case Colour.BLACK
+            => "-fx-background-color: " + Styles.blackFieldColor + ";"
+            case Colour.WHITE
+            => "-fx-background-color: " + Styles.whiteFieldColor + ";"
+            case _ => ""
+        }
     }
-  }
 
-  style = blackOrWhite
-  prefHeight = size
-  prefWidth = size
+    style = blackOrWhite
+    prefHeight = size
+    prefWidth = size
 
 }
