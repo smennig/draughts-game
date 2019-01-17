@@ -1,9 +1,9 @@
 package de.htwg.draughts.view.gui
 
 import de.htwg.draughts.model.{King, Man, Piece}
+import de.htwg.draughts.view.gui.styles.Styles
 import scalafx.scene.Node
 import scalafx.scene.layout.StackPane
-import de.htwg.draughts.view.gui.styles.Styles
 
 class FieldPane(tile: Tile) extends StackPane {
 

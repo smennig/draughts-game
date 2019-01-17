@@ -1,17 +1,16 @@
 package de.htwg.draughts.controller
 
-import com.google.inject.assistedinject.Assisted
 import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.pattern.{ask, pipe}
+import akka.pattern.ask
 import akka.util.Timeout
+import com.google.inject.assistedinject.Assisted
 import de.htwg.draughts.controller.StopGameChecker.CheckPlayer
 import de.htwg.draughts.model._
 import javax.inject.Inject
 
 import scala.collection.mutable
-import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.Await
 import scala.concurrent.duration._
-import scala.collection.mutable.Map
 
 class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val blackPlayer: Player, @Assisted("whitePlayer") val whitePlayer: Player) extends GameController {
 

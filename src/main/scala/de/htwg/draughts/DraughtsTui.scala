@@ -1,8 +1,8 @@
 package de.htwg.draughts
 
 import com.google.inject.Inject
-import controller.{CommandLineController, GameControllerFactory, MoveController}
-import model.{Board, BoardCreator, Player}
+import de.htwg.draughts.controller.{CommandLineController, GameControllerFactory}
+import de.htwg.draughts.model.{Board, Player}
 
 class DraughtsTui @Inject()(clc: CommandLineController, val board: Board, gameControllerFactory: GameControllerFactory) extends Runnable {
   def run(): Unit = {

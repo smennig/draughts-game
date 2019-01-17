@@ -6,7 +6,6 @@ import com.google.inject.{AbstractModule, Provides}
 import de.htwg.draughts.controller.{CommandLineController, GameController, GameControllerFactory, MoveController}
 import de.htwg.draughts.model.{Board, BoardCreator}
 import net.codingwell.scalaguice.ScalaModule
-import scalafx.stage.Stage
 
 class DraughtsModule extends AbstractModule with ScalaModule {
   override def configure(): Unit = {

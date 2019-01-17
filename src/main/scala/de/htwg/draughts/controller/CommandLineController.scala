@@ -2,16 +2,13 @@ package de.htwg.draughts.controller
 
 
 import com.google.inject.Inject
-import de.htwg.draughts.model._
 import de.htwg.draughts.model.{Colour, Player}
 
 import scala.io.StdIn.readLine
 
 class CommandLineController @Inject()() {
 
-  var moveController: GameController = _;
-  var BOARD_SIZE = 8
-
+  var moveController: GameController = _
 
   def readPlayerAttributes(): (Player, Player) = {
     println("Willkommen bei Scala-Dame")

@@ -3,9 +3,9 @@ package de.htwg.draughts.model
 import com.google.inject.{Guice, Injector}
 import de.htwg.draughts.DraughtsModule
 import de.htwg.draughts.controller.CommandLineController
+import net.codingwell.scalaguice.InjectorExtensions._
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import net.codingwell.scalaguice.InjectorExtensions._
 
 class PlayerSpec extends WordSpec {
   val injector: Injector = Guice.createInjector(new DraughtsModule())

@@ -1,9 +1,7 @@
 package de.htwg.draughts.controller
 
-import akka.Done
 import akka.actor.Actor
-import akka.dispatch.sysmsg.Failed
-import de.htwg.draughts.controller.StopGameChecker.{CheckPlayer, StopGame, ContinueGame}
+import de.htwg.draughts.controller.StopGameChecker.CheckPlayer
 import de.htwg.draughts.model.{Board, Colour}
 
 object StopGameChecker {

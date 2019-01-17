@@ -1,8 +1,8 @@
 package de.htwg.draughts.view.gui
 
 import de.htwg.draughts.model.Colour
-import scalafx.scene.layout.Region
 import de.htwg.draughts.view.gui.styles.Styles
+import scalafx.scene.layout.Region
 
 case class FieldRegion(size: Double = 100, color: Colour.Value) extends Region {
 

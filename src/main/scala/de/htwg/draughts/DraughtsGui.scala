@@ -3,9 +3,9 @@ package de.htwg.draughts
 import com.google.inject.Inject
 import de.htwg.draughts.controller.GameControllerFactory
 import de.htwg.draughts.model.Player
+import de.htwg.draughts.view.gui.{BeginGameGUI, GameScene}
 import javafx.embed.swing.JFXPanel
 import scalafx.application.Platform
-import de.htwg.draughts.view.gui.{BeginGameGUI, GameScene}
 import scalafx.stage.Stage
 
 class DraughtsGui @Inject()(gameControllerFactory: GameControllerFactory) extends Runnable {

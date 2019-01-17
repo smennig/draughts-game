@@ -1,18 +1,17 @@
 package de.htwg.draughts.view.gui
 
-import de.htwg.draughts.controller.{GameController, MoveController}
+import de.htwg.draughts.controller.GameController
 import de.htwg.draughts.model._
+import de.htwg.draughts.view.gui.styles.Styles
 import scalafx.Includes._
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
+import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.control.{Alert, ButtonType}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout._
 import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, FontWeight, Text}
-import de.htwg.draughts.view.gui.styles.Styles
-import scalafx.application.Platform
-import scalafx.scene.control.{Alert, ButtonType}
-import scalafx.scene.control.Alert.AlertType
 
 class GameScene(val controller: GameController, endScene: () => Unit) extends Scene {
 

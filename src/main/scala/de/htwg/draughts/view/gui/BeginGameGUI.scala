@@ -15,26 +15,26 @@ import scalafx.scene.text.Text
 
 class BeginGameGUI(changeScene: (Player, Player) => Unit) {
 
-  val firstPlayerNameTextField = new TextField{
+  val firstPlayerNameTextField: TextField = new TextField {
     margin = Insets(0, 10, 0, 60)
     text = "Spieler 1"
     style = "-fx-font-size: 20pt"
   }
 
-  val secondPlayerNameTextField = new TextField{
+  val secondPlayerNameTextField: TextField = new TextField {
     margin = Insets(0, 10, 0, 85)
     text = "Spieler 2"
     style = "-fx-font-size: 20pt"
   }
 
-  val firstPlayerColorButton = new Button {
+  val firstPlayerColorButton: Button = new Button {
     margin = Insets(0, 0, 0, 65)
     prefWidth = 125
     prefHeight = 125
     style = "-fx-background-color: white;"
   }
 
-  val secondPlayerColorButton = new Button {
+  val secondPlayerColorButton: Button = new Button {
     prefWidth = 125
     prefHeight = 125
     margin = Insets(0, 0, 0, 300)
@@ -120,15 +120,14 @@ class BeginGameGUI(changeScene: (Player, Player) => Unit) {
               prefWidth = 300
               prefHeight = 50
               text = "Spiel starten"
-              style = "-fx-font-size: 30pt"
               onAction = (event: ActionEvent) =>  {
                 if(!firstPlayerNameTextField.text.value.isEmpty && !secondPlayerNameTextField.text.value.isEmpty) {
 
                   val firstPlayerColor = getColorValueFromButton(firstPlayerColorButton)
                   val secondPlayerColor = getColorValueFromButton(secondPlayerColorButton)
 
-                  val firstPlayer = new Player(firstPlayerNameTextField.text.value, firstPlayerColor, getInitialTurn(firstPlayerColor));
-                  val secondPlayer = new Player(secondPlayerNameTextField.text.value, secondPlayerColor, getInitialTurn(secondPlayerColor));
+                  val firstPlayer = new Player(firstPlayerNameTextField.text.value, firstPlayerColor, getInitialTurn(firstPlayerColor))
+                  val secondPlayer = new Player(secondPlayerNameTextField.text.value, secondPlayerColor, getInitialTurn(secondPlayerColor))
 
                   changeScene(firstPlayer, secondPlayer)
                 }
@@ -143,11 +142,11 @@ class BeginGameGUI(changeScene: (Player, Player) => Unit) {
   def getStartGameScene: Scene = {
     firstPlayerColorButton.onAction =
       (event: ActionEvent) =>  {
-        performColorSwitch
+        performColorSwitch()
       }
     secondPlayerColorButton.onAction =
       (event: ActionEvent) =>  {
-        performColorSwitch
+        performColorSwitch()
     }
     beginScene
   }
