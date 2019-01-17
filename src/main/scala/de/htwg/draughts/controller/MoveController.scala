@@ -11,6 +11,7 @@ import javax.inject.Inject
 import scala.collection.mutable
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val blackPlayer: Player, @Assisted("whitePlayer") val whitePlayer: Player) extends GameController {
 
@@ -28,6 +29,7 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
     field.hasPiece && field.getPiece.get.getColour == player.color
   }
 
+  //noinspection SimplifyBooleanMatch
   override def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
     val forcedFieldMap = if (multipleMove.isEmpty) checkForcedCapture() else multipleMove
 
@@ -75,11 +77,12 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
 
       val field = board.getField(currentColumn)(currentRow).get
 
-      if (field.hasPiece) {
-        field.getPiece.get.getColour == piece.getColour match {
+      field.getPiece match {
+        case Some(fieldPiece) => fieldPiece.getColour == piece.getColour match {
           case true => ownPieces += 1
           case false => opponentPieces += 1; captureField = Some(field)
         }
+        case _ =>
       }
     } while (currentColumn != newColumn && currentRow != newRow)
 
@@ -123,7 +126,7 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
   }
 
   def checkForcedCapture(): mutable.Map[Field, List[Field]] = {
-    var fieldMap: mutable.Map[Field, List[Field]] = mutable.Map()
+    val fieldMap: mutable.Map[Field, List[Field]] = mutable.Map()
       for (field <- board.iterator) {
           if (field.hasPiece) {
               val piece = field.getPiece.get
@@ -149,16 +152,6 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
 
   override def checkIfGameIsOver(): Boolean = {
     if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
-  }
-
-  private def forceCapture(): Unit = {
-    //Check if Enemy Piece is around (diagonally)
-    //Check if Piece could be captured
-
-
-    //ForcedCaptureMove
-    // Capture automatically?
-    // OR Restrict All other moves!
   }
 
 }

@@ -30,7 +30,7 @@ class Field(column: Int, row: Int, var highlighted: Boolean = false) {
       case (0, 1) => Colour.WHITE
       case (1, 0) => Colour.WHITE
       case (1, 1) => Colour.BLACK
-      case _ => ???
+      case _ => Colour.BLACK
     }
   }
 }

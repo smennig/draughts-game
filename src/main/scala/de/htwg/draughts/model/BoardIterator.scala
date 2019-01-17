@@ -1,7 +1,7 @@
 package de.htwg.draughts.model
 
 class BoardIterator(board: Array[Array[Field]]) extends Iterator[Field] {
-    var position = (0, -1)
+    var position: (Int, Int) = (0, -1)
 
     override def hasNext: Boolean = {
         val length = board.length

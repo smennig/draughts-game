@@ -105,8 +105,8 @@ class GameScene(val controller: GameController, endScene: () => Unit) extends Sc
       lastClickedField match {
         case Some(oldField) =>
           oldField.piece match {
-            case Some(piece) =>
-              val (success, win) = controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
+            case Some(_) =>
+              val (_, win) = controller.move(oldField.col, oldField.row, fieldPane.col, fieldPane.row)
               ckeckGameEnd(win)
               controller.toggleHighlightField(oldField.col, oldField.row)
               lastClickedField = Option.empty
@@ -114,7 +114,7 @@ class GameScene(val controller: GameController, endScene: () => Unit) extends Sc
           }
         case None =>
           fieldPane.piece match {
-            case Some(piece) => lastClickedField = Some(fieldPane)
+            case Some(_) => lastClickedField = Some(fieldPane)
               controller.toggleHighlightField(fieldPane.col, fieldPane.row)
             case None => lastClickedField = Option.empty
           }

@@ -5,6 +5,7 @@ import com.google.inject.Inject
 import de.htwg.draughts.model.{Colour, Player}
 
 import scala.io.StdIn.readLine
+import scala.language.postfixOps
 
 class CommandLineController @Inject()() {
 
@@ -67,10 +68,14 @@ class CommandLineController @Inject()() {
     val NumberPattern = "^([1-8])$".r
     val QuitPattern = "^([q])$".r
     coordinate match {
-      case NumberPattern(`coordinate`) => Option(coordinate.toInt);
-      case QuitPattern(`coordinate`) => println("Spiel auf Wunsch eines Spielers abgebrochen");
-                                        System.exit(0); None;
-      case _ => println(coordinate + " ist eine ungültige Eingabe: Wählen sie eine ganze Zahl zwischen 1 und 8"); None;
+      case NumberPattern(`coordinate`) => Option(coordinate.toInt)
+      case QuitPattern(`coordinate`) =>
+        println("Spiel auf Wunsch eines Spielers abgebrochen")
+        System.exit(0)
+        None
+      case _ =>
+        println(coordinate + " ist eine ungültige Eingabe: Wählen sie eine ganze Zahl zwischen 1 und 8")
+        None
     }
   }
 
