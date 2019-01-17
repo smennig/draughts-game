@@ -14,7 +14,7 @@ class DraughtsBoard(override val size: Int, val fields: Array[Array[Field]]) ext
 
     var output = lineHead + "\n" + " " + lineSeparator
 
-    var line = ("|" + (" x |" * size)) + "\n"
+    val line = ("|" + (" x |" * size)) + "\n"
     for (i <- 1 to size) {
       output += i + line + blank + lineSeparator
     }
