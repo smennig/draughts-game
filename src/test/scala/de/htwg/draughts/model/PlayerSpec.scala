@@ -9,6 +9,8 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 class PlayerSpec extends WordSpec {
   val injector: Injector = Guice.createInjector(new DraughtsModule())
+  val white = "w"
+  val black = "b"
 
   "A Player" when {
     "valid" should {
@@ -37,11 +39,11 @@ class PlayerSpec extends WordSpec {
     "created" should {
       val controller = injector.instance[CommandLineController]
       "be able to choose the color black" in {
-        val color = controller.chooseFirstColor("Schwarz")
+        val color = controller.chooseFirstColor(black)
         color should be (Option(Colour.BLACK))
       }
       "be able to choose the color white" in {
-        val color = controller.chooseFirstColor("Weiß")
+        val color = controller.chooseFirstColor(white)
         color should be (Option(Colour.WHITE))
       }
       "not allow invalid string inputs" in {
@@ -58,11 +60,11 @@ class PlayerSpec extends WordSpec {
       }
       "print the translated color for black" in {
         val translatedBlackColor = controller.translateEnumColour(Colour.BLACK)
-        translatedBlackColor should be ("Schwarz")
+        translatedBlackColor should be(black)
       }
       "print the translated color for white" in {
         val translatedBlackColor = controller.translateEnumColour(Colour.WHITE)
-        translatedBlackColor should be ("Weiß")
+        translatedBlackColor should be(white)
       }
     }
   }

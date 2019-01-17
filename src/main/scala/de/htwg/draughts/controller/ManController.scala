@@ -25,6 +25,14 @@ class ManController(man: Man) extends PieceController {
     }
   }
 
+  private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
+    if (moveRow == 0 && colour == Colour.WHITE || moveRow == 7 && colour == Colour.BLACK) {
+      true
+    } else {
+      false
+    }
+  }
+
   def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean = {
     val rowMove = newField.getRow - oldField.getRow
     val columnMove = newField.getColumn - oldField.getColumn
@@ -49,34 +57,45 @@ class ManController(man: Man) extends PieceController {
     player.removePiece()
   }
 
-  private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
-    if (moveRow == 0 && colour == Colour.WHITE || moveRow == 7 && colour == Colour.BLACK) {
-      true
-    } else {
-      false
-    }
-  }
-
   override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
     var fieldList: List[Field] = List()
 
-    val nextLeftField = board.getField(ownField.getColumn - 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
-    val nextRightField = board.getField(ownField.getColumn + 1)(ownField.getRow + getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
+    ownField.getPiece match {
+      case Some(piece) =>
+        val nextLeftField: Option[Field] = getNextField(board, ownField, piece, Left(), 1)
+        val nextRightField: Option[Field] = getNextField(board, ownField, piece, Right(), 1)
 
-    if (nextLeftField.isDefined) {
-      val overnextLeftField = board.getField(ownField.getColumn - 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
-      if (nextLeftField.get.hasPiece && nextLeftField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextLeftField.isDefined && !overnextLeftField.get.hasPiece) {
-        fieldList = overnextLeftField.get :: fieldList
-      }
+        val overnextLeftField = getNextField(board, ownField, piece, Left(), 2)
+        if (checkNextField(nextLeftField, overnextLeftField, piece)) {
+          fieldList = overnextLeftField.get :: fieldList
+        }
+        val overnextRightField = getNextField(board, ownField, piece, Right(), 2)
+        if (checkNextField(nextRightField, overnextRightField, piece)) {
+          fieldList = overnextRightField.get :: fieldList
+        }
+      case None =>
     }
-    if (nextRightField.isDefined) {
-      val overnextRightField = board.getField(ownField.getColumn + 2)(ownField.getRow + 2 * getCaptureMoveDependingOnColour(ownField.getPiece.get.getColour))
-      if (nextRightField.get.hasPiece && nextRightField.get.getPiece.get.getColour != ownField.getPiece.get.getColour && overnextRightField.isDefined && !overnextRightField.get.hasPiece) {
-        fieldList = overnextRightField.get :: fieldList
-      }
-    }
-
     fieldList
+  }
+
+  private def checkNextField(field: Option[Field], overnextField: Option[Field], piece: Piece): Boolean = {
+    field match {
+      case Some(f) => f.getPiece match {
+        case Some(nextRightPiece) => nextRightPiece.getColour != piece.getColour && overnextField.isDefined && !overnextField.get.hasPiece
+        case _ => false
+      }
+      case _ => false
+    }
+
+  }
+
+  private def getNextField(board: Board, ownField: Field, piece: Piece, direction: Direction, step: Int): Option[Field] = {
+    direction match {
+      case Left() => board.getField(ownField.getColumn - step)(ownField.getRow + step * getCaptureMoveDependingOnColour(piece.getColour))
+      case Right() => board.getField(ownField.getColumn + step)(ownField.getRow + step * getCaptureMoveDependingOnColour(piece.getColour))
+      case _ => Option.empty
+    }
+
   }
 
   private def getCaptureMoveDependingOnColour(colour: Colour.Value): Int = {
@@ -85,4 +104,11 @@ class ManController(man: Man) extends PieceController {
       case Colour.WHITE => -1
     }
   }
+
+  private trait Direction
+
+  private case class Right() extends Direction
+
+  private case class Left() extends Direction
+
 }
