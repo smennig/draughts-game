@@ -5,25 +5,31 @@ import de.htwg.draughts.controller.StopGameChecker.CheckPlayer
 import de.htwg.draughts.model.{Board, Colour}
 
 object StopGameChecker {
-  case class CheckPlayer(board: Board, colourTurn: Colour.Value) {
+    case class CheckPlayer(board: Board, colourTurn: Colour.Value) {
 
-  }
-  case class ContinueGame()
-  case class StopGame()
+    }
+    case class ContinueGame()
+    case class StopGame()
 }
 
 class StopGameChecker extends Actor {
-  override def receive: Receive = {
-    case CheckPlayer(board, colourTurn) => sender ! checkIfValid(board, colourTurn)
-    case _ => sender ! false
-  }
-
-  def checkIfValid(board: Board, colourTurn: Colour.Value): Boolean = {
-    var i = 0
-    for (field <- board.iterator) {
-      if (field.hasPiece && field.getPiece.get.getColour == colourTurn) i += 1
+    override def receive: Receive = {
+        case CheckPlayer(board, colourTurn) => sender ! checkIfValid(board, colourTurn)
+        case _ => sender ! false
     }
 
-    if (i == 0) false else true
-  }
+    def checkIfValid(board: Board, colourTurn: Colour.Value): Boolean = {
+        var i = 0
+        var canMove = false
+        val factory = new PieceControllerFactory
+        for (field <- board.iterator) {
+            if (field.hasPiece && field.getPiece.get.getColour == colourTurn) {
+                i += 1
+                val pieceController: PieceController = factory.getPieceController(field.getPiece.get)
+                if (pieceController.canMakeValidMove(field, board)) canMove = true
+            }
+        }
+
+        if (i == 0 || !canMove) false else true
+    }
 }
