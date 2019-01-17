@@ -31,8 +31,8 @@ class KingController(king: King) extends PieceController {
   override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
     var fieldList: List[Field] = List()
 
-    var startColumn = ownField.getColumn
-    var startRow = ownField.getRow
+    val startColumn = ownField.getColumn
+    val startRow = ownField.getRow
 
     val topRightField = checkFieldsRec(board, startColumn + 1, startRow + 1, 1, 1)
     val topLeftField = checkFieldsRec(board, startColumn - 1, startRow + 1, -1, 1)
@@ -74,7 +74,7 @@ class KingController(king: King) extends PieceController {
     val field = board.getField(column)(row)
     field match {
       case Some(f) => if (f.hasPiece) Some(f) else checkFieldsRec(board, column + columnMove, row + rowMove, columnMove, rowMove)
-      case None => None
+      case None => Option.empty
     }
   }
 }
