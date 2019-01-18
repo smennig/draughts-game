@@ -7,7 +7,7 @@ abstract class PieceController(val piece: Piece) {
 
     def canMakeValidMove(currentField: Field, board: Board): Boolean
 
-    def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean
+    def capture(oldField: Field, newField: Field, captureField: Option[Field]): Boolean
 
     def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field]
 }

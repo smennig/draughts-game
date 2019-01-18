@@ -15,7 +15,5 @@ class BoardIterator(board: Array[Array[Field]]) extends Iterator[Field] {
         else false
     }
 
-    override def next(): Field = {
-        board(position._1)(position._2)
-    }
+    override def next(): Field = board(position._1)(position._2)
 }

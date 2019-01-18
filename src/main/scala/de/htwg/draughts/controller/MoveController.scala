@@ -26,15 +26,34 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
     }
 
     override def checkIfPieceIsValid(field: Field, player: Player): Boolean = {
-        field.hasPiece && field.getPiece.get.getColour == player.color
+        field.getPiece match {
+            case Some(p) => p.getColour == player.color
+            case None => false
+        }
     }
 
     //noinspection SimplifyBooleanMatch
+    /**
+      * Moves the piece from one field to another
+      * @param oldColumn column of the pieces' current position
+      * @param oldRow row of the pieces' current position
+      * @param newColumn column of the pieces' next position
+      * @param newRow row of the pieces' next position
+      * @return true if the move was successful, false if not
+      */
     override def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
         val forcedFieldMap = if (multipleMove.isEmpty) checkForcedCapture() else multipleMove
 
-        val oldField: Field = board.getField(oldColumn)(oldRow).get
-        val newField: Field = board.getField(newColumn)(newRow).get
+        val oldField: Option[Field] = board.getField(oldColumn)(oldRow)
+        val newField: Option[Field] = board.getField(newColumn)(newRow)
+
+        (oldField, newField) match {
+            case (Some(of), Some(nf)) => moveA(of, nf, forcedFieldMap)
+            case (_, _) => (false, None)
+        }
+    }
+
+    def moveA(oldField: Field, newField: Field, forcedFieldMap: mutable.Map[Field, List[Field]]): (Boolean, Option[Player]) = {
         var forcedMove = false
 
         if (forcedFieldMap.nonEmpty) {
@@ -45,23 +64,29 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
             forcedMove = true
         }
 
-        if (newField.hasPiece) {
-            return (false, None)
+        newField.getPiece match {
+            case Some(_) => (false, None)
+            case None => moveB(oldField, newField, forcedMove)
         }
+    }
 
-        val piece = oldField.getPiece.get
+    def moveB(oldField: Field, newField: Field, forcedMove: Boolean): (Boolean, Option[Player]) = {
+        oldField.getPiece match {
+            case Some(p) => moveC(oldField, newField, p, forcedMove)
+            case None => (false, None)
+        }
+    }
 
+    def moveC(oldField: Field, newField: Field, piece: Piece, forcedMove: Boolean): (Boolean, Option[Player]) = {
         if (piece.getColour != colourTurn) return (false, None)
 
         val rowMove = newField.getRow - oldField.getRow
         val columnMove = newField.getColumn - oldField.getColumn
 
-        if (getUnsignedInt(rowMove) != getUnsignedInt(columnMove)) {
-            return (false, None)
-        }
+        if (getUnsignedInt(rowMove) != getUnsignedInt(columnMove)) return (false, None)
 
-        var currentColumn = oldColumn
-        var currentRow = oldRow
+        var currentColumn = oldField.getColumn
+        var currentRow = oldField.getRow
         var ownPieces = 0
         var opponentPieces = 0
         var captureField = None: Option[Field]
@@ -84,15 +109,13 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
                 }
                 case _ =>
             }
-        } while (currentColumn != newColumn && currentRow != newRow)
+        } while (currentColumn != newField.getColumn && currentRow != newField.getRow)
 
         val pieceController: PieceController = getPieceController(piece)
 
-        val player = if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer
-
         val result = (ownPieces, opponentPieces) match {
             case (0, 0) => pieceController.move(oldField, newField)
-            case (0, 1) => pieceController.capture(oldField, newField, captureField, player)
+            case (0, 1) => pieceController.capture(oldField, newField, captureField)
             case (_, _) => false
         }
 
@@ -108,35 +131,31 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
         val future = gameStopActor ? CheckPlayer(board, colourTurn)
         val response = Await.result(future, timeout.duration).asInstanceOf[Boolean]
 
-        val winner = if (!response) {
-            Some(if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer)
-        } else {
-            None
-        }
+        val winner = if (!response) Some(if (colourTurn == Colour.BLACK) blackPlayer else whitePlayer) else None
 
         (result, winner)
     }
 
-    private def getUnsignedInt(x: Int) = {
-        if (x < 0) {
-            x * (-1)
-        } else {
-            x
-        }
-    }
+    private def getUnsignedInt(x: Int) = if (x < 0) x * (-1) else x
 
+    /**
+      * Checks if a field must do a capture move
+      * @return List of the possible fields where the piece has to move
+      */
     def checkForcedCapture(): mutable.Map[Field, List[Field]] = {
         val fieldMap: mutable.Map[Field, List[Field]] = mutable.Map()
         for (field <- board.iterator) {
-            if (field.hasPiece) {
-                val piece = field.getPiece.get
-                if (piece.getColour == colourTurn) {
-                    val pieceController: PieceController = getPieceController(piece)
-                    val forcedFields = pieceController.checkIfNextFieldHasOpponentPiece(board, field)
-                    if (forcedFields.nonEmpty) {
-                        fieldMap(field) = forcedFields
+            field.getPiece match {
+                case Some(piece) => {
+                    if (piece.getColour == colourTurn) {
+                        val pieceController: PieceController = getPieceController(piece)
+                        val forcedFields = pieceController.checkIfNextFieldHasOpponentPiece(board, field)
+                        if (forcedFields.nonEmpty) {
+                            fieldMap(field) = forcedFields
+                        }
                     }
                 }
+                case None => ;
             }
         }
 
@@ -150,8 +169,5 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
         }
     }
 
-    override def checkIfGameIsOver(): Boolean = {
-        if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
-    }
-
+    override def checkIfGameIsOver(): Boolean = if (blackPlayer.pieces == 0 || whitePlayer.pieces == 0) true else false
 }

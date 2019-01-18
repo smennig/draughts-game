@@ -28,7 +28,7 @@ class DraughtsBoard(override val size: Int, val fields: Array[Array[Field]]) ext
         output
     }
 
-    def setPieceOnField(column: Int)(row: Int)(piece: Piece) = {
+    def setPieceOnField(column: Int)(row: Int)(piece: Piece): Boolean = {
         if (column < 0 || column > 7 || row < 0 || row > 7) false else {
             fields(row)(column).piece_(Some(piece))
             true
@@ -39,7 +39,5 @@ class DraughtsBoard(override val size: Int, val fields: Array[Array[Field]]) ext
         if (column < 0 || column > 7 || row < 0 || row > 7) None else Some(fields(row)(column))
     }
 
-    override def iterator: Iterator[Field] = {
-        new BoardIterator(fields)
-    }
+    override def iterator: Iterator[Field] = new BoardIterator(fields)
 }

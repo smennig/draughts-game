@@ -6,11 +6,9 @@ class Player(val name: String, val color: Colour.Value, var turn: Boolean, var h
         turn = !turn
     }
 
-    def removePiece(): Unit = {
-        pieces -= 1
-    }
+//    def removePiece(): Unit = {
+//        pieces -= 1
+//    }
 
-    override def toString: String = {
-        "Name : " + name + " Farbe: " + color
-    }
+    override def toString: String = "Name : " + name + " Farbe: " + color
 }

@@ -3,67 +3,51 @@ package de.htwg.draughts.controller
 import de.htwg.draughts.model._
 
 class KingController(piece: King) extends PieceController(piece) {
+    /**
+      * Moves the King from one field to another field
+      * @param oldField current position of the King
+      * @param newField the new position of the king after the move
+      * @return true if move was successful
+      */
     def move(oldField: Field, newField: Field): Boolean = {
         oldField.clearPiece()
         newField.piece_(Some(piece))
         true
     }
 
-    //  def canMove(currentField: Field, board: Board): Boolean = {
-    //    val topRight = canMoveRec1(board.getField(currentField.getColumn + 1)(currentField.getRow + 1), board, currentField.getPiece.get.getColour, 1, 1)
-    //    val topLeft = canMoveRec1(board.getField(currentField.getColumn - 1)(currentField.getRow + 1), board, currentField.getPiece.get.getColour, -1, 1)
-    //    val bottomLeft = canMoveRec1(board.getField(currentField.getColumn - 1)(currentField.getRow - 1), board, currentField.getPiece.get.getColour, -1, -1)
-    //    val bottomRight = canMoveRec1(board.getField(currentField.getColumn + 1)(currentField.getRow - 1), board, currentField.getPiece.get.getColour, 1, -1)
-    //
-    //    topRight || topLeft || bottomLeft || bottomRight
-    //  }
-    //
-    //  def canMoveRec1(field: Option[Field], board: Board, ownColour: Colour.Value, stepColumn: Int, stepRow: Int): Boolean = {
-    //    field match {
-    //      case Some(f) => {
-    //        if (f.hasPiece && f.getPiece.get.getColour == ownColour) false else {
-    //          canMoveRec2(board.getField(f.getColumn + stepColumn)(f.getRow + stepRow), board, ownColour, stepColumn, stepRow)
-    //        }
-    //      }
-    //      case None => false
-    //    }
-    //  }
-    //
-    //  def canMoveRec2(field: Option[Field], board: Board, ownColour: Colour.Value, stepColumn: Int, stepRow: Int): Boolean = {
-    //    field match {
-    //      case Some(f) => {
-    //        if (f.hasPiece) {
-    //          if (f.getPiece.get.getColour == ownColour) true else board.getField(f.getColumn + stepColumn)(f.getRow + stepRow).isEmpty
-    //        } else {
-    //          canMoveRec2(board.getField(f.getColumn + stepColumn)(f.getRow + stepRow), board, ownColour, stepColumn, stepRow)
-    //        }
-    //      }
-    //      case None => true
-    //    }
-    //  }
-
-    def capture(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Boolean = {
+    /**
+      * Lets the King capture a piece of his opponent
+      * @param oldField current position of the King
+      * @param newField the new position of the king after the move
+      * @param captureField the position of piece that is about to be captured
+      * @return true of the move was successful, false if not
+      */
+    def capture(oldField: Field, newField: Field, captureField: Option[Field]): Boolean = {
         val rowMove = newField.getRow - captureField.get.getRow
         val columnMove = newField.getColumn - captureField.get.getColumn
+        // check if newField actually is right behind the capture field
         (rowMove, columnMove) match {
-            case (1, 1) => captureHelp(oldField, newField, captureField, player); true
-            case (1, -1) => captureHelp(oldField, newField, captureField, player); true
-            case (-1, 1) => captureHelp(oldField, newField, captureField, player); true
-            case (-1, -1) => captureHelp(oldField, newField, captureField, player); true
+            case (1, 1) => captureHelp(oldField, newField, captureField); true
+            case (1, -1) => captureHelp(oldField, newField, captureField); true
+            case (-1, 1) => captureHelp(oldField, newField, captureField); true
+            case (-1, -1) => captureHelp(oldField, newField, captureField); true
             case (_, _) => false
         }
     }
 
-    private def captureHelp(oldField: Field, newField: Field, captureField: Option[Field], player: Player): Unit = {
+    /**
+      * Does the capture move actually
+      * @param oldField current position of the King
+      * @param newField the new position of the king after the move
+      * @param captureField the position of piece that is about to be captured
+      */
+    private def captureHelp(oldField: Field, newField: Field, captureField: Option[Field]): Unit = {
         oldField.clearPiece()
         newField.piece_(Some(piece))
         captureField.get.clearPiece()
-        player.removePiece()
+//        player.removePiece()
     }
 
-    //  override def canCapture(currentField: Field, board: Board): Boolean = {
-    //    checkIfNextFieldHasOpponentPiece(board, currentField).nonEmpty
-    //  }
 
     override def checkIfNextFieldHasOpponentPiece(board: Board, ownField: Field): List[Field] = {
         var fieldList: List[Field] = List()
@@ -105,6 +89,15 @@ class KingController(piece: King) extends PieceController(piece) {
         }
 
         fieldList
+    }
+
+    private def checkIfNextFieldHasOpponentPieceHelper(ownField: Field, nextField: Option[Field], board: Board): Unit = {
+        if (nextField.isDefined && nextField.get.getPiece.get.getColour != ownField.getPiece.get.getColour) {
+            val nextAfterTopRightField = board.getField(nextField.get.getColumn + 1)(nextField.get.getRow + 1)
+            if (nextAfterTopRightField.isDefined && !nextAfterTopRightField.get.hasPiece) {
+                nextAfterTopRightField.get
+            }
+        }
     }
 
     private def checkFieldsRec(board: Board, column: Int, row: Int, columnMove: Int, rowMove: Int): Option[Field] = {
