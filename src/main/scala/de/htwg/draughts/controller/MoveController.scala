@@ -127,11 +127,11 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
             multipleMove(newField) = anotherList
         }
 
-        implicit val timeout: Timeout = Timeout(5 milliseconds)
+        implicit val timeout: Timeout = Timeout(5 seconds)
         val future = gameStopActor ? CheckPlayer(board, colourTurn)
         val response = Await.result(future, timeout.duration).asInstanceOf[Boolean]
 
-        val winner = if (!response) Some(if (colourTurn == Colour.BLACK) blackPlayer else whitePlayer) else None
+        val winner = if (!response) Some(if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer) else None
 
         (result, winner)
     }
