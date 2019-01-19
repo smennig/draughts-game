@@ -35,10 +35,11 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
     //noinspection SimplifyBooleanMatch
     /**
       * Moves the piece from one field to another
+      *
       * @param oldColumn column of the pieces' current position
-      * @param oldRow row of the pieces' current position
+      * @param oldRow    row of the pieces' current position
       * @param newColumn column of the pieces' next position
-      * @param newRow row of the pieces' next position
+      * @param newRow    row of the pieces' next position
       * @return true if the move was successful, false if not
       */
     override def move(oldColumn: Int, oldRow: Int, newColumn: Int, newRow: Int): (Boolean, Option[Player]) = {
@@ -131,7 +132,10 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
         val future = gameStopActor ? CheckPlayer(board, colourTurn)
         val response = Await.result(future, timeout.duration).asInstanceOf[Boolean]
 
-        val winner = if (!response) Some(if (colourTurn == Colour.BLACK) whitePlayer else blackPlayer) else None
+        val winner = if (response) {
+            Some(if (colourTurn == blackPlayer.color) whitePlayer else blackPlayer)
+        }
+        else None
 
         (result, winner)
     }
@@ -140,13 +144,14 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
 
     /**
       * Checks if a field must do a capture move
+      *
       * @return List of the possible fields where the piece has to move
       */
     def checkForcedCapture(): mutable.Map[Field, List[Field]] = {
         val fieldMap: mutable.Map[Field, List[Field]] = mutable.Map()
         for (field <- board.iterator) {
             field.getPiece match {
-                case Some(piece) => {
+                case Some(piece) =>
                     if (piece.getColour == colourTurn) {
                         val pieceController: PieceController = getPieceController(piece)
                         val forcedFields = pieceController.checkIfNextFieldHasOpponentPiece(board, field)
@@ -154,7 +159,6 @@ class MoveController @Inject()(val board: Board, @Assisted("blackPlayer") val bl
                             fieldMap(field) = forcedFields
                         }
                     }
-                }
                 case None => ;
             }
         }

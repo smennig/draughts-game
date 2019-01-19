@@ -74,8 +74,9 @@ class ManController(piece: Man) extends PieceController(piece) {
 
     /**
       * Checks if the field is on the opposite row of the board
+      *
       * @param moveRow the row number of the field
-      * @param colour colour of the current piece
+      * @param colour  colour of the current piece
       * @return true if yes, false if no
       */
     private def isFieldKingsRow(moveRow: Int, colour: Colour.Value): Boolean = {
@@ -119,14 +120,7 @@ class ManController(piece: Man) extends PieceController(piece) {
         checkIfFieldExists(nextLeftField, board, -1) || checkIfFieldExists(nextRightField, board, 1)
     }
 
-    def getNextField(currentField: Field, board: Board, direction: Int): Option[Field] = {
-        piece.getColour match {
-            case Colour.BLACK => board.getField(currentField.getColumn + direction)(currentField.getRow  + 1)
-            case Colour.WHITE => board.getField(currentField.getColumn + direction)(currentField.getRow  - 1)
-        }
-    }
-
-    def checkIfFieldExists(field: Option[Field], board: Board, direction: Int) = {
+    def checkIfFieldExists(field: Option[Field], board: Board, direction: Int): Boolean = {
         field match {
             case Some(f) => checkIfFieldHasPiece(f, board, direction)
             case None => false
@@ -140,10 +134,17 @@ class ManController(piece: Man) extends PieceController(piece) {
         }
     }
 
-    def checkIfCaptureIsPossible(field: Field, board: Board, direction: Int) = {
+    def checkIfCaptureIsPossible(field: Field, board: Board, direction: Int): Boolean = {
         getNextField(field, board, direction) match {
             case Some(f) => !f.hasPiece
             case None => false
+        }
+    }
+
+    def getNextField(currentField: Field, board: Board, direction: Int): Option[Field] = {
+        piece.getColour match {
+            case Colour.BLACK => board.getField(currentField.getColumn + direction)(currentField.getRow + 1)
+            case Colour.WHITE => board.getField(currentField.getColumn + direction)(currentField.getRow - 1)
         }
     }
 }

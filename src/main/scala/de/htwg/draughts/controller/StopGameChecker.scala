@@ -30,6 +30,6 @@ class StopGameChecker extends Actor {
             }
         }
 
-        if (i == 0 || !canMove) false else true
+        if (i == 0 || !canMove) true else false
     }
 }

@@ -140,11 +140,7 @@ class CommandLineController @Inject()() {
             case None =>
         }
 
-        if (moveController.checkIfGameIsOver()) {
-            printWin(currentTurnPlayer)
-            return
-        }
-
+  
         if(!validMove){
             println("Zug ungültig! Bitte wählen sie einen anderen Zug)")
             readGameMoves(currentTurnPlayer)

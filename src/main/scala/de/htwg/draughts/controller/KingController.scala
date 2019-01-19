@@ -91,23 +91,6 @@ class KingController(piece: King) extends PieceController(piece) {
         fieldList
     }
 
-    private def checkIfNextFieldHasOpponentPieceHelper(ownField: Field, nextField: Option[Field], board: Board): Unit = {
-        if (nextField.isDefined && nextField.get.getPiece.get.getColour != ownField.getPiece.get.getColour) {
-            val nextAfterTopRightField = board.getField(nextField.get.getColumn + 1)(nextField.get.getRow + 1)
-            if (nextAfterTopRightField.isDefined && !nextAfterTopRightField.get.hasPiece) {
-                nextAfterTopRightField.get
-            }
-        }
-    }
-
-    private def checkFieldsRec(board: Board, column: Int, row: Int, columnMove: Int, rowMove: Int): Option[Field] = {
-        val field = board.getField(column)(row)
-        field match {
-            case Some(f) => if (f.hasPiece) Some(f) else checkFieldsRec(board, column + columnMove, row + rowMove, columnMove, rowMove)
-            case None => None
-        }
-    }
-
     override def canMakeValidMove(currentField: Field, board: Board): Boolean = {
         val topRightField = getNextField(currentField, board, 1, 1)
         val topLeftField = getNextField(currentField, board, -1, 1)
@@ -135,10 +118,18 @@ class KingController(piece: King) extends PieceController(piece) {
         }
     }
 
-    def checkIfCaptureIsPossible(field: Field, board: Board, columnDirection: Int, rowDirection: Int) = {
+    def checkIfCaptureIsPossible(field: Field, board: Board, columnDirection: Int, rowDirection: Int): Boolean = {
         getNextField(field, board, columnDirection, rowDirection) match {
             case Some(f) => !f.hasPiece
             case None => false
+        }
+    }
+
+    private def checkFieldsRec(board: Board, column: Int, row: Int, columnMove: Int, rowMove: Int): Option[Field] = {
+        val field = board.getField(column)(row)
+        field match {
+            case Some(f) => if (f.hasPiece) Some(f) else checkFieldsRec(board, column + columnMove, row + rowMove, columnMove, rowMove)
+            case None => None
         }
     }
 }
