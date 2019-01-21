@@ -24,4 +24,8 @@ class DraughtsModule extends AbstractModule with ScalaModule {
     }
 
 
+    def provideWinBoard(): Board = {
+        new BoardCreator(8).setupWinFields()
+    }
+
 }
