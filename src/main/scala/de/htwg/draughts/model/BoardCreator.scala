@@ -19,6 +19,13 @@ class BoardCreator(size: Int = 8) {
         new DraughtsBoard(size, fields)
     }
 
+    def getPieceColour(row: Int): Colour.Value = {
+        row match {
+            case x if 0 to 2 contains x => Colour.BLACK
+            case x if size - 3 until size contains x => Colour.WHITE
+        }
+    }
+
     def setupWinFields(): DraughtsBoard = {
 
         for (i <- 0 until size; j <- 0 until size) {
@@ -41,11 +48,19 @@ class BoardCreator(size: Int = 8) {
         new DraughtsBoard(size, fields)
     }
 
-    def getPieceColour(row: Int): Colour.Value = {
-        row match {
-            case x if 0 to 2 contains x => Colour.BLACK
-            case x if size - 3 until size contains x => Colour.WHITE
+    def setupTestGameBoard(): DraughtsBoard = {
+        for (i <- 0 until size; j <- 0 until size) {
+            val field = new Field(row = i, column = j)
+
+            fields(i)(j) = field
+
+
         }
+        fields(1)(5).piece = Option.Some(new Man(Colour.WHITE))
+        fields(4)(0).piece = Option.Some(new Man(Colour.BLACK))
+        fields(4)(2).piece = Option.Some(new Man(Colour.BLACK))
+
+        new DraughtsBoard(size, fields)
     }
 
 }

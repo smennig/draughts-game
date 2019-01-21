@@ -28,4 +28,9 @@ class DraughtsModule extends AbstractModule with ScalaModule {
         new BoardCreator(8).setupWinFields()
     }
 
+    //    @Provides
+    def provideTestBoard(): Board = {
+        new BoardCreator(8).setupTestGameBoard()
+    }
+
 }

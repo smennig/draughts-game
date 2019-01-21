@@ -5,11 +5,8 @@ import de.htwg.draughts.controller.StopGameChecker.CheckPlayer
 import de.htwg.draughts.model.{Board, Colour}
 
 object StopGameChecker {
-    case class CheckPlayer(board: Board, colourTurn: Colour.Value) {
 
-    }
-    case class ContinueGame()
-    case class StopGame()
+    case class CheckPlayer(board: Board, colourTurn: Colour.Value)
 }
 
 class StopGameChecker extends Actor {

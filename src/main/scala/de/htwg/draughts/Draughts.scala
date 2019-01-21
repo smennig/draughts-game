@@ -10,7 +10,7 @@ object Draughts {
     def main(args: Array[String]): Unit = {
 
         if (args.length == 0) {
-            startUi("tui")
+            startUi("gui")
         } else {
             args(0) match {
                 case "gui" => startUi("gui")
