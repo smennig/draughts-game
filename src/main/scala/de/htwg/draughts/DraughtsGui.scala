@@ -34,7 +34,7 @@ class DraughtsGui @Inject()(gameControllerFactory: GameControllerFactory) extend
             // Show dialog and wait till it is closed
             gameStage.showAndWait()
             // Force application exit
-            Platform.exit()
+            System.exit(0)
         }
     }
 
