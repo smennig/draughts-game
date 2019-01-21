@@ -16,7 +16,7 @@ class CommandLineController @Inject()() {
         println("Spieler 1: Bitte geben Sie Ihren Namen ein: ")
         val nameInputOne = readLine()
 
-        println("Hallo " + nameInputOne + ": Bitte wählen sie Ihre Farbe")
+        println("Hallo " + nameInputOne + ": Bitte waehlen sie Ihre Farbe")
         println("Geben sie dazu 'b' oder 'w' ein")
 
         var colorOne: Option[Colour.Value] = None
@@ -44,15 +44,15 @@ class CommandLineController @Inject()() {
 
     def chooseFirstColor(colorInput: String): Option[Colour.Value] = {
         colorInput match {
-            case "w" => println("Sie spielen Weiß"); Option(Colour.WHITE);
+            case "w" => println("Sie spielen Weiss"); Option(Colour.WHITE);
             case "b" => println("Sie spielen Schwarz"); Option(Colour.BLACK);
-            case _ => println(colorInput + " ist eine ungültige Eingabe: Wählen sie 'b' oder 'w'"); None;
+            case _ => println(colorInput + " ist eine ungueltige Eingabe: Waehlen sie 'b' oder 'w'"); None;
         }
     }
 
     def chooseSecondColor(input: Colour.Value): Colour.Value = {
         input match {
-            case Colour.BLACK => println("Sie spielen Weiß"); Colour.WHITE
+            case Colour.BLACK => println("Sie spielen Weiss"); Colour.WHITE
             case Colour.WHITE => println("Sie spielen Schwarz"); Colour.BLACK
         }
     }
@@ -74,7 +74,7 @@ class CommandLineController @Inject()() {
                 System.exit(0)
                 None
             case _ =>
-                println(coordinate + " ist eine ungültige Eingabe: Wählen sie eine ganze Zahl zwischen 1 und 8")
+                println(coordinate + " ist eine ungueltige Eingabe: Waehlen sie eine ganze Zahl zwischen 1 und 8")
                 None
         }
     }
@@ -100,7 +100,7 @@ class CommandLineController @Inject()() {
         println(currentTurnPlayer.name +  " ist am Zug:")
 
         println("Bitte geben sie die Koordinaten der Figur an, die bewegt werden soll:")
-        println("Möchten sie das Spiel beenden, geben sie bitte 'q' ein.")
+        println("Moechten sie das Spiel beenden, geben sie bitte 'q' ein.")
         println("Geben sie dazu die X - Koordinate der Figur als ganze Zahl (1-8) ein.")
         var xCoordPiece: Option[Int] = None
         while(xCoordPiece isEmpty) {
@@ -142,14 +142,14 @@ class CommandLineController @Inject()() {
 
   
         if(!validMove){
-            println("Zug ungültig! Bitte wählen sie einen anderen Zug)")
+            println("Zug ungueltig! Bitte waehlen sie einen anderen Zug)")
             readGameMoves(currentTurnPlayer)
         }
 
     }
 
     def printWin(winningPlayer: Player): Unit = {
-        println("Glückwunsch, " + winningPlayer.name + " hat das Spiel gewonnen!")
+        println("Gluekwunsch, " + winningPlayer.name + " hat das Spiel gewonnen!")
         println("Das Spiel wird beendet...")
         System.exit(0)
     }
