@@ -1,22 +1,11 @@
 package de.htwg.draughts.model
 
-import akka.japi.Option
-
 class BoardCreator(size: Int = 8) {
 
-    val fields: Array[Array[Field]] = Array.ofDim[Field](size, size)
 
     def setupFields(): DraughtsBoard = {
 
-        for (i <- 0 until size; j <- 0 until size) {
-            val field = new Field(row = i, column = j)
-            if (field.getColour == Colour.BLACK && ((i >= 0 && i < 3) || (i >= size - 3 && i < size))) {
-                val piece = new Man(getPieceColour(i))
-                field.piece_(Some(piece))
-            }
-            fields(i)(j) = field
-        }
-        new DraughtsBoard(size, fields)
+        new DraughtsBoard(size)
     }
 
     def getPieceColour(row: Int): Colour.Value = {
@@ -26,41 +15,20 @@ class BoardCreator(size: Int = 8) {
         }
     }
 
-    def setupWinFields(): DraughtsBoard = {
-
-        for (i <- 0 until size; j <- 0 until size) {
-            val field = new Field(row = i, column = j)
-
-            fields(i)(j) = field
-        }
-        fields(1)(1).piece =Option.Some( new Man(Colour.BLACK))
-        fields(2)(2).piece =Option.Some( new Man(Colour.WHITE))
-        new DraughtsBoard(size, fields)
-    }
-
     def setupEmptyBoard(): DraughtsBoard = {
-        for (i <- 0 until size; j <- 0 until size) {
-            val field = new Field(row = i, column = j)
-
-            fields(i)(j) = field
-        }
-
-        new DraughtsBoard(size, fields)
+        new DraughtsBoard(size, true)
     }
 
-    def setupTestGameBoard(): DraughtsBoard = {
-        for (i <- 0 until size; j <- 0 until size) {
-            val field = new Field(row = i, column = j)
 
-            fields(i)(j) = field
+    def setupCustomBoard(): DraughtsBoard = {
+        val board = new DraughtsBoard(size, true)
 
 
-        }
-        fields(1)(5).piece = Option.Some(new Man(Colour.WHITE))
-        fields(4)(0).piece = Option.Some(new Man(Colour.BLACK))
-        fields(4)(2).piece = Option.Some(new Man(Colour.BLACK))
-
-        new DraughtsBoard(size, fields)
+        // TODO  generate this setup
+        board.setPieceOnField(1)(5)(new Man(Colour.WHITE))
+        board.setPieceOnField(4)(0)(new Man(Colour.BLACK))
+        board.setPieceOnField(4)(2)(new Man(Colour.BLACK))
+        board
     }
 
 }

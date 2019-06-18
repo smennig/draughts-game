@@ -23,14 +23,15 @@ class DraughtsModule extends AbstractModule with ScalaModule {
         new BoardCreator(8).setupFields()
     }
 
-
+//    @Provides
     def provideWinBoard(): Board = {
-        new BoardCreator(8).setupWinFields()
+        new BoardCreator(8).setupCustomBoard()
     }
 
     //    @Provides
+    // TODO generate function 
     def provideTestBoard(): Board = {
-        new BoardCreator(8).setupTestGameBoard()
+        new BoardCreator(8).setupEmptyBoard()
     }
 
 }
